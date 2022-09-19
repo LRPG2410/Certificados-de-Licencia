@@ -1,0 +1,22 @@
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\bin\Debug\CERTIFICADO_DE_LICENCIA.exe
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\bin\Debug\CERTIFICADO_DE_LICENCIA.pdb
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\bin\Debug\CERTIFICADO_DE_LICENCIA.xml
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.Form1.resources
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.Resources.resources
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.vbproj.GenerateResource.Cache
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.exe
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.xml
+C:\Users\sistemas.INTEVISA\AppData\Local\Temporary Projects\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.pdb
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.exe
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.xml
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.pdb
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\bin\Debug\CERTIFICADO_DE_LICENCIA.exe
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\bin\Debug\CERTIFICADO_DE_LICENCIA.pdb
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\bin\Debug\CERTIFICADO_DE_LICENCIA.xml
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.Form1.resources
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.Resources.resources
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.vbproj.GenerateResource.Cache
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\Interop.WIA.dll
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.vbproj.ResolveComReference.cache
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.vbproj.AssemblyReference.cache
+C:\Users\sistemas.INTEVISA\Documents\Visual Studio 2010\Projects\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\obj\x86\Debug\CERTIFICADO_DE_LICENCIA.vbproj.CoreCompileInputs.cache
