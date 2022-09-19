@@ -43,7 +43,6 @@ Partial Class Form1
         Me.txtNPaciente = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.cbProfesional = New System.Windows.Forms.ComboBox()
         Me.txtSalud = New System.Windows.Forms.TextBox()
@@ -107,10 +106,12 @@ Partial Class Form1
         Me.btnAgregar = New System.Windows.Forms.Button()
         Me.lFecha = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
+        Me.cmdCamara = New System.Windows.Forms.Button()
+        Me.cmdCapturar = New System.Windows.Forms.Button()
+        Me.btnGuardarArch = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
@@ -228,10 +229,11 @@ Partial Class Form1
         '
         'pbFoto
         '
+        Me.pbFoto.Image = CType(resources.GetObject("pbFoto.Image"), System.Drawing.Image)
         Me.pbFoto.Location = New System.Drawing.Point(455, 41)
         Me.pbFoto.Name = "pbFoto"
         Me.pbFoto.Size = New System.Drawing.Size(212, 209)
-        Me.pbFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFoto.TabIndex = 12
         Me.pbFoto.TabStop = False
         '
@@ -284,6 +286,7 @@ Partial Class Form1
         'txtDpi
         '
         Me.txtDpi.Location = New System.Drawing.Point(10, 85)
+        Me.txtDpi.MaxLength = 13
         Me.txtDpi.Name = "txtDpi"
         Me.txtDpi.Size = New System.Drawing.Size(420, 20)
         Me.txtDpi.TabIndex = 7
@@ -315,7 +318,6 @@ Partial Class Form1
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.PictureBox2)
         Me.GroupBox2.Controls.Add(Me.Label10)
         Me.GroupBox2.Controls.Add(Me.cbProfesional)
         Me.GroupBox2.Controls.Add(Me.txtSalud)
@@ -332,14 +334,6 @@ Partial Class Form1
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "DATOS DEL PROFESIONAL:"
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Location = New System.Drawing.Point(455, 64)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(193, 68)
-        Me.PictureBox2.TabIndex = 13
-        Me.PictureBox2.TabStop = False
         '
         'Label10
         '
@@ -925,8 +919,9 @@ Partial Class Form1
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(639, 12)
+        Me.Button4.Location = New System.Drawing.Point(20, 565)
         Me.Button4.Name = "Button4"
+        Me.Button4.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.Button4.Size = New System.Drawing.Size(100, 40)
         Me.Button4.TabIndex = 18
         Me.Button4.Text = "VER"
@@ -954,7 +949,7 @@ Partial Class Form1
         '
         'btnAgregar
         '
-        Me.btnAgregar.Location = New System.Drawing.Point(513, 28)
+        Me.btnAgregar.Location = New System.Drawing.Point(181, 574)
         Me.btnAgregar.Name = "btnAgregar"
         Me.btnAgregar.Size = New System.Drawing.Size(75, 23)
         Me.btnAgregar.TabIndex = 20
@@ -981,11 +976,41 @@ Partial Class Form1
         Me.Label12.TabIndex = 22
         Me.Label12.Text = "Hoy es:"
         '
+        'cmdCamara
+        '
+        Me.cmdCamara.Location = New System.Drawing.Point(261, 26)
+        Me.cmdCamara.Name = "cmdCamara"
+        Me.cmdCamara.Size = New System.Drawing.Size(75, 23)
+        Me.cmdCamara.TabIndex = 23
+        Me.cmdCamara.Text = "CAMARA"
+        Me.cmdCamara.UseVisualStyleBackColor = True
+        '
+        'cmdCapturar
+        '
+        Me.cmdCapturar.Location = New System.Drawing.Point(342, 26)
+        Me.cmdCapturar.Name = "cmdCapturar"
+        Me.cmdCapturar.Size = New System.Drawing.Size(75, 23)
+        Me.cmdCapturar.TabIndex = 24
+        Me.cmdCapturar.Text = "CAPTURAR"
+        Me.cmdCapturar.UseVisualStyleBackColor = True
+        '
+        'btnGuardarArch
+        '
+        Me.btnGuardarArch.Location = New System.Drawing.Point(504, 26)
+        Me.btnGuardarArch.Name = "btnGuardarArch"
+        Me.btnGuardarArch.Size = New System.Drawing.Size(143, 23)
+        Me.btnGuardarArch.TabIndex = 26
+        Me.btnGuardarArch.Text = "GUARDAR ARCHIVO"
+        Me.btnGuardarArch.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.btnGuardarArch)
+        Me.Controls.Add(Me.cmdCapturar)
+        Me.Controls.Add(Me.cmdCamara)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.lFecha)
         Me.Controls.Add(Me.btnAgregar)
@@ -1004,13 +1029,13 @@ Partial Class Form1
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "Form1"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Certificado de Licencia"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
@@ -1065,7 +1090,6 @@ Partial Class Form1
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents txtResidencia As System.Windows.Forms.TextBox
     Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents rbVision2 As System.Windows.Forms.RadioButton
     Friend WithEvents rbVision1 As System.Windows.Forms.RadioButton
@@ -1124,5 +1148,7 @@ Partial Class Form1
     Protected Friend WithEvents lFecha As System.Windows.Forms.Label
     Friend WithEvents txtAPaciente As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
-
+    Friend WithEvents cmdCamara As Button
+    Friend WithEvents cmdCapturar As Button
+    Friend WithEvents btnGuardarArch As Button
 End Class

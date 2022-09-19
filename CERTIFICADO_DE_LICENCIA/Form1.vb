@@ -10,12 +10,14 @@ Imports System.Data.OleDb ':::Es el proveedor de datos .NET Framework para OLE D
 Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivos y secuencias de datos, así como tipos que proporcionan compatibilidad básica con los archivos y directorios.
 
 ':::Imports Microsoft.Office.interop
+
+Imports System.Runtime.InteropServices
 #End Region
 
 Public Class Form1
 
 #Region "VARIABLES GLOBALES */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
-
+    Public sRuta As String
     Dim conexion As New OleDbConnection
     Dim comandos As New OleDbCommand
     Dim registro As New DataSet
@@ -534,6 +536,9 @@ Public Class Form1
         cbC.Checked = False
         cbE.Checked = False
         cbM.Checked = False
+
+        ':::Limpiar la foto
+        pbFoto.Image = Nothing
     End Sub
 
     ':::Instrucción para mostrar la información en el formulario desde el DataGridView
@@ -765,6 +770,97 @@ Public Class Form1
 
     End Sub
 
+    ':::Instrucción para que solo acepte número en el txtTransito
+    Private Sub txtTransito_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTransito.KeyPress
+        If Char.IsNumber(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO VALORES NÚMERICOS", vbCritical, "ERROR")
+        End If
+    End Sub
+
+    ':::Instrucción para que solo acepte número en el txtSalud
+    Private Sub txtSalud_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSalud.KeyPress
+        If Char.IsNumber(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO VALORES NÚMERICOS", vbCritical, "ERROR")
+        End If
+    End Sub
+
+    ':::Instrucción para que solo acepte número en el txtOftal
+    Private Sub txtOftal_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtOftal.KeyPress
+        If Char.IsNumber(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO VALORES NÚMERICOS", vbCritical, "ERROR")
+        End If
+    End Sub
+
+    ':::Instrucción para que solo acepte número en el txtDpi
+    Private Sub txtDpi_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtDpi.KeyPress
+        If Char.IsNumber(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO VALORES NÚMERICOS", vbCritical, "ERROR")
+        End If
+    End Sub
+
+    ':::Instrucción para que solo acepte letras en el txtAPaciente
+    Private Sub txtAPaciente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtAPaciente.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO LETRAS", vbCritical, "ERROR")
+        End If
+    End Sub
+
+    ':::Instrucción para que solo acepte letras en el txtNPaciente
+    Private Sub txtNPaciente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtNPaciente.KeyPress
+        If Char.IsLetter(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO LETRAS", vbCritical, "ERROR")
+        End If
+    End Sub
+
+    ':::Instrucción para que solo acepte números en el txtAPaciente
+    Private Sub txtAgudeza1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtAgudeza1.KeyPress
+        If Char.IsNumber(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsSeparator(e.KeyChar) Then
+            e.Handled = False
+        Else : e.Handled = True
+            MsgBox("INTRODUZCA SÓLO NÚMEROS", vbCritical, "ERROR")
+        End If
+    End Sub
+
 #End Region
 
 #Region "BASE DE DATOS  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
@@ -938,112 +1034,171 @@ Public Class Form1
         ':::Creamos la variable access que guardar la instruccion de tipo SQL
 
         ':::Instrucción "Delete * From [tabla] Where [nombrecelda1]=" & [nombreherramienta1] & ""
-        Dim access As String = "Delete * From Datos_Paciente Where Pac_Nombre=" & txtNPaciente.Text & ""
+        Dim access As String = "Delete * From Datos_Paciente Where Pac_Nombre='" & txtNPaciente.Text & "'"
         Me.operaciones(dgvTabla, access)
         actualizar()
     End Sub
 
 #End Region
 
+#Region "FOTOGRAFÍA"
+    Dim DATOS As IDataObject
+    Dim IMAGEN As Image
+    Dim CARPETA As String
+    Dim FECHA As String = DateTime.Now.ToShortDateString().Replace("/", "_") + "_" + DateTime.Now.ToLongTimeString().Replace(":", "_")
+    Dim DIRECTORIO As String = "C:\Users\sistemas.INTEVISA\Desktop\" ' AQUI COLOCA LA RUTA A TU ESCRITORIO
+    Dim DESTINO As String
+    Dim CONTADOR As Integer = 1
+    Dim CARPETAS_DIARIAS As String
+    Public Const WM_CAP As Short = &H400S
+    Public Const WM_CAP_DLG_VIDEOFORMAT As Integer = WM_CAP + 41
+    Public Const WM_CAP_DRIVER_CONNECT As Integer = WM_CAP + 10
+    Public Const WM_CAP_DRIVER_DISCONNECT As Integer = WM_CAP + 11
+    Public Const WM_CAP_EDIT_COPY As Integer = WM_CAP + 30
+    Public Const WM_CAP_SEQUENCE As Integer = WM_CAP + 62
+    Public Const WM_CAP_FILE_SAVEAS As Integer = WM_CAP + 23
+    Public Const WM_CAP_SET_PREVIEW As Integer = WM_CAP + 50
+    Public Const WM_CAP_SET_PREVIEWRATE As Integer = WM_CAP + 52
+    Public Const WM_CAP_SET_SCALE As Integer = WM_CAP + 53
+    Public Const WS_CHILD As Integer = &H40000000
+    Public Const WS_VISIBLE As Integer = &H10000000
+    Public Const SWP_NOMOVE As Short = &H2S
+    Public Const SWP_NOSIZE As Short = 1
+    Public Const SWP_NOZORDER As Short = &H4S
+    Public Const HWND_BOTTOM As Short = 1
+    Public Const WM_CAP_STOP As Integer = WM_CAP + 68
 
-    'Para la foto, código no funciona-----------------------------------------------
-    'Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles btnPath.Click
-    'Dim dlgFolder As New FolderBrowserDialog
-    'dlgFolder.Description = "Choose the folder you wish to save the captures to."
-    'If dlgFolder.ShowDialog = DialogResult.OK Then
-    '    SavePath = dlgFolder.SelectedPath
-    '   txtPath.Text = FormatPath(SavePath) 'formats path for label
-    ' End If
+    Public iDevice As Integer = 0 ' Current device ID
+    Public hHwnd As Integer ' Handle to preview window
 
-    'End Sub
+    Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
+        (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer,
+        <MarshalAs(UnmanagedType.AsAny)> ByVal lParam As Object) As Integer
 
-    'Private Function FormatPath(ByVal FilePath As String) As String
-    'procedure formats the label displaying the save path. If over a 50 characters, parses string 
-    'in order to fit nicely inside the label
-    '    If Len(FilePath) > 50 Then
-    'Dim MyNewString As String = Strings.Left(FilePath, 20) & " ... " & Strings.Right(FilePath, 30)
-    '        Return MyNewString
-    '    Else
-    '        Return FilePath
-    '    End If
-    'End Function
-    '
-    '    Private Sub btnGrab_Click(sender As System.Object, e As System.EventArgs) Handles btnGrab.Click
-    'Dim item As WIA.Item
-    '    Try
-    'executes the device's TakePicture command
-    '        item = SelectedDevice.ExecuteCommand(WIA.CommandID.wiaCommandTakePicture)
-    '   Catch ex As System.Exception
-    '      MessageBox.Show("Problem Taking Picture. Please make sure that the camera is plugged in and is not in use by another application. " & vbCrLf & "Extra Info:" & ex.Message, "Problem Grabbing Picture", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)
-    '     Exit Sub
-    'End Try
-    'Dim jpegGuid As String
-    'retrieves jpegKey from registry, used in saving JPEG
-    'Dim jpegKey As Microsoft.Win32.RegistryKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey("CLSID\{D2923B86-15F1-46FF-A19A-DE825F919576}\SupportedExtension\.jpg")
-    '   jpegGuid = CType(jpegKey.GetValue("FormatGUID"), String)
-    'loops through available formats for the captured item, looking for the JPG format
-    '   For Each format As String In item.Formats
-    '       If (format = jpegGuid) Then
-    'transfers image to an imagefile object
-    'Dim imagefile As WIA.ImageFile = CType(item.Transfer(Format), WIA.ImageFile)
-    'Dim Counter As Integer 'counter in loop appended to filename 
-    'Dim LoopAgain As Boolean = True
-    'searches directory, gets next available picture name
-    '            Do Until LoopAgain = False
-    'Dim Filename As String = SavePath & "\" & txtName.Text & Counter.ToString & ".jpg"
-    'if file doesnt exist, save the file
-    '               If Not System.IO.File.Exists(Filename) Then
-    '                  SavedFilePath = Filename
-    '                 imagefile.SaveFile(Filename) 'saves file to disk
-    '                txtPath.Text = FormatPath(Filename)
-    '               lName.Text = txtName.Text & Counter.ToString & ".jpg"
-    '              pbFoto.Image = Image.FromFile(Filename) 'loads captured file to picturebox
-    '             LoopAgain = False
-    '        End If
-    '       Counter = Counter + 1
-    '  Loop
-    'End If
-    'Next
-    'End Sub
+    Public Declare Function SetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hwnd As Integer,
+        ByVal hWndInsertAfter As Integer, ByVal x As Integer, ByVal y As Integer,
+        ByVal cx As Integer, ByVal cy As Integer, ByVal wFlags As Integer) As Integer
 
-    'Private Sub GetDevice()
-    'Dim MyDevice As WIA.Device
-    'Dim MyDialog As New WIA.CommonDialog
-    ' Try
-    'sh'ows selectdevice dialog, if only one device, It automatically selects the device
-    '(not tested with two or more devices)
-    '**Note - Device Type checks for VideoDeviceType, for webcams, in this sample
-    '         MyDevice = MyDialog.ShowSelectDevice(WIA.WiaDeviceType.VideoDeviceType, False, True)
-    '         If Not MyDevice Is Nothing Then
-    'loops through device properties, only gets the ones we want to display
-    '           For Each prop As WIA.Property In MyDevice.Properties
-    '                Select Case prop.Name
-    '                     Case "Manufacturer"
-    '                        Label13.Text = prop.Value.ToString
-    '                    Case "Description"
-    '                      Label14.Text = prop.Value.ToString
-    '                   Case "Name"
-    '                        Label19.Text = prop.Value.ToString
-    '                    Case "WIA Version"
-    '                        Label20.Text = prop.Value.ToString
-    '                    Case "Driver Version"
-    '                        Label21.Text = prop.Value.ToString
-    '                End Select
-    '            Next
-    'sets MyDevice form level selected device
-    '            SelectedDevice = MyDevice
-    '        Else
-    '            Label13.Text = "No WIA Devices Found!"
-    '        End If
-    '    Catch ex As System.Exception
-    '        MessageBox.Show("Problem! " & ex.Message, "Problem Loading Device", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)
-    '        Label13.Text = "No WIA Devices Found!"
-    '    End Try
-    'End Sub
+    Public Declare Function DestroyWindow Lib "user32" (ByVal hndw As Integer) As Boolean
 
-    'Private Sub Button6_Click_1(sender As System.Object, e As System.EventArgs) Handles Button6.Click
-    'GetDevice()
+    Public Declare Function capCreateCaptureWindowA Lib "avicap32.dll" _
+        (ByVal lpszWindowName As String, ByVal dwStyle As Integer,
+        ByVal x As Integer, ByVal y As Integer, ByVal nWidth As Integer,
+        ByVal nHeight As Short, ByVal hWndParent As Integer,
+        ByVal nID As Integer) As Integer
 
-    'End Sub
-    '---------------------------------------------------------------------------------
+    Public Declare Function capGetDriverDescriptionA Lib "avicap32.dll" (ByVal wDriver As Short,
+        ByVal lpszName As String, ByVal cbName As Integer, ByVal lpszVer As String,
+        ByVal cbVer As Integer) As Boolean
+
+    ':::Abrir la vista
+    Public Sub OpenPreviewWindow()
+
+        ' Open Preview window in picturebox
+        '
+        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 640,
+        480, VISOR.Handle.ToInt32, 0)
+
+        ' Connect to device
+        '
+        SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0)
+        If SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0) Then
+            '
+            'Set the preview scale
+
+            SendMessage(hHwnd, WM_CAP_SET_SCALE, True, 0)
+
+            'Set the preview rate in milliseconds
+            '
+            SendMessage(hHwnd, WM_CAP_SET_PREVIEWRATE, 66, 0)
+
+            'Start previewing the image from the camera
+            '
+            SendMessage(hHwnd, WM_CAP_SET_PREVIEW, True, 0)
+
+            ' Resize window to fit in picturebox
+            '
+            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, VISOR.Width, VISOR.Height,
+            SWP_NOMOVE Or SWP_NOZORDER)
+
+        Else
+            ' Error connecting to device close window
+            ' 
+            DestroyWindow(hHwnd)
+
+        End If
+    End Sub
+
+    ':::Abrir la prevista 
+    Public Sub OpenPreviewWindowCliente()
+
+        ' Open Preview window in picturebox
+        '
+        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 600,
+           480, Me.pbFoto.Handle.ToInt32, 0)
+
+        ' Connect to device
+        '
+        SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0)
+        If SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0) Then
+            '
+            'Set the preview scale
+
+            SendMessage(hHwnd, WM_CAP_SET_SCALE, True, 0)
+
+            'Set the preview rate in milliseconds
+            '
+            SendMessage(hHwnd, WM_CAP_SET_PREVIEWRATE, 66, 0)
+
+            'Start previewing the image from the camera
+            '
+            SendMessage(hHwnd, WM_CAP_SET_PREVIEW, True, 0)
+
+            ' Resize window to fit in picturebox
+            '
+            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, Me.pbFoto.Width, Me.pbFoto.Height,
+                    SWP_NOMOVE Or SWP_NOZORDER)
+
+        Else
+            ' Error connecting to device close window
+            ' 
+            DestroyWindow(hHwnd)
+
+        End If
+    End Sub
+
+    ':::Capturar la fotografia
+    Public Sub CapturarCliente()
+        ' Copy image to clipboard
+        '
+        SendMessage(hHwnd, WM_CAP_EDIT_COPY, 0, 0)
+
+        ' Get image from clipboard and convert it to a bitmap
+        '
+        DATOS = Clipboard.GetDataObject()
+
+        IMAGEN = CType(DATOS.GetData(GetType(System.Drawing.Bitmap)), Image)
+        Me.pbFoto.Image = IMAGEN
+        'GUARDAR.Visible = True
+    End Sub
+
+    ':::Cerrar ventana anterior
+    Public Sub ClosePreviewWindow()
+        '
+        ' Disconnect from device
+        '
+        SendMessage(hHwnd, WM_CAP_DRIVER_DISCONNECT, 0, 0)
+        '
+        ' close window
+        '
+        DestroyWindow(hHwnd)
+    End Sub
+
+    ':::Abrir camara
+    Private Sub cmdCamara_Click(sender As Object, e As EventArgs) Handles cmdCamara.Click
+        Me.OpenPreviewWindowCliente()
+        cmdCamara.Enabled = False
+    End Sub
+
+#End Region
 End Class
