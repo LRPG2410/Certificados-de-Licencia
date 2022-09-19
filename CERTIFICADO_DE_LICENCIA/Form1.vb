@@ -777,7 +777,7 @@ Public Class Form1
         Try
 
             ':::Usamos la variable conexion para el enlace a la base de datos
-            conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\BD\CERTIFICADO_DE_LICENCIA_BD.accdb"
+            conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
             conexion.Open()
             MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
         Catch ex As Exception
