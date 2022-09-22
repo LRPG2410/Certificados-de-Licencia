@@ -1,17 +1,19 @@
 ﻿#Region "IMPORTS  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
+
 ':::ADO.NET es un conjunto de componentes que pueden ser usado para acceder a datos y a servicios de datos. Es parte de la biblioteca de clases base que están incluidas en el Microsoft .NET Framework.
 Imports System.Data ':::Ofrece acceso a clases que representan la arquitectura de ADO.NET. ADO.NET permite crear componentes que administran datos de varios orígenes de datos con eficacia.
 
 ':::OLE DB es la sigla de Object Linking and Embedding for Databases, es una tecnología usada para tener acceso a fuentes de información, o bases de datos.
 Imports System.Data.OleDb ':::Es el proveedor de datos .NET Framework para OLE DB.
 
-':::Imports Microsoft.Office.Interop.Word ' para activar esta referencia se va a proyecto luego en agregar referencia com y se agrega Microsoft Word 9.0 Object Library dependiendo de la version de office
+Imports Microsoft.Office.Interop.Word ':::Para activar esta referencia se va a proyecto luego en agregar referencia com y se agrega Microsoft Word 9.0 Object Library dependiendo de la version de office
 
 Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivos y secuencias de datos, así como tipos que proporcionan compatibilidad básica con los archivos y directorios.
 
-':::Imports Microsoft.Office.interop
-
+Imports Microsoft.Office.Interop
 Imports System.Runtime.InteropServices
+Imports System.Data.SqlClient
+
 #End Region
 
 Public Class Form1
@@ -21,8 +23,8 @@ Public Class Form1
     Dim conexion As New OleDbConnection
     Dim comandos As New OleDbCommand
     Dim registro As New DataSet
-    'Dim MSWord As New Word.Application
-    'Dim documento As Word.Document
+    Dim MSWord As New Word.Application
+    Dim documento As Word.Document
     Dim connectionstring As String
     Private SelectedDevice As WIA.Device
     Private SavePath As String
@@ -43,7 +45,7 @@ Public Class Form1
             Dim DA As New OleDbDataAdapter(access, conexion)
 
             ':::Creamos el objeto DataTable que recibe la informacion del DataAdapter
-            Dim DT As New DataTable
+            Dim DT As New Data.DataTable
 
             ':::Pasamos la informacion del DataAdapter al DataTable mediante la propiedad Fill
             DA.Fill(DT)
@@ -82,6 +84,19 @@ Public Class Form1
 
         ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos (2) parametros (dgvTabla, access)
         Me.consulta(dgvTabla, access)
+    End Sub
+
+    ':::PROCEDIMIENTO para el contador de pacientes
+    Private Sub cont()
+        ':::Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
+
+        Try
+            'Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
+            Dim access As String = "Select Contador from Datos_Paciente"
+        Catch ex As Exception
+            MsgBox("No se pudo compa")
+        End Try
+
     End Sub
 
 #End Region
@@ -725,18 +740,10 @@ Public Class Form1
     ':::Instrucción para abrir el explorador de archivos y buscar la FOTO
     Private Sub PictureBox1_Click(sender As System.Object, e As System.EventArgs) Handles pbFoto.Click
         ':::Buscamos la imagen a grabar
-        Dim openDlg As OpenFileDialog = New OpenFileDialog()
-        openDlg.Filter = "Todos los archivos JPEG|*.jpg"
-        Dim filter As String = openDlg.Filter
-        openDlg.Title = "Abrir archivos JPEG"
-        If (openDlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-            curFileName = openDlg.FileName
-            SaveImage = True
-
-            ':::Mostrando la foto en el picture
-            Me.pbFoto.ImageLocation = curFileName.ToString
-        Else
-            Exit Sub
+        Dim file As New OpenFileDialog()
+        file.Filter = "Archivo JPG|*.jpg"
+        If file.ShowDialog() = DialogResult.OK Then
+            pbFoto.Image = Image.FromFile(file.FileName)
         End If
     End Sub
 
@@ -861,6 +868,14 @@ Public Class Form1
         End If
     End Sub
 
+    ':::Instrucción para "placeholder" en el RichTextBox
+    Private Sub rtb1_Click(sender As Object, e As EventArgs) Handles rtb1.Click
+        If rtb1.Text = "Observaciones: " Then
+            Me.rtb1.Text = Nothing
+            Me.rtb1.ForeColor = Color.Black
+        End If
+    End Sub
+
 #End Region
 
 #Region "BASE DE DATOS  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
@@ -868,6 +883,10 @@ Public Class Form1
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ':::Instrucción para mostrar la fecha de hoy
         Me.lFecha.Text = Date.Now.Date
+        Me.rtb1.ForeColor = Color.Gray
+        Me.rtb1.Text = "Observaciones: "
+        cont()
+
 
         ':::Instrucción Try para capturar errores
         Try
@@ -1041,7 +1060,7 @@ Public Class Form1
 
 #End Region
 
-#Region "FOTOGRAFÍA"
+#Region "FOTOGRAFÍA */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
     Dim DATOS As IDataObject
     Dim IMAGEN As Image
     Dim CARPETA As String
@@ -1071,33 +1090,22 @@ Public Class Form1
     Public iDevice As Integer = 0 ' Current device ID
     Public hHwnd As Integer ' Handle to preview window
 
-    Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer,
-        <MarshalAs(UnmanagedType.AsAny)> ByVal lParam As Object) As Integer
+    Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, <MarshalAs(UnmanagedType.AsAny)> ByVal lParam As Object) As Integer
 
-    Public Declare Function SetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hwnd As Integer,
-        ByVal hWndInsertAfter As Integer, ByVal x As Integer, ByVal y As Integer,
-        ByVal cx As Integer, ByVal cy As Integer, ByVal wFlags As Integer) As Integer
+    Declare Function SetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hwnd As Integer, ByVal hWndInsertAfter As Integer, ByVal x As Integer, ByVal y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal wFlags As Integer) As Integer
 
-    Public Declare Function DestroyWindow Lib "user32" (ByVal hndw As Integer) As Boolean
+    Declare Function DestroyWindow Lib "user32" (ByVal hndw As Integer) As Boolean
 
-    Public Declare Function capCreateCaptureWindowA Lib "avicap32.dll" _
-        (ByVal lpszWindowName As String, ByVal dwStyle As Integer,
-        ByVal x As Integer, ByVal y As Integer, ByVal nWidth As Integer,
-        ByVal nHeight As Short, ByVal hWndParent As Integer,
-        ByVal nID As Integer) As Integer
+    Declare Function capCreateCaptureWindowA Lib "avicap32.dll" (ByVal lpszWindowName As String, ByVal dwStyle As Integer, ByVal x As Integer, ByVal y As Integer, ByVal nWidth As Integer, ByVal nHeight As Short, ByVal hWndParent As Integer, ByVal nID As Integer) As Integer
 
-    Public Declare Function capGetDriverDescriptionA Lib "avicap32.dll" (ByVal wDriver As Short,
-        ByVal lpszName As String, ByVal cbName As Integer, ByVal lpszVer As String,
-        ByVal cbVer As Integer) As Boolean
+    Declare Function capGetDriverDescriptionA Lib "avicap32.dll" (ByVal wDriver As Short, ByVal lpszName As String, ByVal cbName As Integer, ByVal lpszVer As String, ByVal cbVer As Integer) As Boolean
 
     ':::Abrir la vista
     Public Sub OpenPreviewWindow()
 
         ' Open Preview window in picturebox
         '
-        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 640,
-        480, VISOR.Handle.ToInt32, 0)
+        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 640, 480, VISOR.Handle.ToInt32, 0)
 
         ' Connect to device
         '
@@ -1118,8 +1126,7 @@ Public Class Form1
 
             ' Resize window to fit in picturebox
             '
-            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, VISOR.Width, VISOR.Height,
-            SWP_NOMOVE Or SWP_NOZORDER)
+            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, VISOR.Width, VISOR.Height, SWP_NOMOVE Or SWP_NOZORDER)
 
         Else
             ' Error connecting to device close window
@@ -1134,8 +1141,7 @@ Public Class Form1
 
         ' Open Preview window in picturebox
         '
-        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 600,
-           480, Me.pbFoto.Handle.ToInt32, 0)
+        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 600, 480, Me.pbFoto.Handle.ToInt32, 0)
 
         ' Connect to device
         '
@@ -1156,8 +1162,7 @@ Public Class Form1
 
             ' Resize window to fit in picturebox
             '
-            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, Me.pbFoto.Width, Me.pbFoto.Height,
-                    SWP_NOMOVE Or SWP_NOZORDER)
+            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, Me.pbFoto.Width, Me.pbFoto.Height, SWP_NOMOVE Or SWP_NOZORDER)
 
         Else
             ' Error connecting to device close window
@@ -1201,4 +1206,5 @@ Public Class Form1
     End Sub
 
 #End Region
+
 End Class

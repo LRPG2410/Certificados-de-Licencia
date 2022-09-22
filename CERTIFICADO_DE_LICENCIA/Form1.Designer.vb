@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -109,6 +109,9 @@ Partial Class Form1
         Me.cmdCamara = New System.Windows.Forms.Button()
         Me.cmdCapturar = New System.Windows.Forms.Button()
         Me.btnGuardarArch = New System.Windows.Forms.Button()
+        Me.VISOR = New System.Windows.Forms.PictureBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.lcontador = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -127,6 +130,7 @@ Partial Class Form1
         CType(Me.nudCentral2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
         CType(Me.dgvTabla, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.VISOR, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -881,36 +885,48 @@ Partial Class Form1
         '
         'BtnGuardar
         '
-        Me.BtnGuardar.Location = New System.Drawing.Point(20, 511)
+        Me.BtnGuardar.Image = CType(resources.GetObject("BtnGuardar.Image"), System.Drawing.Image)
+        Me.BtnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnGuardar.Location = New System.Drawing.Point(10, 503)
         Me.BtnGuardar.Name = "BtnGuardar"
-        Me.BtnGuardar.Size = New System.Drawing.Size(100, 40)
+        Me.BtnGuardar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.BtnGuardar.Size = New System.Drawing.Size(160, 40)
         Me.BtnGuardar.TabIndex = 14
         Me.BtnGuardar.Text = "GUARDAR"
         Me.BtnGuardar.UseVisualStyleBackColor = True
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(359, 565)
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button2.Location = New System.Drawing.Point(508, 503)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(100, 40)
+        Me.Button2.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.Button2.Size = New System.Drawing.Size(160, 40)
         Me.Button2.TabIndex = 15
         Me.Button2.Text = "LIMPIAR"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(465, 565)
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button3.Location = New System.Drawing.Point(1091, 12)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(100, 40)
+        Me.Button3.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.Button3.Size = New System.Drawing.Size(160, 40)
         Me.Button3.TabIndex = 16
         Me.Button3.Text = "SALIR"
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(598, 565)
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button1.Location = New System.Drawing.Point(342, 503)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(100, 40)
+        Me.Button1.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.Button1.Size = New System.Drawing.Size(160, 40)
         Me.Button1.TabIndex = 17
         Me.Button1.Text = "ELIMINAR"
         Me.Button1.UseVisualStyleBackColor = True
@@ -919,19 +935,22 @@ Partial Class Form1
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(20, 565)
+        Me.Button4.Location = New System.Drawing.Point(251, 549)
         Me.Button4.Name = "Button4"
-        Me.Button4.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
-        Me.Button4.Size = New System.Drawing.Size(100, 40)
+        Me.Button4.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
+        Me.Button4.Size = New System.Drawing.Size(160, 40)
         Me.Button4.TabIndex = 18
         Me.Button4.Text = "VER"
         Me.Button4.UseVisualStyleBackColor = True
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(126, 511)
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button5.Location = New System.Drawing.Point(176, 503)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(100, 40)
+        Me.Button5.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.Button5.Size = New System.Drawing.Size(160, 40)
         Me.Button5.TabIndex = 19
         Me.Button5.Text = "ACTUALIZAR"
         Me.Button5.UseVisualStyleBackColor = True
@@ -949,7 +968,7 @@ Partial Class Form1
         '
         'btnAgregar
         '
-        Me.btnAgregar.Location = New System.Drawing.Point(181, 574)
+        Me.btnAgregar.Location = New System.Drawing.Point(493, 12)
         Me.btnAgregar.Name = "btnAgregar"
         Me.btnAgregar.Size = New System.Drawing.Size(75, 23)
         Me.btnAgregar.TabIndex = 20
@@ -978,7 +997,7 @@ Partial Class Form1
         '
         'cmdCamara
         '
-        Me.cmdCamara.Location = New System.Drawing.Point(261, 26)
+        Me.cmdCamara.Location = New System.Drawing.Point(182, 12)
         Me.cmdCamara.Name = "cmdCamara"
         Me.cmdCamara.Size = New System.Drawing.Size(75, 23)
         Me.cmdCamara.TabIndex = 23
@@ -987,7 +1006,7 @@ Partial Class Form1
         '
         'cmdCapturar
         '
-        Me.cmdCapturar.Location = New System.Drawing.Point(342, 26)
+        Me.cmdCapturar.Location = New System.Drawing.Point(263, 12)
         Me.cmdCapturar.Name = "cmdCapturar"
         Me.cmdCapturar.Size = New System.Drawing.Size(75, 23)
         Me.cmdCapturar.TabIndex = 24
@@ -996,18 +1015,49 @@ Partial Class Form1
         '
         'btnGuardarArch
         '
-        Me.btnGuardarArch.Location = New System.Drawing.Point(504, 26)
+        Me.btnGuardarArch.Location = New System.Drawing.Point(344, 12)
         Me.btnGuardarArch.Name = "btnGuardarArch"
         Me.btnGuardarArch.Size = New System.Drawing.Size(143, 23)
         Me.btnGuardarArch.TabIndex = 26
         Me.btnGuardarArch.Text = "GUARDAR ARCHIVO"
         Me.btnGuardarArch.UseVisualStyleBackColor = True
         '
+        'VISOR
+        '
+        Me.VISOR.Location = New System.Drawing.Point(574, 12)
+        Me.VISOR.Name = "VISOR"
+        Me.VISOR.Size = New System.Drawing.Size(100, 50)
+        Me.VISOR.TabIndex = 27
+        Me.VISOR.TabStop = False
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(706, 13)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(128, 24)
+        Me.Label19.TabIndex = 29
+        Me.Label19.Text = "No. Paciente: "
+        '
+        'lcontador
+        '
+        Me.lcontador.AutoSize = True
+        Me.lcontador.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lcontador.Location = New System.Drawing.Point(840, 13)
+        Me.lcontador.Name = "lcontador"
+        Me.lcontador.Size = New System.Drawing.Size(20, 24)
+        Me.lcontador.TabIndex = 30
+        Me.lcontador.Text = "#"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.lcontador)
+        Me.Controls.Add(Me.Label19)
+        Me.Controls.Add(Me.VISOR)
         Me.Controls.Add(Me.btnGuardarArch)
         Me.Controls.Add(Me.cmdCapturar)
         Me.Controls.Add(Me.cmdCamara)
@@ -1061,6 +1111,7 @@ Partial Class Form1
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         CType(Me.dgvTabla, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.VISOR, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1151,4 +1202,7 @@ Partial Class Form1
     Friend WithEvents cmdCamara As Button
     Friend WithEvents cmdCapturar As Button
     Friend WithEvents btnGuardarArch As Button
+    Friend WithEvents VISOR As PictureBox
+    Friend WithEvents Label19 As Label
+    Friend WithEvents lcontador As Label
 End Class
