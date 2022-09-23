@@ -13,6 +13,9 @@ Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivo
 Imports Microsoft.Office.Interop
 Imports System.Runtime.InteropServices
 Imports System.Data.SqlClient
+Imports DataTable = System.Data.DataTable
+Imports System.Data.Odbc
+
 
 #End Region
 
@@ -23,6 +26,7 @@ Public Class Form1
     Dim conexion As New OleDbConnection
     Dim comandos As New OleDbCommand
     Dim registro As New DataSet
+    Dim reader As OleDbDataReader
     Dim MSWord As New Word.Application
     Dim documento As Word.Document
     Dim connectionstring As String
@@ -86,17 +90,16 @@ Public Class Form1
         Me.consulta(dgvTabla, access)
     End Sub
 
-    ':::PROCEDIMIENTO para el contador de pacientes
-    Private Sub cont()
-        ':::Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
-
-        Try
-            'Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
-            Dim access As String = "Select Contador from Datos_Paciente"
-        Catch ex As Exception
-            MsgBox("No se pudo compa")
-        End Try
-
+    ':::PRUEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    Sub num()
+        Dim Sql As String = "Select  max(Contador) from Datos_Paciente"
+        Dim cmd As New OleDbCommand(Sql, conexion)
+        Dim codigo = cmd.ExecuteScalar
+        If IsDBNull(codigo) Then
+            Me.lcontador.Text = "100"
+        Else
+            Me.lcontador.Text = CStr(codigo)
+        End If
     End Sub
 
 #End Region
@@ -885,7 +888,6 @@ Public Class Form1
         Me.lFecha.Text = Date.Now.Date
         Me.rtb1.ForeColor = Color.Gray
         Me.rtb1.Text = "Observaciones: "
-        cont()
 
 
         ':::Instrucción Try para capturar errores
@@ -895,15 +897,15 @@ Public Class Form1
             conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
             conexion.Open()
             MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
+            num()
         Catch ex As Exception
             MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NIGUN DATO", vbCritical, "ERROR")
             MsgBox(ex.Message)
         End Try
     End Sub
 
-    ':::Boton que ENVIA la información a la base de datos
+    ':::Boton que ENVIA [GUARDAR] la información a la base de datos
     Private Sub BtnGuardar_Click(sender As System.Object, e As System.EventArgs) Handles BtnGuardar.Click
-
         ':::Instrucción Try para capturar errores
         Try
 
@@ -1008,6 +1010,7 @@ Public Class Form1
             Else
                 comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text = " ")
             End If
+
             If (cbNinguna.Checked = True) Then
                 comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text)
             Else
@@ -1026,7 +1029,7 @@ Public Class Form1
         End Try
     End Sub
 
-    ':::Boton que MUESTRA la información almacenada en la base de datos
+    ':::Boton que MUESTRA [VER] la información almacenada en la base de datos
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
         ':::Creamos la variable access que guarda la instruccion de tipo SQL
 
@@ -1039,7 +1042,7 @@ Public Class Form1
         Me.consulta(dgvTabla, access)
     End Sub
 
-    ':::Boton que ACTUALIZA la informacion almacenada en la base de datos
+    ':::Boton que ACTUALIZA [ACTUALIZAR] la informacion almacenada en la base de datos
     Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
         ':::Creamos la variable access que guardar la instruccion de tipo SQL
 
@@ -1048,14 +1051,18 @@ Public Class Form1
         Me.operaciones(dgvTabla, access)
     End Sub
 
-    ':::Boton que ELIMINA la información de la base de datos
+    ':::Boton que ELIMINA [ELIMINAR] la información de la base de datos
     Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
         ':::Creamos la variable access que guardar la instruccion de tipo SQL
+        If MessageBox.Show("¿Seguro que quiere elimar este paciente?", "ELIMINACIÓN DE PACIENTE", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = vbYes Then
+            Dim access As String = "Delete * From Datos_Paciente Where Pac_Nombre='" & txtNPaciente.Text & "'"
+            Me.operaciones(dgvTabla, access)
+            actualizar()
+            Else
+        End If
 
         ':::Instrucción "Delete * From [tabla] Where [nombrecelda1]=" & [nombreherramienta1] & ""
-        Dim access As String = "Delete * From Datos_Paciente Where Pac_Nombre='" & txtNPaciente.Text & "'"
-        Me.operaciones(dgvTabla, access)
-        actualizar()
+
     End Sub
 
 #End Region
