@@ -897,7 +897,7 @@ Public Class Form1
         FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\PlantillaJornadas.docx", "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\'" & txtNPaciente.Text & " '.docx")
         documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\'" & txtNPaciente.Text & " '.docx")
 
-
+        documento.Bookmarks.Item("NombresPaciente").Range.Text = txtNPaciente.Text
 
     End Sub
 
