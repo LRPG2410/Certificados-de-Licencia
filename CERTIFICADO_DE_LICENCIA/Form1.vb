@@ -20,6 +20,8 @@ Imports System.Data.Odbc
 #End Region
 
 Public Class Form1
+    ':::String -> Cadena de caracteres
+    ':::Integer -> Valores de tipo entero
 
 #Region "VARIABLES GLOBALES */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
     Public sRuta As String
@@ -90,14 +92,20 @@ Public Class Form1
         Me.consulta(dgvTabla, access)
     End Sub
 
-    ':::PRUEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes
     Sub num()
-        Dim Sql As String = "Select  max(Contador) from Datos_Paciente"
+        Dim Sql As String = "Select max(Contador) from Datos_Paciente"
         Dim cmd As New OleDbCommand(Sql, conexion)
+
+        ':::ExecuteScalar es una operación que se utiliza para devolver un valor único
         Dim codigo = cmd.ExecuteScalar
+
+        ':::IsDBNull es una operación que se utiliza para verificar si hay registros en la base de datos, lanza un valor booleano
         If IsDBNull(codigo) Then
-            Me.lcontador.Text = "100"
+            Me.lcontador.Text = "0"
         Else
+
+            ':::CStr se encarga de convertir un valor numérico en un tipo String
             Me.lcontador.Text = CStr(codigo)
         End If
     End Sub
@@ -502,9 +510,6 @@ Public Class Form1
         txtNPaciente.Text = ""
         txtDpi.Text = ""
         txtResidencia.Text = ""
-        txtAgudeza1.Text = ""
-        txtAgudeza2.Text = ""
-        txtAgudeza3.Text = ""
         txtEdad.Visible = False
         txtEdad.Text = ""
 
@@ -517,6 +522,9 @@ Public Class Form1
         cbMunicipio.Text = Nothing
         cbGenero.SelectedValue = Nothing
         cbGenero.Text = Nothing
+        cbAgudeza1.Text = Nothing
+        cbAgudeza2.Text = Nothing
+        cbAgudeza3.Text = Nothing
 
         ':::Limpiar la fecha
         txtDate1.Text = Nothing
@@ -575,9 +583,9 @@ Public Class Form1
         Me.cbGenero.Text = dgvTabla.Rows(I).Cells(10).Value.ToString
         Me.txtResidencia.Text = dgvTabla.Rows(I).Cells(11).Value.ToString
 
-        Me.txtAgudeza1.Text = dgvTabla.Rows(I).Cells(12).Value.ToString
-        Me.txtAgudeza2.Text = dgvTabla.Rows(I).Cells(13).Value.ToString
-        Me.txtAgudeza3.Text = dgvTabla.Rows(I).Cells(14).Value.ToString
+        Me.cbAgudeza1.Text = dgvTabla.Rows(I).Cells(12).Value.ToString
+        Me.cbAgudeza2.Text = dgvTabla.Rows(I).Cells(13).Value.ToString
+        Me.cbAgudeza3.Text = dgvTabla.Rows(I).Cells(14).Value.ToString
 
         ':::Instrucción para que los RadioButton se marquen correctamente al momento de enviarlos al formulario OPCION [1]
         If CStr(dgvTabla.Rows(I).Cells(15).Value) = "NORMAL" Then
@@ -722,9 +730,9 @@ Public Class Form1
         cbMunicipio.Text = "Ciudad de Guatemala"
         cbGenero.Text = "Masculino"
         txtResidencia.Text = "Vivo por ahi"
-        txtAgudeza1.Text = "67"
-        txtAgudeza2.Text = "34"
-        txtAgudeza3.Text = "90"
+        cbAgudeza1.Text = "67"
+        cbAgudeza2.Text = "34"
+        cbAgudeza3.Text = "90"
         rbVision1.Checked = True
         nudCentral1.Value = "45"
         nudCentral2.Value = "32"
@@ -766,13 +774,17 @@ Public Class Form1
         Dim edad = vHoyAnio - vAnio
 
         ':::La instrucción If se encarga de verificar que el día y mes actuales sean iguales a los de nacimiento para confirmar si ya cumplio años
-        If (vHoyDia = vDia And vHoyMes = vMes) Then
+        If (vHoyDia <= vDia And vHoyMes <= vMes) Then
             txtEdad.Text = "Tiene " & edad & " años."
 
             ':::La instrucción Else se encarga de restarle uno a edad, ya que el día y mes actuales no son igual a los de nacimiento
         Else
-            Dim nuevaEdad = edad - 1
-            txtEdad.Text = "Tiene " & nuevaEdad & " años."
+            If (vHoyDia <> vDia And vHoyAnio = vAnio) Then
+                txtEdad.Text = "Tiene 0 años"
+            Else
+                Dim nuevaEdad = edad - 1
+                txtEdad.Text = "Tiene " & nuevaEdad & " años."
+            End If
         End If
 
         '::::Hacemos visible el Label
@@ -859,7 +871,7 @@ Public Class Form1
     End Sub
 
     ':::Instrucción para que solo acepte números en el txtAPaciente
-    Private Sub txtAgudeza1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtAgudeza1.KeyPress
+    Private Sub txtAgudeza1_KeyPress(sender As Object, e As KeyPressEventArgs)
         If Char.IsNumber(e.KeyChar) Then
             e.Handled = False
         ElseIf Char.IsControl(e.KeyChar) Then
@@ -877,6 +889,16 @@ Public Class Form1
             Me.rtb1.Text = Nothing
             Me.rtb1.ForeColor = Color.Black
         End If
+    End Sub
+
+    ':::Boton para imprimir los REPORTES en word
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '", MsgBoxStyle.Information, "JORNADAS")
+        FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\PlantillaJornadas.docx", "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\'" & txtNPaciente.Text & " '.docx")
+        documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\'" & txtNPaciente.Text & " '.docx")
+
+
+
     End Sub
 
 #End Region
@@ -897,7 +919,7 @@ Public Class Form1
             conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
             conexion.Open()
             MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
-            num()
+            'num()
         Catch ex As Exception
             MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NIGUN DATO", vbCritical, "ERROR")
             MsgBox(ex.Message)
@@ -910,7 +932,7 @@ Public Class Form1
         Try
 
             ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
-            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @txtAgudeza1, @txtAgudeza2, @txtAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1)", conexion)
+            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1)", conexion)
 
             ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
             comandos.Parameters.AddWithValue("@Pro_Nombre", cbProfesional.SelectedItem)
@@ -927,9 +949,9 @@ Public Class Form1
             comandos.Parameters.AddWithValue("@Pac_Genero", cbGenero.SelectedItem)
             comandos.Parameters.AddWithValue("@Pac_Residencia", txtResidencia.Text)
 
-            comandos.Parameters.AddWithValue("@Res_Agudeza1", txtAgudeza1.Text)
-            comandos.Parameters.AddWithValue("@Res_Agudeza2", txtAgudeza2.Text)
-            comandos.Parameters.AddWithValue("@Res_Agudeza3", txtAgudeza3.Text)
+            comandos.Parameters.AddWithValue("@Res_Agudeza1", cbAgudeza1.SelectedItem)
+            comandos.Parameters.AddWithValue("@Res_Agudeza2", cbAgudeza2.SelectedItem)
+            comandos.Parameters.AddWithValue("@Res_Agudeza3", cbAgudeza3.SelectedItem)
 
             ':::Instrucción If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
             If (rbVision1.Checked = True) Then

@@ -76,9 +76,9 @@ Partial Class Form1
         Me.rbPeriferico1 = New System.Windows.Forms.RadioButton()
         Me.rbPeriferico2 = New System.Windows.Forms.RadioButton()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.txtAgudeza1 = New System.Windows.Forms.TextBox()
-        Me.txtAgudeza3 = New System.Windows.Forms.TextBox()
-        Me.txtAgudeza2 = New System.Windows.Forms.TextBox()
+        Me.cbAgudeza1 = New System.Windows.Forms.ComboBox()
+        Me.cbAgudeza2 = New System.Windows.Forms.ComboBox()
+        Me.cbAgudeza3 = New System.Windows.Forms.ComboBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.nudCentral1 = New System.Windows.Forms.NumericUpDown()
@@ -112,6 +112,7 @@ Partial Class Form1
         Me.VISOR = New System.Windows.Forms.PictureBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -678,9 +679,9 @@ Partial Class Form1
         '
         'GroupBox5
         '
-        Me.GroupBox5.Controls.Add(Me.txtAgudeza1)
-        Me.GroupBox5.Controls.Add(Me.txtAgudeza3)
-        Me.GroupBox5.Controls.Add(Me.txtAgudeza2)
+        Me.GroupBox5.Controls.Add(Me.cbAgudeza1)
+        Me.GroupBox5.Controls.Add(Me.cbAgudeza2)
+        Me.GroupBox5.Controls.Add(Me.cbAgudeza3)
         Me.GroupBox5.Location = New System.Drawing.Point(10, 25)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(240, 60)
@@ -688,26 +689,35 @@ Partial Class Form1
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "AGUDEZA VISUAL:"
         '
-        'txtAgudeza1
+        'cbAgudeza1
         '
-        Me.txtAgudeza1.Location = New System.Drawing.Point(24, 26)
-        Me.txtAgudeza1.Name = "txtAgudeza1"
-        Me.txtAgudeza1.Size = New System.Drawing.Size(60, 20)
-        Me.txtAgudeza1.TabIndex = 14
+        Me.cbAgudeza1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbAgudeza1.FormattingEnabled = True
+        Me.cbAgudeza1.Items.AddRange(New Object() {"20/20", "20/25", "20/30", "20/40", "20/50", "20/60", "20/70", "20/80", "20/90", "20/100", "20/150", "20/200", "20/250", "20/300", ""})
+        Me.cbAgudeza1.Location = New System.Drawing.Point(24, 24)
+        Me.cbAgudeza1.Name = "cbAgudeza1"
+        Me.cbAgudeza1.Size = New System.Drawing.Size(60, 21)
+        Me.cbAgudeza1.TabIndex = 9
         '
-        'txtAgudeza3
+        'cbAgudeza2
         '
-        Me.txtAgudeza3.Location = New System.Drawing.Point(156, 26)
-        Me.txtAgudeza3.Name = "txtAgudeza3"
-        Me.txtAgudeza3.Size = New System.Drawing.Size(60, 20)
-        Me.txtAgudeza3.TabIndex = 16
+        Me.cbAgudeza2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbAgudeza2.FormattingEnabled = True
+        Me.cbAgudeza2.Items.AddRange(New Object() {"20/20", "20/25", "20/30", "20/40", "20/50", "20/60", "20/70", "20/80", "20/90", "20/100", "20/150", "20/200", "20/250", "20/300"})
+        Me.cbAgudeza2.Location = New System.Drawing.Point(90, 24)
+        Me.cbAgudeza2.Name = "cbAgudeza2"
+        Me.cbAgudeza2.Size = New System.Drawing.Size(60, 21)
+        Me.cbAgudeza2.TabIndex = 10
         '
-        'txtAgudeza2
+        'cbAgudeza3
         '
-        Me.txtAgudeza2.Location = New System.Drawing.Point(90, 26)
-        Me.txtAgudeza2.Name = "txtAgudeza2"
-        Me.txtAgudeza2.Size = New System.Drawing.Size(60, 20)
-        Me.txtAgudeza2.TabIndex = 15
+        Me.cbAgudeza3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbAgudeza3.FormattingEnabled = True
+        Me.cbAgudeza3.Items.AddRange(New Object() {"20/20", "20/25", "20/30", "20/40", "20/50", "20/60", "20/70", "20/80", "20/90", "20/100", "20/150", "20/200", "20/250", "20/300"})
+        Me.cbAgudeza3.Location = New System.Drawing.Point(156, 24)
+        Me.cbAgudeza3.Name = "cbAgudeza3"
+        Me.cbAgudeza3.Size = New System.Drawing.Size(60, 21)
+        Me.cbAgudeza3.TabIndex = 11
         '
         'GroupBox6
         '
@@ -935,7 +945,7 @@ Partial Class Form1
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(251, 549)
+        Me.Button4.Location = New System.Drawing.Point(176, 549)
         Me.Button4.Name = "Button4"
         Me.Button4.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
         Me.Button4.Size = New System.Drawing.Size(160, 40)
@@ -1050,11 +1060,24 @@ Partial Class Form1
         Me.lcontador.TabIndex = 30
         Me.lcontador.Text = "#"
         '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button6.Location = New System.Drawing.Point(342, 549)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
+        Me.Button6.Size = New System.Drawing.Size(160, 40)
+        Me.Button6.TabIndex = 31
+        Me.Button6.Text = "IMPRIMIR"
+        Me.Button6.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.VISOR)
@@ -1103,7 +1126,6 @@ Partial Class Form1
         CType(Me.nudPeriferico2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudPeriferico1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         CType(Me.nudCentral1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1144,9 +1166,6 @@ Partial Class Form1
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents rbVision2 As System.Windows.Forms.RadioButton
     Friend WithEvents rbVision1 As System.Windows.Forms.RadioButton
-    Friend WithEvents txtAgudeza2 As System.Windows.Forms.TextBox
-    Friend WithEvents txtAgudeza3 As System.Windows.Forms.TextBox
-    Friend WithEvents txtAgudeza1 As System.Windows.Forms.TextBox
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents nudCentral1 As System.Windows.Forms.NumericUpDown
     Friend WithEvents rbLentes2 As System.Windows.Forms.RadioButton
@@ -1205,4 +1224,8 @@ Partial Class Form1
     Friend WithEvents VISOR As PictureBox
     Friend WithEvents Label19 As Label
     Friend WithEvents lcontador As Label
+    Friend WithEvents Button6 As Button
+    Friend WithEvents cbAgudeza3 As ComboBox
+    Friend WithEvents cbAgudeza2 As ComboBox
+    Friend WithEvents cbAgudeza1 As ComboBox
 End Class
