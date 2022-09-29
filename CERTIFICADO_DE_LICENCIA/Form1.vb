@@ -15,6 +15,13 @@ Imports System.Runtime.InteropServices
 Imports System.Data.SqlClient
 Imports DataTable = System.Data.DataTable
 Imports System.Data.Odbc
+Imports System.Security.Cryptography.X509Certificates
+Imports COMSVCSLib
+Imports WIA
+Imports System.Windows.Controls
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+
+
 
 
 #End Region
@@ -751,10 +758,19 @@ Public Class Form1
     ':::Instrucción para abrir el explorador de archivos y buscar la FOTO
     Private Sub PictureBox1_Click(sender As System.Object, e As System.EventArgs) Handles pbFoto.Click
         ':::Buscamos la imagen a grabar
-        Dim file As New OpenFileDialog()
-        file.Filter = "Archivo JPG|*.jpg"
-        If file.ShowDialog() = DialogResult.OK Then
-            pbFoto.Image = Image.FromFile(file.FileName)
+        Dim SaveImage As Boolean = False
+        Dim openDlg As OpenFileDialog = New OpenFileDialog()
+        openDlg.Filter = "Todos los archivos JPEG|*.jpg"
+        Dim filter As String = openDlg.Filter
+        openDlg.Title = "Abrir archivos JPEG"
+        If (openDlg.ShowDialog() = DialogResult.OK) Then
+            curFileName = openDlg.FileName
+            SaveImage = True
+            'Mostrando la foto en el picture
+            Me.pbFoto.ImageLocation = curFileName.ToString
+            Label14.Text = curFileName
+        Else
+            Exit Sub
         End If
     End Sub
 
@@ -893,11 +909,130 @@ Public Class Form1
 
     ':::Boton para imprimir los REPORTES en word
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '", MsgBoxStyle.Information, "JORNADAS")
-        FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\PlantillaJornadas.docx", "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\'" & txtNPaciente.Text & " '.docx")
-        documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\'" & txtNPaciente.Text & " '.docx")
+        'MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '", MsgBoxStyle.Information, "JORNADAS")
+        FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx", "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+        documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
-        documento.Bookmarks.Item("NombresPaciente").Range.Text = txtNPaciente.Text
+        documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
+        documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
+        documento.Bookmarks.Item("txtSalud").Range.Text = txtSalud.Text
+        documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
+
+        documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text
+        documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
+        documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
+        'documento.Bookmarks.Item("UNO").Range.Application.Selection.InlineShapes.AddPicture(Label14.Text, LinkToFile:=True, SaveWithDocument:=True)
+
+        Dim oDoct As Microsoft.Office.Interop.Word.Document
+        Dim oTable As Microsoft.Office.Interop.Word.Table
+
+        Clipboard.SetImage(Me.pbFoto.Image)
+        documento.Range.Bookmarks.Item("prueba").Range.Paste()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        'documento.Bookmarks.Item("prueba1")
+
+        If cbGenero.SelectedItem = "Femenino" Then
+            documento.Bookmarks.Item("cbGenero1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("cbGenero2").Range.Text = "X"
+        End If
+
+        documento.Bookmarks.Item("cbDepartamento").Range.Text = cbDepartamento.SelectedItem
+        documento.Bookmarks.Item("cbMunicipio").Range.Text = cbMunicipio.SelectedItem
+        documento.Bookmarks.Item("txtResidencia").Range.Text = txtResidencia.Text
+
+        documento.Bookmarks.Item("cbAgudeza1").Range.Text = cbAgudeza1.Text
+        documento.Bookmarks.Item("cbAgudeza2").Range.Text = cbAgudeza2.Text
+        documento.Bookmarks.Item("cbAgudeza3").Range.Text = cbAgudeza3.Text
+
+        If rbVision1.Checked = True Then
+            documento.Bookmarks.Item("rbVision1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbVision2").Range.Text = "X"
+        End If
+
+        If rbSensibilidad1.Checked = True Then
+            documento.Bookmarks.Item("rbSensibilidad1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbSensibilidad2").Range.Text = "X"
+        End If
+
+        If rbPrueba1.Checked = True Then
+            documento.Bookmarks.Item("rbPrueba1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbPrueba2").Range.Text = "X"
+        End If
+
+        If rbSeg1.Checked = True Then
+            documento.Bookmarks.Item("rbSeg1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbSeg2").Range.Text = "X"
+        End If
+
+        If rbAnteojos1.Checked = True Then
+            documento.Bookmarks.Item("rbAnteojos1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbAnteojos2").Range.Text = "X"
+        End If
+
+        If rbLentes1.Checked = True Then
+            documento.Bookmarks.Item("rbLentes1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbLentes2").Range.Text = "X"
+        End If
+
+        documento.Bookmarks.Item("nudCentral1").Range.Text = nudCentral1.Value
+        documento.Bookmarks.Item("nudCentral2").Range.Text = nudCentral2.Value
+        If rbCentral1.Checked = True Then
+            documento.Bookmarks.Item("rbCentral1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbCentral2").Range.Text = "X"
+        End If
+
+        documento.Bookmarks.Item("nudPeriferico1").Range.Text = nudPeriferico1.Value
+        documento.Bookmarks.Item("nudPeriferico2").Range.Text = nudPeriferico2.Value
+        If rbCentral1.Checked = True Then
+            documento.Bookmarks.Item("rbPeriferico1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbPeriferico2").Range.Text = "X"
+        End If
+
+        If (cbA.Checked = True) Then
+            documento.Bookmarks.Item("cbA").Range.Text = "X"
+        End If
+
+        If (cbB.Checked = True) Then
+            documento.Bookmarks.Item("cbB").Range.Text = "X"
+        End If
+
+        If (cbE.Checked = True) Then
+            documento.Bookmarks.Item("cbE").Range.Text = "X"
+        End If
+
+        If (cbC.Checked = True) Then
+            documento.Bookmarks.Item("cbC").Range.Text = "X"
+        End If
+
+        If (cbM.Checked = True) Then
+            documento.Bookmarks.Item("cbM").Range.Text = "X"
+        End If
+
+        If (cbNinguna.Checked = True) Then
+            documento.Bookmarks.Item("cbNinguna").Range.Text = "Ninguna licencia"
+        End If
 
     End Sub
 
@@ -1212,7 +1347,7 @@ Public Class Form1
         DATOS = Clipboard.GetDataObject()
 
         IMAGEN = CType(DATOS.GetData(GetType(System.Drawing.Bitmap)), Image)
-        Me.pbFoto.Image = IMAGEN
+        'Me.pbFoto.Image = IMAGEN
         'GUARDAR.Visible = True
     End Sub
 

@@ -113,6 +113,7 @@ Partial Class Form1
         Me.Label19 = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -1072,11 +1073,22 @@ Partial Class Form1
         Me.Button6.Text = "IMPRIMIR"
         Me.Button6.UseVisualStyleBackColor = True
         '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(24, 48)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(45, 13)
+        Me.Label14.TabIndex = 32
+        Me.Label14.Text = "Label14"
+        Me.Label14.Visible = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.Label19)
@@ -1228,4 +1240,5 @@ Partial Class Form1
     Friend WithEvents cbAgudeza3 As ComboBox
     Friend WithEvents cbAgudeza2 As ComboBox
     Friend WithEvents cbAgudeza1 As ComboBox
+    Friend WithEvents Label14 As Label
 End Class
