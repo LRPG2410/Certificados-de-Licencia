@@ -12,17 +12,7 @@ Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivo
 
 Imports Microsoft.Office.Interop
 Imports System.Runtime.InteropServices
-Imports System.Data.SqlClient
-Imports DataTable = System.Data.DataTable
-Imports System.Data.Odbc
-Imports System.Security.Cryptography.X509Certificates
-Imports COMSVCSLib
-Imports WIA
 Imports System.Windows.Controls
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-
-
-
 
 #End Region
 
@@ -31,19 +21,24 @@ Public Class Form1
     ':::Integer -> Valores de tipo entero
 
 #Region "VARIABLES GLOBALES */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
-    Public sRuta As String
+
+    ':::Se le asigna a la variable conexion la clase de OleDbConnection que representa una conexión única a un origen de datos.
     Dim conexion As New OleDbConnection
+
+    ':::Se le asigna a la variable comandos la clase OleDbCommand que representa una instrucción SQL o un procedimiento almacenado que se va a ejecutar en un origen de datos.
     Dim comandos As New OleDbCommand
-    Dim registro As New DataSet
+
+    ':::Se le asigna a la variable reader la clase OleDbDataReader que proporciona el modo de lectura de una secuencia de filas de datos de tipo sólo avance de un origen de datos.
     Dim reader As OleDbDataReader
+
+    ':::Se le asigna a la variable MSWord el enlace entre vs y la aplicación de word.
     Dim MSWord As New Word.Application
+
+    ':::Se le asigna a la variable documento el enlace entre vs y el documento de word.
     Dim documento As Word.Document
-    Dim connectionstring As String
-    Private SelectedDevice As WIA.Device
-    Private SavePath As String
-    Private SavedFilePath As String
-    Dim curFileName As String = ""
-    Dim SaveImage As Boolean = False
+
+    ':::Se utiliza junto con la clase OleDbCommand. Sirve para enlazar la base de datos.
+    Dim ConnectionString As String
 
 #End Region
 
@@ -55,18 +50,21 @@ Public Class Form1
         Try
 
             ':::Creamos el objeto DataAdapter y le pasamos los dos parametros (Instruccion, conexión)
+            '::OleDbDaraAdapter funciona como un puente mediante Fill para cargar datos del origen de datos en DataSet y usar Update para enviar los cambios realizados en el DataSet origen de datos.
             Dim DA As New OleDbDataAdapter(access, conexion)
 
             ':::Creamos el objeto DataTable que recibe la informacion del DataAdapter
+            '::DataTable se utilizan para representar las tablas de un DataSet.
+            '::Los datos son locales de la aplicación basada en .NET en la que residen, pero se pueden llenar desde un origen de datos como SQL Server mediante un DataAdapter, como en este caso.
             Dim DT As New Data.DataTable
 
-            ':::Pasamos la informacion del DataAdapter al DataTable mediante la propiedad Fill
+            ':::Pasamos la informacion del DataAdapter al DataTable mediante la propiedad Fill, antes mencionada.
             DA.Fill(DT)
 
             ':::Ahora mostramos los datos en el DataGridView
             tabla.DataSource = DT
         Catch ex As Exception
-            MsgBox("No se logro realizar la consulta por: " & ex.Message, MsgBoxStyle.Critical, "Tutorial CRUD")
+            MsgBox("No se logro realizar la consulta por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
         End Try
     End Sub
 
@@ -79,27 +77,28 @@ Public Class Form1
             Dim cmd As New OleDbCommand(access, conexion)
 
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
+            '::Realiza operaciones de catálogo (por ejemplo, consultar la estructura de una base de datos o crear objetos de base de datos como tablas)
+            '::o cambiar los datos de una base de datos sin usar, mediante DataSet, la ejecución de instrucciones UPDATE, INSERT o DELETE.
             cmd.ExecuteNonQuery()
         Catch ex As Exception
-            MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "Tutorial CRUD")
+            MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
         End Try
     End Sub
 
     ':::PROCEDIMIENTO para actualizar el DataGridView al momento de accionar cualquier boton
     Sub actualizar()
+        ':Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
+        ':Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
+        ':Instrucción "Select * from [tabla]"
+
         ':::Creamos la variable access que guarda la instruccion de tipo SQL
-
-        ':::Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
-        'Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
-
-        ':::Instrucción "Select * from [tabla]"
         Dim access As String = "Select * from Datos_Paciente"
 
-        ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos (2) parametros (dgvTabla, access)
+        ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos 2 parametros (dgvTabla, access)
         Me.consulta(dgvTabla, access)
     End Sub
 
-    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes
+    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes ---AUN NO FUNCIONA---
     Sub num()
         Dim Sql As String = "Select max(Contador) from Datos_Paciente"
         Dim cmd As New OleDbCommand(Sql, conexion)
@@ -115,6 +114,130 @@ Public Class Form1
             ':::CStr se encarga de convertir un valor numérico en un tipo String
             Me.lcontador.Text = CStr(codigo)
         End If
+    End Sub
+
+    ':::PROCEDIMIENTO para generar los reportes en word
+    Sub reporte()
+        ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
+        FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
+        "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+
+        ':::A documento se le asigna el documento de word que este especificado en la ruta.
+        documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+
+        MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
+               MsgBoxStyle.Information, "INFORMACIÓN")
+
+        ':::Aqui hacemos referencia al documento de word, al marcador al que queres que se exporte la info y por ultimo la herramienta de la cual se tomara la información
+        documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
+        documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
+        documento.Bookmarks.Item("txtSalud").Range.Text = txtSalud.Text
+        documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
+
+        documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text & " " & txtAPaciente.Text
+        documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
+        documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
+
+        ':::Se copia al portapapeles la imagen que este en el PictureBox
+        Clipboard.SetImage(Me.pbFoto.Image)
+
+        ':::Se busca en el documento de word el marcador y se pega la imagen anteriormente copiada
+        documento.Range.Bookmarks.Item("prueba").Range.Paste()
+
+        ':::Se crea una condición para que, dependiendo de la elección, se marque en el documento de word.
+        If cbGenero.SelectedItem = "Femenino" Then
+
+            ':::Se marca una "X" en el lugar del marcador indicado.
+            documento.Bookmarks.Item("cbGenero1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("cbGenero2").Range.Text = "X"
+        End If
+
+        documento.Bookmarks.Item("cbDepartamento").Range.Text = cbDepartamento.SelectedItem
+        documento.Bookmarks.Item("cbMunicipio").Range.Text = cbMunicipio.SelectedItem
+        documento.Bookmarks.Item("txtResidencia").Range.Text = txtResidencia.Text
+
+        documento.Bookmarks.Item("cbAgudeza1").Range.Text = cbAgudeza1.Text
+        documento.Bookmarks.Item("cbAgudeza2").Range.Text = cbAgudeza2.Text
+        documento.Bookmarks.Item("cbAgudeza3").Range.Text = cbAgudeza3.Text
+
+        If rbVision1.Checked = True Then
+            documento.Bookmarks.Item("rbVision1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbVision2").Range.Text = "X"
+        End If
+
+        If rbSensibilidad1.Checked = True Then
+            documento.Bookmarks.Item("rbSensibilidad1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbSensibilidad2").Range.Text = "X"
+        End If
+
+        If rbPrueba1.Checked = True Then
+            documento.Bookmarks.Item("rbPrueba1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbPrueba2").Range.Text = "X"
+        End If
+
+        If rbSeg1.Checked = True Then
+            documento.Bookmarks.Item("rbSeg1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbSeg2").Range.Text = "X"
+        End If
+
+        If rbAnteojos1.Checked = True Then
+            documento.Bookmarks.Item("rbAnteojos1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbAnteojos2").Range.Text = "X"
+        End If
+
+        If rbLentes1.Checked = True Then
+            documento.Bookmarks.Item("rbLentes1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbLentes2").Range.Text = "X"
+        End If
+
+        documento.Bookmarks.Item("nudCentral1").Range.Text = nudCentral1.Value
+        documento.Bookmarks.Item("nudCentral2").Range.Text = nudCentral2.Value
+        If rbCentral1.Checked = True Then
+            documento.Bookmarks.Item("rbCentral1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbCentral2").Range.Text = "X"
+        End If
+
+        documento.Bookmarks.Item("nudPeriferico1").Range.Text = nudPeriferico1.Value
+        documento.Bookmarks.Item("nudPeriferico2").Range.Text = nudPeriferico2.Value
+        If rbCentral1.Checked = True Then
+            documento.Bookmarks.Item("rbPeriferico1").Range.Text = "X"
+        Else
+            documento.Bookmarks.Item("rbPeriferico2").Range.Text = "X"
+        End If
+
+        If (cbA.Checked = True) Then
+            documento.Bookmarks.Item("cbA").Range.Text = "X"
+        End If
+
+        If (cbB.Checked = True) Then
+            documento.Bookmarks.Item("cbB").Range.Text = "X"
+        End If
+
+        If (cbE.Checked = True) Then
+            documento.Bookmarks.Item("cbE").Range.Text = "X"
+        End If
+
+        If (cbC.Checked = True) Then
+            documento.Bookmarks.Item("cbC").Range.Text = "X"
+        End If
+
+        If (cbM.Checked = True) Then
+            documento.Bookmarks.Item("cbM").Range.Text = "X"
+        End If
+
+        If (cbNinguna.Checked = True) Then
+            documento.Bookmarks.Item("cbNinguna").Range.Text = "Ninguna licencia." & " " & rtb1.Text
+        End If
+
+        documento.Bookmarks.Item("cbNinguna").Range.Text = " " & rtb1.Text
     End Sub
 
 #End Region
@@ -757,6 +880,10 @@ Public Class Form1
 
     ':::Instrucción para abrir el explorador de archivos y buscar la FOTO
     Private Sub PictureBox1_Click(sender As System.Object, e As System.EventArgs) Handles pbFoto.Click
+
+        ':::Variable que utlizamos para guardar la cadena que contiene la localización de la imagen.
+        Dim curFileName As String = ""
+
         ':::Buscamos la imagen a grabar
         Dim SaveImage As Boolean = False
         Dim openDlg As OpenFileDialog = New OpenFileDialog()
@@ -909,131 +1036,7 @@ Public Class Form1
 
     ':::Boton para imprimir los REPORTES en word
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        'MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '", MsgBoxStyle.Information, "JORNADAS")
-        FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx", "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
-        documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
-
-        documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
-        documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
-        documento.Bookmarks.Item("txtSalud").Range.Text = txtSalud.Text
-        documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
-
-        documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text
-        documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
-        documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
-        'documento.Bookmarks.Item("UNO").Range.Application.Selection.InlineShapes.AddPicture(Label14.Text, LinkToFile:=True, SaveWithDocument:=True)
-
-        Dim oDoct As Microsoft.Office.Interop.Word.Document
-        Dim oTable As Microsoft.Office.Interop.Word.Table
-
-        Clipboard.SetImage(Me.pbFoto.Image)
-        documento.Range.Bookmarks.Item("prueba").Range.Paste()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        'documento.Bookmarks.Item("prueba1")
-
-        If cbGenero.SelectedItem = "Femenino" Then
-            documento.Bookmarks.Item("cbGenero1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("cbGenero2").Range.Text = "X"
-        End If
-
-        documento.Bookmarks.Item("cbDepartamento").Range.Text = cbDepartamento.SelectedItem
-        documento.Bookmarks.Item("cbMunicipio").Range.Text = cbMunicipio.SelectedItem
-        documento.Bookmarks.Item("txtResidencia").Range.Text = txtResidencia.Text
-
-        documento.Bookmarks.Item("cbAgudeza1").Range.Text = cbAgudeza1.Text
-        documento.Bookmarks.Item("cbAgudeza2").Range.Text = cbAgudeza2.Text
-        documento.Bookmarks.Item("cbAgudeza3").Range.Text = cbAgudeza3.Text
-
-        If rbVision1.Checked = True Then
-            documento.Bookmarks.Item("rbVision1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbVision2").Range.Text = "X"
-        End If
-
-        If rbSensibilidad1.Checked = True Then
-            documento.Bookmarks.Item("rbSensibilidad1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbSensibilidad2").Range.Text = "X"
-        End If
-
-        If rbPrueba1.Checked = True Then
-            documento.Bookmarks.Item("rbPrueba1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbPrueba2").Range.Text = "X"
-        End If
-
-        If rbSeg1.Checked = True Then
-            documento.Bookmarks.Item("rbSeg1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbSeg2").Range.Text = "X"
-        End If
-
-        If rbAnteojos1.Checked = True Then
-            documento.Bookmarks.Item("rbAnteojos1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbAnteojos2").Range.Text = "X"
-        End If
-
-        If rbLentes1.Checked = True Then
-            documento.Bookmarks.Item("rbLentes1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbLentes2").Range.Text = "X"
-        End If
-
-        documento.Bookmarks.Item("nudCentral1").Range.Text = nudCentral1.Value
-        documento.Bookmarks.Item("nudCentral2").Range.Text = nudCentral2.Value
-        If rbCentral1.Checked = True Then
-            documento.Bookmarks.Item("rbCentral1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbCentral2").Range.Text = "X"
-        End If
-
-        documento.Bookmarks.Item("nudPeriferico1").Range.Text = nudPeriferico1.Value
-        documento.Bookmarks.Item("nudPeriferico2").Range.Text = nudPeriferico2.Value
-        If rbCentral1.Checked = True Then
-            documento.Bookmarks.Item("rbPeriferico1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbPeriferico2").Range.Text = "X"
-        End If
-
-        If (cbA.Checked = True) Then
-            documento.Bookmarks.Item("cbA").Range.Text = "X"
-        End If
-
-        If (cbB.Checked = True) Then
-            documento.Bookmarks.Item("cbB").Range.Text = "X"
-        End If
-
-        If (cbE.Checked = True) Then
-            documento.Bookmarks.Item("cbE").Range.Text = "X"
-        End If
-
-        If (cbC.Checked = True) Then
-            documento.Bookmarks.Item("cbC").Range.Text = "X"
-        End If
-
-        If (cbM.Checked = True) Then
-            documento.Bookmarks.Item("cbM").Range.Text = "X"
-        End If
-
-        If (cbNinguna.Checked = True) Then
-            documento.Bookmarks.Item("cbNinguna").Range.Text = "Ninguna licencia"
-        End If
-
+        reporte()
     End Sub
 
 #End Region
