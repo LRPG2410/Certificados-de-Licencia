@@ -354,7 +354,7 @@ Partial Class Form1
         '
         Me.cbProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbProfesional.FormattingEnabled = True
-        Me.cbProfesional.Items.AddRange(New Object() {"ERWIN HERNANDEZ", "LUIS PORRAS", "ELENA RIVERA", "ARTURO RAMIREZ", "STEVE JOBS"})
+        Me.cbProfesional.Items.AddRange(New Object() {"Ramiro Faillace Poggio"})
         Me.cbProfesional.Location = New System.Drawing.Point(10, 20)
         Me.cbProfesional.Name = "cbProfesional"
         Me.cbProfesional.Size = New System.Drawing.Size(336, 21)
@@ -362,6 +362,7 @@ Partial Class Form1
         '
         'txtSalud
         '
+        Me.txtSalud.Enabled = False
         Me.txtSalud.Location = New System.Drawing.Point(305, 88)
         Me.txtSalud.Name = "txtSalud"
         Me.txtSalud.Size = New System.Drawing.Size(126, 20)
@@ -369,6 +370,7 @@ Partial Class Form1
         '
         'txtTransito
         '
+        Me.txtTransito.Enabled = False
         Me.txtTransito.Location = New System.Drawing.Point(305, 64)
         Me.txtTransito.Name = "txtTransito"
         Me.txtTransito.Size = New System.Drawing.Size(126, 20)
@@ -394,6 +396,7 @@ Partial Class Form1
         '
         'txtOftal
         '
+        Me.txtOftal.Enabled = False
         Me.txtOftal.Location = New System.Drawing.Point(305, 112)
         Me.txtOftal.Name = "txtOftal"
         Me.txtOftal.Size = New System.Drawing.Size(126, 20)

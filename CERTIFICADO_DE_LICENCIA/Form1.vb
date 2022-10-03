@@ -234,10 +234,10 @@ Public Class Form1
         End If
 
         If (cbNinguna.Checked = True) Then
-            documento.Bookmarks.Item("cbNinguna").Range.Text = "Ninguna licencia." & " " & rtb1.Text
+            documento.Bookmarks.Item("cbNinguna").Range.Text = "X"
         End If
 
-        documento.Bookmarks.Item("cbNinguna").Range.Text = " " & rtb1.Text
+        documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
     End Sub
 
 #End Region
@@ -1037,6 +1037,15 @@ Public Class Form1
     ':::Boton para imprimir los REPORTES en word
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         reporte()
+    End Sub
+
+    ':::Instrucción para colocar los #'s de registro cuando se selecciona al profesional en cbProfesional
+    Private Sub cbProfesional_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbProfesional.SelectedIndexChanged
+        If cbProfesional.Text = "Ramiro Faillace Poggio" Then
+            txtTransito.Text = "070213"
+            txtSalud.Text = "404"
+        End If
+
     End Sub
 
 #End Region
