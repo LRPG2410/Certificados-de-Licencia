@@ -96,10 +96,12 @@ Public Class Form1
 
         ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos 2 parametros (dgvTabla, access)
         Me.consulta(dgvTabla, access)
+        num()
     End Sub
 
-    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes ---AUN NO FUNCIONA---
+    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes.
     Sub num()
+
         Dim Sql As String = "Select max(Contador) from Datos_Paciente"
         Dim cmd As New OleDbCommand(Sql, conexion)
 
@@ -108,12 +110,14 @@ Public Class Form1
 
         ':::IsDBNull es una operación que se utiliza para verificar si hay registros en la base de datos, lanza un valor booleano
         If IsDBNull(codigo) Then
-            Me.lcontador.Text = "0"
+            Me.lcontador.Text = "001"
         Else
 
             ':::CStr se encarga de convertir un valor numérico en un tipo String
-            Me.lcontador.Text = CStr(codigo)
+            Me.lcontador.Text = CStr(codigo) + 1
         End If
+
+
     End Sub
 
     ':::PROCEDIMIENTO para generar los reportes en word
@@ -1058,15 +1062,14 @@ Public Class Form1
         Me.rtb1.ForeColor = Color.Gray
         Me.rtb1.Text = "Observaciones: "
 
-
         ':::Instrucción Try para capturar errores
         Try
 
             ':::Usamos la variable conexion para el enlace a la base de datos
             conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
             conexion.Open()
+            num()
             MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
-            'num()
         Catch ex As Exception
             MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NIGUN DATO", vbCritical, "ERROR")
             MsgBox(ex.Message)
@@ -1079,7 +1082,7 @@ Public Class Form1
         Try
 
             ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
-            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1)", conexion)
+            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs, Contador) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @)", conexion)
 
             ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
             comandos.Parameters.AddWithValue("@Pro_Nombre", cbProfesional.SelectedItem)
@@ -1187,6 +1190,8 @@ Public Class Form1
             End If
 
             comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
+
+            comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
 
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
             comandos.ExecuteNonQuery()
