@@ -114,6 +114,8 @@ Partial Class Form1
         Me.lcontador = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
+        Me.lpaciente = New System.Windows.Forms.Label()
+        Me.lFReporte = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -158,7 +160,7 @@ Partial Class Form1
         Me.GroupBox1.Location = New System.Drawing.Point(10, 225)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(688, 272)
-        Me.GroupBox1.TabIndex = 5
+        Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "CERTIFICA QUE:"
         '
@@ -167,7 +169,7 @@ Partial Class Form1
         Me.txtAPaciente.Location = New System.Drawing.Point(10, 39)
         Me.txtAPaciente.Name = "txtAPaciente"
         Me.txtAPaciente.Size = New System.Drawing.Size(189, 20)
-        Me.txtAPaciente.TabIndex = 18
+        Me.txtAPaciente.TabIndex = 4
         '
         'txtEdad
         '
@@ -185,7 +187,7 @@ Partial Class Form1
         Me.txtResidencia.Location = New System.Drawing.Point(10, 230)
         Me.txtResidencia.Name = "txtResidencia"
         Me.txtResidencia.Size = New System.Drawing.Size(420, 20)
-        Me.txtResidencia.TabIndex = 12
+        Me.txtResidencia.TabIndex = 11
         '
         'Label13
         '
@@ -212,7 +214,7 @@ Partial Class Form1
         Me.cbMunicipio.Location = New System.Drawing.Point(241, 130)
         Me.cbMunicipio.Name = "cbMunicipio"
         Me.cbMunicipio.Size = New System.Drawing.Size(190, 21)
-        Me.cbMunicipio.TabIndex = 9
+        Me.cbMunicipio.TabIndex = 8
         '
         'cbDepartamento
         '
@@ -222,7 +224,7 @@ Partial Class Form1
         Me.cbDepartamento.Location = New System.Drawing.Point(10, 130)
         Me.cbDepartamento.Name = "cbDepartamento"
         Me.cbDepartamento.Size = New System.Drawing.Size(189, 21)
-        Me.cbDepartamento.TabIndex = 8
+        Me.cbDepartamento.TabIndex = 7
         '
         'txtDate1
         '
@@ -231,7 +233,7 @@ Partial Class Form1
         Me.txtDate1.Location = New System.Drawing.Point(10, 178)
         Me.txtDate1.Name = "txtDate1"
         Me.txtDate1.Size = New System.Drawing.Size(189, 20)
-        Me.txtDate1.TabIndex = 10
+        Me.txtDate1.TabIndex = 9
         '
         'pbFoto
         '
@@ -260,7 +262,7 @@ Partial Class Form1
         Me.cbGenero.Location = New System.Drawing.Point(241, 177)
         Me.cbGenero.Name = "cbGenero"
         Me.cbGenero.Size = New System.Drawing.Size(189, 21)
-        Me.cbGenero.TabIndex = 11
+        Me.cbGenero.TabIndex = 10
         '
         'Label8
         '
@@ -295,7 +297,7 @@ Partial Class Form1
         Me.txtDpi.MaxLength = 13
         Me.txtDpi.Name = "txtDpi"
         Me.txtDpi.Size = New System.Drawing.Size(420, 20)
-        Me.txtDpi.TabIndex = 7
+        Me.txtDpi.TabIndex = 6
         '
         'Label2
         '
@@ -311,7 +313,7 @@ Partial Class Form1
         Me.txtNPaciente.Location = New System.Drawing.Point(241, 39)
         Me.txtNPaciente.Name = "txtNPaciente"
         Me.txtNPaciente.Size = New System.Drawing.Size(189, 20)
-        Me.txtNPaciente.TabIndex = 6
+        Me.txtNPaciente.TabIndex = 5
         '
         'Label1
         '
@@ -337,7 +339,7 @@ Partial Class Form1
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(0)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(688, 148)
-        Me.GroupBox2.TabIndex = 0
+        Me.GroupBox2.TabIndex = 1
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "DATOS DEL PROFESIONAL:"
         '
@@ -358,23 +360,25 @@ Partial Class Form1
         Me.cbProfesional.Location = New System.Drawing.Point(10, 20)
         Me.cbProfesional.Name = "cbProfesional"
         Me.cbProfesional.Size = New System.Drawing.Size(336, 21)
-        Me.cbProfesional.TabIndex = 1
+        Me.cbProfesional.TabIndex = 2
         '
         'txtSalud
         '
+        Me.txtSalud.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSalud.Enabled = False
         Me.txtSalud.Location = New System.Drawing.Point(305, 88)
         Me.txtSalud.Name = "txtSalud"
         Me.txtSalud.Size = New System.Drawing.Size(126, 20)
-        Me.txtSalud.TabIndex = 3
+        Me.txtSalud.TabIndex = 0
         '
         'txtTransito
         '
+        Me.txtTransito.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTransito.Enabled = False
         Me.txtTransito.Location = New System.Drawing.Point(305, 64)
         Me.txtTransito.Name = "txtTransito"
         Me.txtTransito.Size = New System.Drawing.Size(126, 20)
-        Me.txtTransito.TabIndex = 2
+        Me.txtTransito.TabIndex = 0
         '
         'Label5
         '
@@ -396,11 +400,12 @@ Partial Class Form1
         '
         'txtOftal
         '
+        Me.txtOftal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtOftal.Enabled = False
         Me.txtOftal.Location = New System.Drawing.Point(305, 112)
         Me.txtOftal.Name = "txtOftal"
         Me.txtOftal.Size = New System.Drawing.Size(126, 20)
-        Me.txtOftal.TabIndex = 4
+        Me.txtOftal.TabIndex = 0
         '
         'Label3
         '
@@ -433,7 +438,7 @@ Partial Class Form1
         Me.GroupBox3.Location = New System.Drawing.Point(710, 71)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(540, 540)
-        Me.GroupBox3.TabIndex = 13
+        Me.GroupBox3.TabIndex = 12
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "OBTUVO LOS SIGUIENTES RESULTADOS:"
         '
@@ -443,7 +448,7 @@ Partial Class Form1
         Me.cbNinguna.Location = New System.Drawing.Point(324, 419)
         Me.cbNinguna.Name = "cbNinguna"
         Me.cbNinguna.Size = New System.Drawing.Size(76, 17)
-        Me.cbNinguna.TabIndex = 44
+        Me.cbNinguna.TabIndex = 50
         Me.cbNinguna.Text = "NINGUNA"
         Me.cbNinguna.UseVisualStyleBackColor = True
         '
@@ -454,7 +459,7 @@ Partial Class Form1
         Me.GroupBox12.Location = New System.Drawing.Point(289, 309)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(240, 60)
-        Me.GroupBox12.TabIndex = 22
+        Me.GroupBox12.TabIndex = 42
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "USA LENTES DE CONTACTO:"
         '
@@ -464,7 +469,7 @@ Partial Class Form1
         Me.rbLentes2.Location = New System.Drawing.Point(126, 25)
         Me.rbLentes2.Name = "rbLentes2"
         Me.rbLentes2.Size = New System.Drawing.Size(41, 17)
-        Me.rbLentes2.TabIndex = 36
+        Me.rbLentes2.TabIndex = 44
         Me.rbLentes2.TabStop = True
         Me.rbLentes2.Text = "NO"
         Me.rbLentes2.UseVisualStyleBackColor = True
@@ -475,7 +480,7 @@ Partial Class Form1
         Me.rbLentes1.Location = New System.Drawing.Point(67, 25)
         Me.rbLentes1.Name = "rbLentes1"
         Me.rbLentes1.Size = New System.Drawing.Size(35, 17)
-        Me.rbLentes1.TabIndex = 35
+        Me.rbLentes1.TabIndex = 43
         Me.rbLentes1.TabStop = True
         Me.rbLentes1.Text = "SI"
         Me.rbLentes1.UseVisualStyleBackColor = True
@@ -487,7 +492,7 @@ Partial Class Form1
         Me.GroupBox9.Location = New System.Drawing.Point(289, 91)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Size = New System.Drawing.Size(240, 80)
-        Me.GroupBox9.TabIndex = 20
+        Me.GroupBox9.TabIndex = 33
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "PRUEBA ESTEREOSCOPIA PARA VISIÓN LEJANA:"
         '
@@ -497,7 +502,7 @@ Partial Class Form1
         Me.rbPrueba1.Location = New System.Drawing.Point(17, 41)
         Me.rbPrueba1.Name = "rbPrueba1"
         Me.rbPrueba1.Size = New System.Drawing.Size(100, 30)
-        Me.rbPrueba1.TabIndex = 29
+        Me.rbPrueba1.TabIndex = 34
         Me.rbPrueba1.TabStop = True
         Me.rbPrueba1.Text = "SI HAY " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "ESTEREOPSIS" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         Me.rbPrueba1.UseVisualStyleBackColor = True
@@ -508,7 +513,7 @@ Partial Class Form1
         Me.rbPrueba2.Location = New System.Drawing.Point(123, 41)
         Me.rbPrueba2.Name = "rbPrueba2"
         Me.rbPrueba2.Size = New System.Drawing.Size(100, 30)
-        Me.rbPrueba2.TabIndex = 30
+        Me.rbPrueba2.TabIndex = 35
         Me.rbPrueba2.TabStop = True
         Me.rbPrueba2.Text = "NO HAY " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "ESTEREOPSIS"
         Me.rbPrueba2.UseVisualStyleBackColor = True
@@ -520,7 +525,7 @@ Partial Class Form1
         Me.GroupBox11.Location = New System.Drawing.Point(289, 243)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(240, 60)
-        Me.GroupBox11.TabIndex = 21
+        Me.GroupBox11.TabIndex = 39
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "USA ANTEOJOS:"
         '
@@ -530,7 +535,7 @@ Partial Class Form1
         Me.rbAnteojos2.Location = New System.Drawing.Point(126, 25)
         Me.rbAnteojos2.Name = "rbAnteojos2"
         Me.rbAnteojos2.Size = New System.Drawing.Size(41, 17)
-        Me.rbAnteojos2.TabIndex = 34
+        Me.rbAnteojos2.TabIndex = 41
         Me.rbAnteojos2.TabStop = True
         Me.rbAnteojos2.Text = "NO"
         Me.rbAnteojos2.UseVisualStyleBackColor = True
@@ -541,7 +546,7 @@ Partial Class Form1
         Me.rbAnteojos1.Location = New System.Drawing.Point(67, 25)
         Me.rbAnteojos1.Name = "rbAnteojos1"
         Me.rbAnteojos1.Size = New System.Drawing.Size(35, 17)
-        Me.rbAnteojos1.TabIndex = 33
+        Me.rbAnteojos1.TabIndex = 40
         Me.rbAnteojos1.TabStop = True
         Me.rbAnteojos1.Text = "SI"
         Me.rbAnteojos1.UseVisualStyleBackColor = True
@@ -553,7 +558,7 @@ Partial Class Form1
         Me.GroupBox8.Location = New System.Drawing.Point(289, 25)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(240, 59)
-        Me.GroupBox8.TabIndex = 20
+        Me.GroupBox8.TabIndex = 30
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "SENSIBILIDAD AL CONTRASTE:"
         '
@@ -563,7 +568,7 @@ Partial Class Form1
         Me.rbSensibilidad1.Location = New System.Drawing.Point(40, 28)
         Me.rbSensibilidad1.Name = "rbSensibilidad1"
         Me.rbSensibilidad1.Size = New System.Drawing.Size(71, 17)
-        Me.rbSensibilidad1.TabIndex = 27
+        Me.rbSensibilidad1.TabIndex = 31
         Me.rbSensibilidad1.TabStop = True
         Me.rbSensibilidad1.Text = "NORMAL"
         Me.rbSensibilidad1.UseVisualStyleBackColor = True
@@ -574,7 +579,7 @@ Partial Class Form1
         Me.rbSensibilidad2.Location = New System.Drawing.Point(129, 28)
         Me.rbSensibilidad2.Name = "rbSensibilidad2"
         Me.rbSensibilidad2.Size = New System.Drawing.Size(88, 17)
-        Me.rbSensibilidad2.TabIndex = 28
+        Me.rbSensibilidad2.TabIndex = 32
         Me.rbSensibilidad2.TabStop = True
         Me.rbSensibilidad2.Text = "DEFICIENTE"
         Me.rbSensibilidad2.UseVisualStyleBackColor = True
@@ -586,7 +591,7 @@ Partial Class Form1
         Me.GroupBox10.Location = New System.Drawing.Point(289, 177)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(240, 60)
-        Me.GroupBox10.TabIndex = 20
+        Me.GroupBox10.TabIndex = 36
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = ">= A 600 SEG:"
         '
@@ -596,7 +601,7 @@ Partial Class Form1
         Me.rbSeg2.Location = New System.Drawing.Point(126, 25)
         Me.rbSeg2.Name = "rbSeg2"
         Me.rbSeg2.Size = New System.Drawing.Size(41, 17)
-        Me.rbSeg2.TabIndex = 32
+        Me.rbSeg2.TabIndex = 38
         Me.rbSeg2.TabStop = True
         Me.rbSeg2.Text = "NO"
         Me.rbSeg2.UseVisualStyleBackColor = True
@@ -607,7 +612,7 @@ Partial Class Form1
         Me.rbSeg1.Location = New System.Drawing.Point(67, 25)
         Me.rbSeg1.Name = "rbSeg1"
         Me.rbSeg1.Size = New System.Drawing.Size(35, 17)
-        Me.rbSeg1.TabIndex = 31
+        Me.rbSeg1.TabIndex = 37
         Me.rbSeg1.TabStop = True
         Me.rbSeg1.Text = "SI"
         Me.rbSeg1.UseVisualStyleBackColor = True
@@ -623,16 +628,18 @@ Partial Class Form1
         Me.GroupBox7.Location = New System.Drawing.Point(10, 266)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(240, 103)
-        Me.GroupBox7.TabIndex = 21
+        Me.GroupBox7.TabIndex = 25
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "CAMPO VISUAL PERIFERICO EN GRADOS:"
         '
         'nudPeriferico2
         '
+        Me.nudPeriferico2.Increment = New Decimal(New Integer() {5, 0, 0, 0})
         Me.nudPeriferico2.Location = New System.Drawing.Point(124, 37)
         Me.nudPeriferico2.Name = "nudPeriferico2"
         Me.nudPeriferico2.Size = New System.Drawing.Size(60, 20)
-        Me.nudPeriferico2.TabIndex = 24
+        Me.nudPeriferico2.TabIndex = 27
+        Me.nudPeriferico2.Value = New Decimal(New Integer() {85, 0, 0, 0})
         '
         'Label18
         '
@@ -645,10 +652,12 @@ Partial Class Form1
         '
         'nudPeriferico1
         '
+        Me.nudPeriferico1.Increment = New Decimal(New Integer() {5, 0, 0, 0})
         Me.nudPeriferico1.Location = New System.Drawing.Point(37, 37)
         Me.nudPeriferico1.Name = "nudPeriferico1"
         Me.nudPeriferico1.Size = New System.Drawing.Size(60, 20)
-        Me.nudPeriferico1.TabIndex = 23
+        Me.nudPeriferico1.TabIndex = 26
+        Me.nudPeriferico1.Value = New Decimal(New Integer() {85, 0, 0, 0})
         '
         'Label17
         '
@@ -665,7 +674,7 @@ Partial Class Form1
         Me.rbPeriferico1.Location = New System.Drawing.Point(37, 63)
         Me.rbPeriferico1.Name = "rbPeriferico1"
         Me.rbPeriferico1.Size = New System.Drawing.Size(71, 17)
-        Me.rbPeriferico1.TabIndex = 25
+        Me.rbPeriferico1.TabIndex = 28
         Me.rbPeriferico1.TabStop = True
         Me.rbPeriferico1.Text = "NORMAL"
         Me.rbPeriferico1.UseVisualStyleBackColor = True
@@ -676,7 +685,7 @@ Partial Class Form1
         Me.rbPeriferico2.Location = New System.Drawing.Point(124, 63)
         Me.rbPeriferico2.Name = "rbPeriferico2"
         Me.rbPeriferico2.Size = New System.Drawing.Size(88, 17)
-        Me.rbPeriferico2.TabIndex = 26
+        Me.rbPeriferico2.TabIndex = 29
         Me.rbPeriferico2.TabStop = True
         Me.rbPeriferico2.Text = "DEFICIENTE"
         Me.rbPeriferico2.UseVisualStyleBackColor = True
@@ -689,19 +698,21 @@ Partial Class Form1
         Me.GroupBox5.Location = New System.Drawing.Point(10, 25)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(240, 60)
-        Me.GroupBox5.TabIndex = 20
+        Me.GroupBox5.TabIndex = 13
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "AGUDEZA VISUAL:"
         '
         'cbAgudeza1
         '
+        Me.cbAgudeza1.AccessibleRole = System.Windows.Forms.AccessibleRole.None
         Me.cbAgudeza1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbAgudeza1.FormattingEnabled = True
+        Me.cbAgudeza1.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.cbAgudeza1.Items.AddRange(New Object() {"20/20", "20/25", "20/30", "20/40", "20/50", "20/60", "20/70", "20/80", "20/90", "20/100", "20/150", "20/200", "20/250", "20/300", ""})
         Me.cbAgudeza1.Location = New System.Drawing.Point(24, 24)
         Me.cbAgudeza1.Name = "cbAgudeza1"
         Me.cbAgudeza1.Size = New System.Drawing.Size(60, 21)
-        Me.cbAgudeza1.TabIndex = 9
+        Me.cbAgudeza1.TabIndex = 14
         '
         'cbAgudeza2
         '
@@ -711,7 +722,7 @@ Partial Class Form1
         Me.cbAgudeza2.Location = New System.Drawing.Point(90, 24)
         Me.cbAgudeza2.Name = "cbAgudeza2"
         Me.cbAgudeza2.Size = New System.Drawing.Size(60, 21)
-        Me.cbAgudeza2.TabIndex = 10
+        Me.cbAgudeza2.TabIndex = 15
         '
         'cbAgudeza3
         '
@@ -721,7 +732,7 @@ Partial Class Form1
         Me.cbAgudeza3.Location = New System.Drawing.Point(156, 24)
         Me.cbAgudeza3.Name = "cbAgudeza3"
         Me.cbAgudeza3.Size = New System.Drawing.Size(60, 21)
-        Me.cbAgudeza3.TabIndex = 11
+        Me.cbAgudeza3.TabIndex = 16
         '
         'GroupBox6
         '
@@ -749,10 +760,12 @@ Partial Class Form1
         '
         'nudCentral1
         '
+        Me.nudCentral1.Increment = New Decimal(New Integer() {10, 0, 0, 0})
         Me.nudCentral1.Location = New System.Drawing.Point(37, 44)
         Me.nudCentral1.Name = "nudCentral1"
         Me.nudCentral1.Size = New System.Drawing.Size(60, 20)
-        Me.nudCentral1.TabIndex = 19
+        Me.nudCentral1.TabIndex = 21
+        Me.nudCentral1.Value = New Decimal(New Integer() {20, 0, 0, 0})
         '
         'Label16
         '
@@ -765,10 +778,12 @@ Partial Class Form1
         '
         'nudCentral2
         '
+        Me.nudCentral2.Increment = New Decimal(New Integer() {10, 0, 0, 0})
         Me.nudCentral2.Location = New System.Drawing.Point(124, 44)
         Me.nudCentral2.Name = "nudCentral2"
         Me.nudCentral2.Size = New System.Drawing.Size(60, 20)
-        Me.nudCentral2.TabIndex = 20
+        Me.nudCentral2.TabIndex = 22
+        Me.nudCentral2.Value = New Decimal(New Integer() {20, 0, 0, 0})
         '
         'rbCentral1
         '
@@ -776,7 +791,7 @@ Partial Class Form1
         Me.rbCentral1.Location = New System.Drawing.Point(37, 70)
         Me.rbCentral1.Name = "rbCentral1"
         Me.rbCentral1.Size = New System.Drawing.Size(71, 17)
-        Me.rbCentral1.TabIndex = 21
+        Me.rbCentral1.TabIndex = 23
         Me.rbCentral1.TabStop = True
         Me.rbCentral1.Tag = "CENTRAL"
         Me.rbCentral1.Text = "NORMAL"
@@ -788,7 +803,7 @@ Partial Class Form1
         Me.rbCentral2.Location = New System.Drawing.Point(124, 70)
         Me.rbCentral2.Name = "rbCentral2"
         Me.rbCentral2.Size = New System.Drawing.Size(88, 17)
-        Me.rbCentral2.TabIndex = 22
+        Me.rbCentral2.TabIndex = 24
         Me.rbCentral2.TabStop = True
         Me.rbCentral2.Tag = "CENTRAL"
         Me.rbCentral2.Text = "DEFICIENTE"
@@ -801,7 +816,7 @@ Partial Class Form1
         Me.GroupBox4.Location = New System.Drawing.Point(10, 91)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(240, 60)
-        Me.GroupBox4.TabIndex = 43
+        Me.GroupBox4.TabIndex = 17
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "VISION DE COLORES:"
         '
@@ -811,7 +826,7 @@ Partial Class Form1
         Me.rbVision1.Location = New System.Drawing.Point(40, 27)
         Me.rbVision1.Name = "rbVision1"
         Me.rbVision1.Size = New System.Drawing.Size(71, 17)
-        Me.rbVision1.TabIndex = 17
+        Me.rbVision1.TabIndex = 18
         Me.rbVision1.TabStop = True
         Me.rbVision1.Tag = "VISION"
         Me.rbVision1.Text = "NORMAL"
@@ -823,7 +838,7 @@ Partial Class Form1
         Me.rbVision2.Location = New System.Drawing.Point(117, 27)
         Me.rbVision2.Name = "rbVision2"
         Me.rbVision2.Size = New System.Drawing.Size(88, 17)
-        Me.rbVision2.TabIndex = 18
+        Me.rbVision2.TabIndex = 19
         Me.rbVision2.TabStop = True
         Me.rbVision2.Tag = "VISION"
         Me.rbVision2.Text = "DEFICIENTE"
@@ -831,10 +846,11 @@ Partial Class Form1
         '
         'rtb1
         '
+        Me.rtb1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.rtb1.Location = New System.Drawing.Point(10, 451)
         Me.rtb1.Name = "rtb1"
         Me.rtb1.Size = New System.Drawing.Size(519, 77)
-        Me.rtb1.TabIndex = 42
+        Me.rtb1.TabIndex = 51
         Me.rtb1.Tag = ""
         Me.rtb1.Text = ""
         '
@@ -844,7 +860,7 @@ Partial Class Form1
         Me.cbM.Location = New System.Drawing.Point(282, 419)
         Me.cbM.Name = "cbM"
         Me.cbM.Size = New System.Drawing.Size(35, 17)
-        Me.cbM.TabIndex = 41
+        Me.cbM.TabIndex = 49
         Me.cbM.Text = "M"
         Me.cbM.UseVisualStyleBackColor = True
         '
@@ -854,7 +870,7 @@ Partial Class Form1
         Me.cbC.Location = New System.Drawing.Point(243, 419)
         Me.cbC.Name = "cbC"
         Me.cbC.Size = New System.Drawing.Size(33, 17)
-        Me.cbC.TabIndex = 40
+        Me.cbC.TabIndex = 48
         Me.cbC.Text = "C"
         Me.cbC.UseVisualStyleBackColor = True
         '
@@ -864,7 +880,7 @@ Partial Class Form1
         Me.cbE.Location = New System.Drawing.Point(204, 419)
         Me.cbE.Name = "cbE"
         Me.cbE.Size = New System.Drawing.Size(33, 17)
-        Me.cbE.TabIndex = 39
+        Me.cbE.TabIndex = 47
         Me.cbE.Text = "E"
         Me.cbE.UseVisualStyleBackColor = True
         '
@@ -874,7 +890,7 @@ Partial Class Form1
         Me.cbB.Location = New System.Drawing.Point(165, 419)
         Me.cbB.Name = "cbB"
         Me.cbB.Size = New System.Drawing.Size(33, 17)
-        Me.cbB.TabIndex = 38
+        Me.cbB.TabIndex = 46
         Me.cbB.Text = "B"
         Me.cbB.UseVisualStyleBackColor = True
         '
@@ -884,7 +900,7 @@ Partial Class Form1
         Me.cbA.Location = New System.Drawing.Point(126, 419)
         Me.cbA.Name = "cbA"
         Me.cbA.Size = New System.Drawing.Size(33, 17)
-        Me.cbA.TabIndex = 37
+        Me.cbA.TabIndex = 45
         Me.cbA.Text = "A"
         Me.cbA.UseVisualStyleBackColor = True
         '
@@ -905,7 +921,7 @@ Partial Class Form1
         Me.BtnGuardar.Name = "BtnGuardar"
         Me.BtnGuardar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
         Me.BtnGuardar.Size = New System.Drawing.Size(160, 40)
-        Me.BtnGuardar.TabIndex = 14
+        Me.BtnGuardar.TabIndex = 52
         Me.BtnGuardar.Text = "GUARDAR"
         Me.BtnGuardar.UseVisualStyleBackColor = True
         '
@@ -917,7 +933,7 @@ Partial Class Form1
         Me.Button2.Name = "Button2"
         Me.Button2.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
         Me.Button2.Size = New System.Drawing.Size(160, 40)
-        Me.Button2.TabIndex = 15
+        Me.Button2.TabIndex = 55
         Me.Button2.Text = "LIMPIAR"
         Me.Button2.UseVisualStyleBackColor = True
         '
@@ -937,25 +953,27 @@ Partial Class Form1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(342, 503)
+        Me.Button1.Location = New System.Drawing.Point(265, 7)
         Me.Button1.Name = "Button1"
         Me.Button1.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.Button1.Size = New System.Drawing.Size(160, 40)
-        Me.Button1.TabIndex = 17
+        Me.Button1.Size = New System.Drawing.Size(58, 40)
+        Me.Button1.TabIndex = 0
         Me.Button1.Text = "ELIMINAR"
         Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
         '
         'Button4
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(176, 549)
+        Me.Button4.Location = New System.Drawing.Point(329, 7)
         Me.Button4.Name = "Button4"
         Me.Button4.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
-        Me.Button4.Size = New System.Drawing.Size(160, 40)
-        Me.Button4.TabIndex = 18
+        Me.Button4.Size = New System.Drawing.Size(51, 40)
+        Me.Button4.TabIndex = 0
         Me.Button4.Text = "VER"
         Me.Button4.UseVisualStyleBackColor = True
+        Me.Button4.Visible = False
         '
         'Button5
         '
@@ -965,7 +983,7 @@ Partial Class Form1
         Me.Button5.Name = "Button5"
         Me.Button5.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
         Me.Button5.Size = New System.Drawing.Size(160, 40)
-        Me.Button5.TabIndex = 19
+        Me.Button5.TabIndex = 53
         Me.Button5.Text = "ACTUALIZAR"
         Me.Button5.UseVisualStyleBackColor = True
         '
@@ -982,10 +1000,10 @@ Partial Class Form1
         '
         'btnAgregar
         '
-        Me.btnAgregar.Location = New System.Drawing.Point(493, 12)
+        Me.btnAgregar.Location = New System.Drawing.Point(605, 12)
         Me.btnAgregar.Name = "btnAgregar"
-        Me.btnAgregar.Size = New System.Drawing.Size(75, 23)
-        Me.btnAgregar.TabIndex = 20
+        Me.btnAgregar.Size = New System.Drawing.Size(53, 23)
+        Me.btnAgregar.TabIndex = 0
         Me.btnAgregar.Text = "Agregar"
         Me.btnAgregar.UseVisualStyleBackColor = True
         '
@@ -1011,38 +1029,42 @@ Partial Class Form1
         '
         'cmdCamara
         '
-        Me.cmdCamara.Location = New System.Drawing.Point(182, 12)
+        Me.cmdCamara.Location = New System.Drawing.Point(386, 12)
         Me.cmdCamara.Name = "cmdCamara"
-        Me.cmdCamara.Size = New System.Drawing.Size(75, 23)
-        Me.cmdCamara.TabIndex = 23
-        Me.cmdCamara.Text = "CAMARA"
+        Me.cmdCamara.Size = New System.Drawing.Size(52, 23)
+        Me.cmdCamara.TabIndex = 0
+        Me.cmdCamara.Text = "Camara"
         Me.cmdCamara.UseVisualStyleBackColor = True
+        Me.cmdCamara.Visible = False
         '
         'cmdCapturar
         '
-        Me.cmdCapturar.Location = New System.Drawing.Point(263, 12)
+        Me.cmdCapturar.Location = New System.Drawing.Point(444, 12)
         Me.cmdCapturar.Name = "cmdCapturar"
-        Me.cmdCapturar.Size = New System.Drawing.Size(75, 23)
-        Me.cmdCapturar.TabIndex = 24
-        Me.cmdCapturar.Text = "CAPTURAR"
+        Me.cmdCapturar.Size = New System.Drawing.Size(56, 23)
+        Me.cmdCapturar.TabIndex = 0
+        Me.cmdCapturar.Text = "Capturar"
         Me.cmdCapturar.UseVisualStyleBackColor = True
+        Me.cmdCapturar.Visible = False
         '
         'btnGuardarArch
         '
-        Me.btnGuardarArch.Location = New System.Drawing.Point(344, 12)
+        Me.btnGuardarArch.Location = New System.Drawing.Point(506, 12)
         Me.btnGuardarArch.Name = "btnGuardarArch"
-        Me.btnGuardarArch.Size = New System.Drawing.Size(143, 23)
-        Me.btnGuardarArch.TabIndex = 26
-        Me.btnGuardarArch.Text = "GUARDAR ARCHIVO"
+        Me.btnGuardarArch.Size = New System.Drawing.Size(93, 23)
+        Me.btnGuardarArch.TabIndex = 0
+        Me.btnGuardarArch.Text = "Guardar Archivo"
         Me.btnGuardarArch.UseVisualStyleBackColor = True
+        Me.btnGuardarArch.Visible = False
         '
         'VISOR
         '
-        Me.VISOR.Location = New System.Drawing.Point(574, 12)
+        Me.VISOR.Location = New System.Drawing.Point(664, 12)
         Me.VISOR.Name = "VISOR"
-        Me.VISOR.Size = New System.Drawing.Size(100, 50)
+        Me.VISOR.Size = New System.Drawing.Size(10, 23)
         Me.VISOR.TabIndex = 27
         Me.VISOR.TabStop = False
+        Me.VISOR.Visible = False
         '
         'Label19
         '
@@ -1068,11 +1090,11 @@ Partial Class Form1
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(342, 549)
+        Me.Button6.Location = New System.Drawing.Point(342, 503)
         Me.Button6.Name = "Button6"
         Me.Button6.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
         Me.Button6.Size = New System.Drawing.Size(160, 40)
-        Me.Button6.TabIndex = 31
+        Me.Button6.TabIndex = 54
         Me.Button6.Text = "IMPRIMIR"
         Me.Button6.UseVisualStyleBackColor = True
         '
@@ -1086,11 +1108,34 @@ Partial Class Form1
         Me.Label14.Text = "Label14"
         Me.Label14.Visible = False
         '
+        'lpaciente
+        '
+        Me.lpaciente.AutoSize = True
+        Me.lpaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lpaciente.Location = New System.Drawing.Point(840, 40)
+        Me.lpaciente.Name = "lpaciente"
+        Me.lpaciente.Size = New System.Drawing.Size(20, 24)
+        Me.lpaciente.TabIndex = 33
+        Me.lpaciente.Text = "#"
+        Me.lpaciente.Visible = False
+        '
+        'lFReporte
+        '
+        Me.lFReporte.AutoSize = True
+        Me.lFReporte.Location = New System.Drawing.Point(7, 598)
+        Me.lFReporte.Name = "lFReporte"
+        Me.lFReporte.Size = New System.Drawing.Size(45, 13)
+        Me.lFReporte.TabIndex = 34
+        Me.lFReporte.Text = "Label20"
+        Me.lFReporte.Visible = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.lFReporte)
+        Me.Controls.Add(Me.lpaciente)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
@@ -1098,6 +1143,7 @@ Partial Class Form1
         Me.Controls.Add(Me.VISOR)
         Me.Controls.Add(Me.btnGuardarArch)
         Me.Controls.Add(Me.cmdCapturar)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.cmdCamara)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.lFecha)
@@ -1105,7 +1151,6 @@ Partial Class Form1
         Me.Controls.Add(Me.dgvTabla)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.BtnGuardar)
@@ -1172,7 +1217,6 @@ Partial Class Form1
     Friend WithEvents txtNPaciente As System.Windows.Forms.TextBox
     Friend WithEvents pbFoto As System.Windows.Forms.PictureBox
     Friend WithEvents cbGenero As System.Windows.Forms.ComboBox
-    Friend WithEvents txtDate1 As System.Windows.Forms.DateTimePicker
     Friend WithEvents cbMunicipio As System.Windows.Forms.ComboBox
     Friend WithEvents cbDepartamento As System.Windows.Forms.ComboBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
@@ -1244,4 +1288,7 @@ Partial Class Form1
     Friend WithEvents cbAgudeza2 As ComboBox
     Friend WithEvents cbAgudeza1 As ComboBox
     Friend WithEvents Label14 As Label
+    Friend WithEvents lpaciente As Label
+    Friend WithEvents lFReporte As Label
+    Friend WithEvents txtDate1 As DateTimePicker
 End Class

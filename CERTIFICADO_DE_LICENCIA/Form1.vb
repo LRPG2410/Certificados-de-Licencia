@@ -110,7 +110,7 @@ Public Class Form1
 
         ':::IsDBNull es una operación que se utiliza para verificar si hay registros en la base de datos, lanza un valor booleano
         If IsDBNull(codigo) Then
-            Me.lcontador.Text = "001"
+            Me.lcontador.Text = "1"
         Else
 
             ':::CStr se encarga de convertir un valor numérico en un tipo String
@@ -133,6 +133,7 @@ Public Class Form1
                MsgBoxStyle.Information, "INFORMACIÓN")
 
         ':::Aqui hacemos referencia al documento de word, al marcador al que queres que se exporte la info y por ultimo la herramienta de la cual se tomara la información
+        documento.Bookmarks.Item("lFReporte").Range.Text = lFReporte.Text
         documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
         documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
         documento.Bookmarks.Item("txtSalud").Range.Text = txtSalud.Text
@@ -243,6 +244,81 @@ Public Class Form1
 
         documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
     End Sub
+
+    ':::PROCEDIMIENTO para limpiar los campos
+    Sub limpiar()
+        ':::Limpiar los TextBox
+        'txtTransito.Text = ""
+        'txtSalud.Text = ""
+        'txtOftal.Text = ""
+        txtAPaciente.Text = ""
+        txtNPaciente.Text = ""
+        txtDpi.Text = ""
+        txtResidencia.Text = ""
+        txtEdad.Visible = False
+        txtEdad.Text = ""
+
+        ':::Limpiar los ComboBox
+        'cbProfesional.SelectedValue = Nothing
+        'cbProfesional.Text = Nothing
+        cbDepartamento.SelectedValue = Nothing
+        cbDepartamento.Text = Nothing
+        cbMunicipio.SelectedValue = Nothing
+        cbMunicipio.Text = Nothing
+        cbGenero.SelectedValue = Nothing
+        cbGenero.Text = Nothing
+        cbAgudeza1.Text = "20/25"
+        cbAgudeza2.Text = "20/25"
+        cbAgudeza3.Text = "20/25"
+
+        ':::Limpiar la fecha
+        txtDate1.Text = Nothing
+
+        ':::Limpiar los RadioButton
+        rbVision1.Checked = False
+        rbVision2.Checked = False
+        rbCentral1.Checked = False
+        rbCentral2.Checked = False
+        rbPeriferico1.Checked = False
+        rbPeriferico2.Checked = False
+        rbSensibilidad1.Checked = False
+        rbSensibilidad2.Checked = False
+        rbPrueba1.Checked = False
+        rbPrueba2.Checked = False
+        rbSeg1.Checked = False
+        rbSeg2.Checked = False
+        rbAnteojos1.Checked = False
+        rbAnteojos2.Checked = False
+        rbLentes1.Checked = False
+        rbLentes2.Checked = False
+
+        ':::Limpiar el RichTextBox
+        Me.rtb1.ForeColor = Color.Gray
+        rtb1.Text = "Observaciones: "
+
+        ':::Limpiar los NumericUpDown
+        nudCentral1.Value = "20"
+        nudCentral2.Value = "20"
+        nudPeriferico1.Value = "85"
+        nudPeriferico2.Value = "85"
+
+        ':::Limpiar los CheckBox
+        cbA.Checked = False
+        cbB.Checked = False
+        cbC.Checked = False
+        cbE.Checked = False
+        cbM.Checked = False
+
+        ':::Limpiar la foto
+        pbFoto.ImageLocation = "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\usuario.png"
+
+        ':::Instrucción para evitar que el # de paciente y correlativo del paciente actual se mezclen
+        lpaciente.Visible = False
+        lpaciente.Text = Nothing
+        num()
+        lcontador.Visible = True
+    End Sub
+
 
 #End Region
 
@@ -636,69 +712,8 @@ Public Class Form1
 
     ':::LIMPIAR el programa
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        ':::Limpiar los TextBox
-        txtTransito.Text = ""
-        txtSalud.Text = ""
-        txtOftal.Text = ""
-        txtAPaciente.Text = ""
-        txtNPaciente.Text = ""
-        txtDpi.Text = ""
-        txtResidencia.Text = ""
-        txtEdad.Visible = False
-        txtEdad.Text = ""
+        limpiar()
 
-        ':::Limpiar los ComboBox
-        cbProfesional.SelectedValue = Nothing
-        cbProfesional.Text = Nothing
-        cbDepartamento.SelectedValue = Nothing
-        cbDepartamento.Text = Nothing
-        cbMunicipio.SelectedValue = Nothing
-        cbMunicipio.Text = Nothing
-        cbGenero.SelectedValue = Nothing
-        cbGenero.Text = Nothing
-        cbAgudeza1.Text = Nothing
-        cbAgudeza2.Text = Nothing
-        cbAgudeza3.Text = Nothing
-
-        ':::Limpiar la fecha
-        txtDate1.Text = Nothing
-
-        ':::Limpiar los RadioButton
-        rbVision1.Checked = False
-        rbVision2.Checked = False
-        rbCentral1.Checked = False
-        rbCentral2.Checked = False
-        rbPeriferico1.Checked = False
-        rbPeriferico2.Checked = False
-        rbSensibilidad1.Checked = False
-        rbSensibilidad2.Checked = False
-        rbPrueba1.Checked = False
-        rbPrueba2.Checked = False
-        rbSeg1.Checked = False
-        rbSeg2.Checked = False
-        rbAnteojos1.Checked = False
-        rbAnteojos2.Checked = False
-        rbLentes1.Checked = False
-        rbLentes2.Checked = False
-
-        ':::Limpiar el RichTextBox
-        rtb1.Text = ""
-
-        ':::Limpiar los NumericUpDown
-        nudCentral1.Value = Nothing
-        nudCentral2.Value = Nothing
-        nudPeriferico1.Value = Nothing
-        nudPeriferico2.Value = Nothing
-
-        ':::Limpiar los CheckBox
-        cbA.Checked = False
-        cbB.Checked = False
-        cbC.Checked = False
-        cbE.Checked = False
-        cbM.Checked = False
-
-        ':::Limpiar la foto
-        pbFoto.Image = Nothing
     End Sub
 
     ':::Instrucción para mostrar la información en el formulario desde el DataGridView
@@ -803,6 +818,11 @@ Public Class Form1
         End If
 
         Me.rtb1.Text = dgvTabla.Rows(I).Cells(33).Value.ToString
+
+        Me.lpaciente.Text = dgvTabla.Rows(I).Cells(35).Value.ToString
+        Me.lcontador.Visible = False
+        Me.lpaciente.Location = New Drawing.Point(840, 13)
+        Me.lpaciente.Visible = True
 
     End Sub
 
@@ -1059,6 +1079,12 @@ Public Class Form1
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ':::Instrucción para mostrar la fecha de hoy
         Me.lFecha.Text = Date.Now.Date
+        Dim fechaReporte = Format(Date.Now.Date, "Long Date")
+        lFReporte.Text = fechaReporte
+        cbAgudeza1.Text = "20/25"
+        cbAgudeza2.Text = "20/25"
+        cbAgudeza3.Text = "20/25"
+
         Me.rtb1.ForeColor = Color.Gray
         Me.rtb1.Text = "Observaciones: "
 
@@ -1085,108 +1111,188 @@ Public Class Form1
             comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs, Contador) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @)", conexion)
 
             ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
-            comandos.Parameters.AddWithValue("@Pro_Nombre", cbProfesional.SelectedItem)
+            If cbProfesional.SelectedItem = Nothing Then
+                MsgBox("Aún no ha selecciona a un médico", vbExclamation, "ERROR")
+            Else
+                comandos.Parameters.AddWithValue("@Pro_Nombre", cbProfesional.SelectedItem)
+            End If
+
             comandos.Parameters.AddWithValue("@Pro_regTransito", txtTransito.Text)
             comandos.Parameters.AddWithValue("@Pro_regSalud", txtSalud.Text)
             comandos.Parameters.AddWithValue("@Pro_regOft", txtOftal.Text)
 
-            comandos.Parameters.AddWithValue("@Pac_Apellido", txtAPaciente.Text)
-            comandos.Parameters.AddWithValue("@Pac_Nombre", txtNPaciente.Text)
-            comandos.Parameters.AddWithValue("@Pac_Dpi", txtDpi.Text)
-            comandos.Parameters.AddWithValue("@Pac_Departamento", cbDepartamento.SelectedItem)
-            comandos.Parameters.AddWithValue("@Pac_Municipio", cbMunicipio.SelectedItem)
-            comandos.Parameters.AddWithValue("@Pac_Nacimiento", txtDate1.Text)
-            comandos.Parameters.AddWithValue("@Pac_Genero", cbGenero.SelectedItem)
-            comandos.Parameters.AddWithValue("@Pac_Residencia", txtResidencia.Text)
+            If txtAPaciente.Text = Nothing Then
+                MsgBox("Ingrese apellido del paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Apellido", txtAPaciente.Text)
+            End If
+
+            If txtNPaciente.Text = Nothing Then
+                MsgBox("Ingrese nombre del paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Nombre", txtNPaciente.Text)
+            End If
+
+            If txtDpi.Text = Nothing Then
+                MsgBox("Ingrese DPI del paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Dpi", txtDpi.Text)
+            End If
+
+            If cbDepartamento.SelectedItem = Nothing Then
+                MsgBox("Debe ingresar el departamento en el que reside el paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Departamento", cbDepartamento.SelectedItem)
+            End If
+
+            If cbMunicipio.SelectedItem = Nothing Then
+                MsgBox("Debe ingresar el municipio en el que reside el paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Municipio", cbMunicipio.SelectedItem)
+            End If
+
+            If txtDate1.Text = Nothing Then
+                MsgBox("Debe ingresar la fecha de nacimiento del paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Nacimiento", txtDate1.Text)
+            End If
+
+            If cbGenero.SelectedItem = Nothing Then
+                MsgBox("Debe ingresar el género del paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Genero", cbGenero.SelectedItem)
+            End If
+
+            If txtResidencia.Text = Nothing Then
+                MsgBox("Debe ingresar la dirección en la que reside del paciente", vbExclamation, "AVISO")
+            Else
+                comandos.Parameters.AddWithValue("@Pac_Residencia", txtResidencia.Text)
+            End If
 
             comandos.Parameters.AddWithValue("@Res_Agudeza1", cbAgudeza1.SelectedItem)
             comandos.Parameters.AddWithValue("@Res_Agudeza2", cbAgudeza2.SelectedItem)
             comandos.Parameters.AddWithValue("@Res_Agudeza3", cbAgudeza3.SelectedItem)
 
-            ':::Instrucción If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
-            If (rbVision1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Vision", rbVision1.Text)
+            If rbVision1.Checked = Nothing And rbVision2.Checked = Nothing Then
+                MsgBox("Debe ingresar la visión de colores del paciente", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Vision", rbVision2.Text)
+                ':::Instrucción If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
+                If (rbVision1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Vision", rbVision1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Vision", rbVision2.Text)
+                End If
             End If
 
             comandos.Parameters.AddWithValue("@Res_CampoCentralOD", nudCentral1.Value)
             comandos.Parameters.AddWithValue("@Res_CampoCentralOI", nudCentral2.Value)
-            If (rbCentral1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral1.Text)
+            If rbCentral1.Checked = Nothing And rbCentral2.Checked = Nothing Then
+                MsgBox("Debe ingresar el campo visual central del paciente", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral2.Text)
+                If (rbCentral1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral2.Text)
+                End If
             End If
 
             comandos.Parameters.AddWithValue("@Res_CampoPerifericoOD", nudPeriferico1.Value)
             comandos.Parameters.AddWithValue("@Res_CampoPerifericoOI", nudPeriferico2.Value)
-            If (rbPeriferico1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico1.Text)
+            If rbPeriferico1.Checked = Nothing And rbPeriferico2.Checked = Nothing Then
+                MsgBox("Debe ingresar el campo visual periférico del paciente", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico2.Text)
+                If (rbPeriferico1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico2.Text)
+                End If
             End If
 
-            If (rbSensibilidad1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad1.Text)
+            If rbSensibilidad1.Checked = Nothing And rbSensibilidad2.Checked = Nothing Then
+                MsgBox("Debe seleccionar la sensibilidad al contraste del paciente", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad2.Text)
+                If (rbSensibilidad1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad2.Text)
+                End If
             End If
 
-            If (rbPrueba1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Prueba", rbPrueba1.Text)
+            If rbPrueba1.Checked = Nothing And rbPrueba2.Checked = Nothing Then
+                MsgBox("Debe seleccionar la sensibilidad al contraste del paciente", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Prueba", rbPrueba2.Text)
+                If (rbPrueba1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Prueba", rbPrueba1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Prueba", rbPrueba2.Text)
+                End If
             End If
 
-            If (rbSeg1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Seg", rbSeg1.Text)
+            If rbSeg1.Checked = Nothing And rbSeg2.Checked = Nothing Then
+                MsgBox("Debe seleccionar a 600 segundos del paciente", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Seg", rbSeg2.Text)
+                If (rbSeg1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Seg", rbSeg1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Seg", rbSeg2.Text)
+                End If
             End If
 
-            If (rbAnteojos1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos1.Text)
+            If rbAnteojos1.Checked = Nothing And rbAnteojos2.Checked = Nothing Then
+                MsgBox("Debe seleccionar si el paciente usa lentes o no.", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos2.Text)
+                If (rbAnteojos1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos2.Text)
+                End If
             End If
 
-            If (rbLentes1.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes1.Text)
+            If rbLentes1.Checked = Nothing And rbLentes2.Checked = Nothing Then
+                MsgBox("Debe seleccionar si el paciente usa lentes de contacto o no.", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes2.Text)
+                If (rbLentes1.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes1.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes2.Text)
+                End If
             End If
 
-            If (cbA.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text)
+            If cbA.Checked = Nothing And cbB.Checked = Nothing And cbE.Checked = Nothing And cbC.Checked = Nothing And cbM.Checked = Nothing And cbNinguna.Checked = Nothing Then
+                MsgBox("Debe seleccionar para que tipo de licencia se encuentra apto el paciente.", vbExclamation, "AVISO")
             Else
-                comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text = " ")
-            End If
+                If (cbA.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text = " ")
+                End If
 
-            If (cbB.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text)
-            Else
-                comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text = " ")
-            End If
-            If (cbE.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text)
-            Else
-                comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text = " ")
-            End If
-            If (cbC.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text)
-            Else
-                comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text = " ")
-            End If
-            If (cbM.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text)
-            Else
-                comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text = " ")
-            End If
+                If (cbB.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text = " ")
+                End If
+                If (cbE.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text = " ")
+                End If
+                If (cbC.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text = " ")
+                End If
+                If (cbM.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text = " ")
+                End If
 
-            If (cbNinguna.Checked = True) Then
-                comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text)
-            Else
-                comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text = " ")
+                If (cbNinguna.Checked = True) Then
+                    comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text)
+                Else
+                    comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text = " ")
+                End If
             End If
 
             comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
@@ -1197,6 +1303,7 @@ Public Class Form1
             comandos.ExecuteNonQuery()
             MsgBox("DATOS GUARDADOS EXITOSAMENTE", vbInformation, "CORRECTO")
             actualizar()
+            limpiar()
         Catch ex As Exception
             MsgBox("ERROR AL GUARDAR EL FORMULARIO", vbCritical, "ERROR")
             MsgBox(ex.Message)
@@ -1223,6 +1330,8 @@ Public Class Form1
         ':::Instrucción "Update [tabla] set [nombrecelda1]='" & [nombreherramienta1] & "'" where [nombrecelda2]= " & [nombreherramienta1] & "" 
         Dim access As String = "Update Datos_Paciente Set NombrePaciente='" & txtNPaciente.Text & "', Genero='" & cbGenero.Text & "' where Id=" & txtOftal.Text & ""
         Me.operaciones(dgvTabla, access)
+        actualizar()
+        limpiar()
     End Sub
 
     ':::Boton que ELIMINA [ELIMINAR] la información de la base de datos
@@ -1232,7 +1341,7 @@ Public Class Form1
             Dim access As String = "Delete * From Datos_Paciente Where Pac_Nombre='" & txtNPaciente.Text & "'"
             Me.operaciones(dgvTabla, access)
             actualizar()
-            Else
+            limpiar()
         End If
 
         ':::Instrucción "Delete * From [tabla] Where [nombrecelda1]=" & [nombreherramienta1] & ""
