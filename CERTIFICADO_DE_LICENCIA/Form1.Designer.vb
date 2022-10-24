@@ -109,13 +109,25 @@ Partial Class Form1
         Me.cmdCamara = New System.Windows.Forms.Button()
         Me.cmdCapturar = New System.Windows.Forms.Button()
         Me.btnGuardarArch = New System.Windows.Forms.Button()
-        Me.VISOR = New System.Windows.Forms.PictureBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.lpaciente = New System.Windows.Forms.Label()
         Me.lFReporte = New System.Windows.Forms.Label()
+        Me.rbGenerar = New System.Windows.Forms.RadioButton()
+        Me.rbBuscar = New System.Windows.Forms.RadioButton()
+        Me.rbAbrir = New System.Windows.Forms.RadioButton()
+        Me.gbBotones = New System.Windows.Forms.GroupBox()
+        Me.pbSalir = New System.Windows.Forms.PictureBox()
+        Me.RadioButton7 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton4 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton5 = New System.Windows.Forms.RadioButton()
+        Me.rnNombre = New System.Windows.Forms.RadioButton()
+        Me.pbCargando = New System.Windows.Forms.PictureBox()
+        Me.pbImpresora = New System.Windows.Forms.PictureBox()
+        Me.pbLupa = New System.Windows.Forms.PictureBox()
+        Me.VISOR = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -134,6 +146,11 @@ Partial Class Form1
         CType(Me.nudCentral2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
         CType(Me.dgvTabla, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbBotones.SuspendLayout()
+        CType(Me.pbSalir, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbCargando, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbImpresora, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbLupa, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.VISOR, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -920,7 +937,7 @@ Partial Class Form1
         Me.BtnGuardar.Location = New System.Drawing.Point(10, 503)
         Me.BtnGuardar.Name = "BtnGuardar"
         Me.BtnGuardar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.BtnGuardar.Size = New System.Drawing.Size(160, 40)
+        Me.BtnGuardar.Size = New System.Drawing.Size(168, 40)
         Me.BtnGuardar.TabIndex = 52
         Me.BtnGuardar.Text = "GUARDAR"
         Me.BtnGuardar.UseVisualStyleBackColor = True
@@ -929,10 +946,10 @@ Partial Class Form1
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(508, 503)
+        Me.Button2.Location = New System.Drawing.Point(327, 7)
         Me.Button2.Name = "Button2"
         Me.Button2.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.Button2.Size = New System.Drawing.Size(160, 40)
+        Me.Button2.Size = New System.Drawing.Size(58, 40)
         Me.Button2.TabIndex = 55
         Me.Button2.Text = "LIMPIAR"
         Me.Button2.UseVisualStyleBackColor = True
@@ -966,23 +983,22 @@ Partial Class Form1
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(329, 7)
+        Me.Button4.Location = New System.Drawing.Point(532, 503)
         Me.Button4.Name = "Button4"
         Me.Button4.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
-        Me.Button4.Size = New System.Drawing.Size(51, 40)
+        Me.Button4.Size = New System.Drawing.Size(168, 40)
         Me.Button4.TabIndex = 0
-        Me.Button4.Text = "VER"
+        Me.Button4.Text = "BUSCAR"
         Me.Button4.UseVisualStyleBackColor = True
-        Me.Button4.Visible = False
         '
         'Button5
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
         Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button5.Location = New System.Drawing.Point(176, 503)
+        Me.Button5.Location = New System.Drawing.Point(358, 503)
         Me.Button5.Name = "Button5"
         Me.Button5.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.Button5.Size = New System.Drawing.Size(160, 40)
+        Me.Button5.Size = New System.Drawing.Size(168, 40)
         Me.Button5.TabIndex = 53
         Me.Button5.Text = "ACTUALIZAR"
         Me.Button5.UseVisualStyleBackColor = True
@@ -1057,15 +1073,6 @@ Partial Class Form1
         Me.btnGuardarArch.UseVisualStyleBackColor = True
         Me.btnGuardarArch.Visible = False
         '
-        'VISOR
-        '
-        Me.VISOR.Location = New System.Drawing.Point(664, 12)
-        Me.VISOR.Name = "VISOR"
-        Me.VISOR.Size = New System.Drawing.Size(10, 23)
-        Me.VISOR.TabIndex = 27
-        Me.VISOR.TabStop = False
-        Me.VISOR.Visible = False
-        '
         'Label19
         '
         Me.Label19.AutoSize = True
@@ -1090,12 +1097,12 @@ Partial Class Form1
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(342, 503)
+        Me.Button6.Location = New System.Drawing.Point(184, 503)
         Me.Button6.Name = "Button6"
         Me.Button6.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
-        Me.Button6.Size = New System.Drawing.Size(160, 40)
+        Me.Button6.Size = New System.Drawing.Size(168, 40)
         Me.Button6.TabIndex = 54
-        Me.Button6.Text = "IMPRIMIR"
+        Me.Button6.Text = "REPORTE"
         Me.Button6.UseVisualStyleBackColor = True
         '
         'Label14
@@ -1122,26 +1129,184 @@ Partial Class Form1
         'lFReporte
         '
         Me.lFReporte.AutoSize = True
-        Me.lFReporte.Location = New System.Drawing.Point(7, 598)
+        Me.lFReporte.Location = New System.Drawing.Point(75, 48)
         Me.lFReporte.Name = "lFReporte"
         Me.lFReporte.Size = New System.Drawing.Size(45, 13)
         Me.lFReporte.TabIndex = 34
         Me.lFReporte.Text = "Label20"
         Me.lFReporte.Visible = False
         '
+        'rbGenerar
+        '
+        Me.rbGenerar.AutoSize = True
+        Me.rbGenerar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbGenerar.Location = New System.Drawing.Point(6, 9)
+        Me.rbGenerar.Name = "rbGenerar"
+        Me.rbGenerar.Size = New System.Drawing.Size(122, 20)
+        Me.rbGenerar.TabIndex = 57
+        Me.rbGenerar.TabStop = True
+        Me.rbGenerar.Text = "GENERAR PDF"
+        Me.rbGenerar.UseVisualStyleBackColor = True
+        Me.rbGenerar.Visible = False
+        '
+        'rbBuscar
+        '
+        Me.rbBuscar.AutoSize = True
+        Me.rbBuscar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbBuscar.Location = New System.Drawing.Point(6, 35)
+        Me.rbBuscar.Name = "rbBuscar"
+        Me.rbBuscar.Size = New System.Drawing.Size(81, 20)
+        Me.rbBuscar.TabIndex = 58
+        Me.rbBuscar.TabStop = True
+        Me.rbBuscar.Text = "BUSCAR"
+        Me.rbBuscar.UseVisualStyleBackColor = True
+        Me.rbBuscar.Visible = False
+        '
+        'rbAbrir
+        '
+        Me.rbAbrir.AutoSize = True
+        Me.rbAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbAbrir.Location = New System.Drawing.Point(104, 9)
+        Me.rbAbrir.Name = "rbAbrir"
+        Me.rbAbrir.Size = New System.Drawing.Size(66, 20)
+        Me.rbAbrir.TabIndex = 59
+        Me.rbAbrir.TabStop = True
+        Me.rbAbrir.Text = "ABRIR"
+        Me.rbAbrir.UseVisualStyleBackColor = True
+        Me.rbAbrir.Visible = False
+        '
+        'gbBotones
+        '
+        Me.gbBotones.Controls.Add(Me.pbSalir)
+        Me.gbBotones.Controls.Add(Me.RadioButton7)
+        Me.gbBotones.Controls.Add(Me.RadioButton4)
+        Me.gbBotones.Controls.Add(Me.rbAbrir)
+        Me.gbBotones.Controls.Add(Me.RadioButton5)
+        Me.gbBotones.Controls.Add(Me.rbGenerar)
+        Me.gbBotones.Controls.Add(Me.rnNombre)
+        Me.gbBotones.Controls.Add(Me.rbBuscar)
+        Me.gbBotones.Location = New System.Drawing.Point(10, 549)
+        Me.gbBotones.Name = "gbBotones"
+        Me.gbBotones.Size = New System.Drawing.Size(688, 62)
+        Me.gbBotones.TabIndex = 56
+        Me.gbBotones.TabStop = False
+        Me.gbBotones.Visible = False
+        '
+        'pbSalir
+        '
+        Me.pbSalir.Image = CType(resources.GetObject("pbSalir.Image"), System.Drawing.Image)
+        Me.pbSalir.Location = New System.Drawing.Point(661, 9)
+        Me.pbSalir.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSalir.Name = "pbSalir"
+        Me.pbSalir.Size = New System.Drawing.Size(25, 25)
+        Me.pbSalir.TabIndex = 64
+        Me.pbSalir.TabStop = False
+        '
+        'RadioButton7
+        '
+        Me.RadioButton7.AutoSize = True
+        Me.RadioButton7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RadioButton7.Location = New System.Drawing.Point(406, 35)
+        Me.RadioButton7.Name = "RadioButton7"
+        Me.RadioButton7.Size = New System.Drawing.Size(104, 20)
+        Me.RadioButton7.TabIndex = 63
+        Me.RadioButton7.TabStop = True
+        Me.RadioButton7.Text = "VER TODOS"
+        Me.RadioButton7.UseVisualStyleBackColor = True
+        Me.RadioButton7.Visible = False
+        '
+        'RadioButton4
+        '
+        Me.RadioButton4.AutoSize = True
+        Me.RadioButton4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RadioButton4.Location = New System.Drawing.Point(593, 35)
+        Me.RadioButton4.Name = "RadioButton4"
+        Me.RadioButton4.Size = New System.Drawing.Size(89, 20)
+        Me.RadioButton4.TabIndex = 62
+        Me.RadioButton4.TabStop = True
+        Me.RadioButton4.Text = "APELLIDO"
+        Me.RadioButton4.UseVisualStyleBackColor = True
+        Me.RadioButton4.Visible = False
+        '
+        'RadioButton5
+        '
+        Me.RadioButton5.AutoSize = True
+        Me.RadioButton5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RadioButton5.Location = New System.Drawing.Point(516, 35)
+        Me.RadioButton5.Name = "RadioButton5"
+        Me.RadioButton5.Size = New System.Drawing.Size(47, 20)
+        Me.RadioButton5.TabIndex = 60
+        Me.RadioButton5.TabStop = True
+        Me.RadioButton5.Text = "DPI"
+        Me.RadioButton5.UseVisualStyleBackColor = True
+        Me.RadioButton5.Visible = False
+        '
+        'rnNombre
+        '
+        Me.rnNombre.AutoSize = True
+        Me.rnNombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rnNombre.Location = New System.Drawing.Point(479, 9)
+        Me.rnNombre.Name = "rnNombre"
+        Me.rnNombre.Size = New System.Drawing.Size(84, 20)
+        Me.rnNombre.TabIndex = 61
+        Me.rnNombre.TabStop = True
+        Me.rnNombre.Text = "NOMBRE"
+        Me.rnNombre.UseVisualStyleBackColor = True
+        Me.rnNombre.Visible = False
+        '
+        'pbCargando
+        '
+        Me.pbCargando.Image = CType(resources.GetObject("pbCargando.Image"), System.Drawing.Image)
+        Me.pbCargando.Location = New System.Drawing.Point(914, 7)
+        Me.pbCargando.Name = "pbCargando"
+        Me.pbCargando.Size = New System.Drawing.Size(10, 10)
+        Me.pbCargando.TabIndex = 57
+        Me.pbCargando.TabStop = False
+        '
+        'pbImpresora
+        '
+        Me.pbImpresora.Image = CType(resources.GetObject("pbImpresora.Image"), System.Drawing.Image)
+        Me.pbImpresora.Location = New System.Drawing.Point(930, 7)
+        Me.pbImpresora.Name = "pbImpresora"
+        Me.pbImpresora.Size = New System.Drawing.Size(10, 10)
+        Me.pbImpresora.TabIndex = 58
+        Me.pbImpresora.TabStop = False
+        '
+        'pbLupa
+        '
+        Me.pbLupa.Image = CType(resources.GetObject("pbLupa.Image"), System.Drawing.Image)
+        Me.pbLupa.Location = New System.Drawing.Point(946, 7)
+        Me.pbLupa.Name = "pbLupa"
+        Me.pbLupa.Size = New System.Drawing.Size(10, 10)
+        Me.pbLupa.TabIndex = 59
+        Me.pbLupa.TabStop = False
+        '
+        'VISOR
+        '
+        Me.VISOR.Location = New System.Drawing.Point(665, 13)
+        Me.VISOR.Name = "VISOR"
+        Me.VISOR.Size = New System.Drawing.Size(10, 10)
+        Me.VISOR.TabIndex = 60
+        Me.VISOR.TabStop = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.VISOR)
+        Me.Controls.Add(Me.pbLupa)
+        Me.Controls.Add(Me.pbImpresora)
+        Me.Controls.Add(Me.pbCargando)
+        Me.Controls.Add(Me.gbBotones)
         Me.Controls.Add(Me.lFReporte)
         Me.Controls.Add(Me.lpaciente)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.Label19)
-        Me.Controls.Add(Me.VISOR)
         Me.Controls.Add(Me.btnGuardarArch)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.cmdCapturar)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.cmdCamara)
@@ -1152,7 +1317,6 @@ Partial Class Form1
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.BtnGuardar)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
@@ -1193,6 +1357,12 @@ Partial Class Form1
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         CType(Me.dgvTabla, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbBotones.ResumeLayout(False)
+        Me.gbBotones.PerformLayout()
+        CType(Me.pbSalir, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbCargando, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbImpresora, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbLupa, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.VISOR, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -1280,7 +1450,6 @@ Partial Class Form1
     Friend WithEvents cmdCamara As Button
     Friend WithEvents cmdCapturar As Button
     Friend WithEvents btnGuardarArch As Button
-    Friend WithEvents VISOR As PictureBox
     Friend WithEvents Label19 As Label
     Friend WithEvents lcontador As Label
     Friend WithEvents Button6 As Button
@@ -1291,4 +1460,17 @@ Partial Class Form1
     Friend WithEvents lpaciente As Label
     Friend WithEvents lFReporte As Label
     Friend WithEvents txtDate1 As DateTimePicker
+    Friend WithEvents rbGenerar As RadioButton
+    Friend WithEvents rbBuscar As RadioButton
+    Friend WithEvents rbAbrir As RadioButton
+    Friend WithEvents gbBotones As GroupBox
+    Friend WithEvents RadioButton7 As RadioButton
+    Friend WithEvents RadioButton4 As RadioButton
+    Friend WithEvents RadioButton5 As RadioButton
+    Friend WithEvents rnNombre As RadioButton
+    Friend WithEvents pbCargando As PictureBox
+    Friend WithEvents pbImpresora As PictureBox
+    Friend WithEvents pbLupa As PictureBox
+    Friend WithEvents VISOR As PictureBox
+    Friend WithEvents pbSalir As PictureBox
 End Class

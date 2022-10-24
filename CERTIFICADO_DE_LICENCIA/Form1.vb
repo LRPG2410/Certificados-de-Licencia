@@ -13,6 +13,10 @@ Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivo
 Imports Microsoft.Office.Interop
 Imports System.Runtime.InteropServices
 Imports System.Windows.Controls
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports System.Windows.Media.Media3D
+Imports stdole
+
 
 #End Region
 
@@ -122,127 +126,136 @@ Public Class Form1
 
     ':::PROCEDIMIENTO para generar los reportes en word
     Sub reporte()
-        ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
-        FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
-        "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
-        ':::A documento se le asigna el documento de word que este especificado en la ruta.
-        documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+        Try
+            ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
+            FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
+            "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
-        MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
-               MsgBoxStyle.Information, "INFORMACIÓN")
+            ':::A documento se le asigna el documento de word que este especificado en la ruta.
+            documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
-        ':::Aqui hacemos referencia al documento de word, al marcador al que queres que se exporte la info y por ultimo la herramienta de la cual se tomara la información
-        documento.Bookmarks.Item("lFReporte").Range.Text = lFReporte.Text
-        documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
-        documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
-        documento.Bookmarks.Item("txtSalud").Range.Text = txtSalud.Text
-        documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
+            MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
+                   MsgBoxStyle.Information, "INFORMACIÓN")
 
-        documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text & " " & txtAPaciente.Text
-        documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
-        documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
+            ':::Aqui hacemos referencia al documento de word, al marcador al que queres que se exporte la info y por ultimo la herramienta de la cual se tomara la información
+            documento.Bookmarks.Item("lcontador").Range.Text = lcontador.Text
+            documento.Bookmarks.Item("lFReporte").Range.Text = lFReporte.Text
+            documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
+            documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
+            documento.Bookmarks.Item("txtSalud").Range.Text = txtSalud.Text
+            documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
 
-        ':::Se copia al portapapeles la imagen que este en el PictureBox
-        Clipboard.SetImage(Me.pbFoto.Image)
+            documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text & " " & txtAPaciente.Text
+            documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
+            documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
 
-        ':::Se busca en el documento de word el marcador y se pega la imagen anteriormente copiada
-        documento.Range.Bookmarks.Item("prueba").Range.Paste()
+            ':::Se copia al portapapeles la imagen que este en el PictureBox
+            Clipboard.SetImage(Me.pbFoto.Image)
 
-        ':::Se crea una condición para que, dependiendo de la elección, se marque en el documento de word.
-        If cbGenero.SelectedItem = "Femenino" Then
+            ':::Se busca en el documento de word el marcador y se pega la imagen anteriormente copiada
+            documento.Range.Bookmarks.Item("prueba").Range.Paste()
 
-            ':::Se marca una "X" en el lugar del marcador indicado.
-            documento.Bookmarks.Item("cbGenero1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("cbGenero2").Range.Text = "X"
-        End If
+            ':::Se crea una condición para que, dependiendo de la elección, se marque en el documento de word.
+            If cbGenero.SelectedItem = "Femenino" Then
+                ':::Se marca una "X" en el lugar del marcador indicado.
+                documento.Bookmarks.Item("cbGenero1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("cbGenero2").Range.Text = "X"
+            End If
 
-        documento.Bookmarks.Item("cbDepartamento").Range.Text = cbDepartamento.SelectedItem
-        documento.Bookmarks.Item("cbMunicipio").Range.Text = cbMunicipio.SelectedItem
-        documento.Bookmarks.Item("txtResidencia").Range.Text = txtResidencia.Text
+            documento.Bookmarks.Item("cbDepartamento").Range.Text = cbDepartamento.SelectedItem
+            documento.Bookmarks.Item("cbMunicipio").Range.Text = cbMunicipio.SelectedItem
+            documento.Bookmarks.Item("txtResidencia").Range.Text = txtResidencia.Text
 
-        documento.Bookmarks.Item("cbAgudeza1").Range.Text = cbAgudeza1.Text
-        documento.Bookmarks.Item("cbAgudeza2").Range.Text = cbAgudeza2.Text
-        documento.Bookmarks.Item("cbAgudeza3").Range.Text = cbAgudeza3.Text
+            documento.Bookmarks.Item("cbAgudeza1").Range.Text = cbAgudeza1.Text
+            documento.Bookmarks.Item("cbAgudeza2").Range.Text = cbAgudeza2.Text
+            documento.Bookmarks.Item("cbAgudeza3").Range.Text = cbAgudeza3.Text
 
-        If rbVision1.Checked = True Then
-            documento.Bookmarks.Item("rbVision1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbVision2").Range.Text = "X"
-        End If
+            If rbVision1.Checked = True Then
+                documento.Bookmarks.Item("rbVision1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbVision2").Range.Text = "X"
+            End If
 
-        If rbSensibilidad1.Checked = True Then
-            documento.Bookmarks.Item("rbSensibilidad1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbSensibilidad2").Range.Text = "X"
-        End If
+            If rbSensibilidad1.Checked = True Then
+                documento.Bookmarks.Item("rbSensibilidad1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbSensibilidad2").Range.Text = "X"
+            End If
 
-        If rbPrueba1.Checked = True Then
-            documento.Bookmarks.Item("rbPrueba1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbPrueba2").Range.Text = "X"
-        End If
+            If rbPrueba1.Checked = True Then
+                documento.Bookmarks.Item("rbPrueba1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbPrueba2").Range.Text = "X"
+            End If
 
-        If rbSeg1.Checked = True Then
-            documento.Bookmarks.Item("rbSeg1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbSeg2").Range.Text = "X"
-        End If
+            If rbSeg1.Checked = True Then
+                documento.Bookmarks.Item("rbSeg1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbSeg2").Range.Text = "X"
+            End If
 
-        If rbAnteojos1.Checked = True Then
-            documento.Bookmarks.Item("rbAnteojos1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbAnteojos2").Range.Text = "X"
-        End If
+            If rbAnteojos1.Checked = True Then
+                documento.Bookmarks.Item("rbAnteojos1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbAnteojos2").Range.Text = "X"
+            End If
 
-        If rbLentes1.Checked = True Then
-            documento.Bookmarks.Item("rbLentes1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbLentes2").Range.Text = "X"
-        End If
+            If rbLentes1.Checked = True Then
+                documento.Bookmarks.Item("rbLentes1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbLentes2").Range.Text = "X"
+            End If
 
-        documento.Bookmarks.Item("nudCentral1").Range.Text = nudCentral1.Value
-        documento.Bookmarks.Item("nudCentral2").Range.Text = nudCentral2.Value
-        If rbCentral1.Checked = True Then
-            documento.Bookmarks.Item("rbCentral1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbCentral2").Range.Text = "X"
-        End If
+            documento.Bookmarks.Item("nudCentral1").Range.Text = nudCentral1.Value
+            documento.Bookmarks.Item("nudCentral2").Range.Text = nudCentral2.Value
+            If rbCentral1.Checked = True Then
+                documento.Bookmarks.Item("rbCentral1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbCentral2").Range.Text = "X"
+            End If
 
-        documento.Bookmarks.Item("nudPeriferico1").Range.Text = nudPeriferico1.Value
-        documento.Bookmarks.Item("nudPeriferico2").Range.Text = nudPeriferico2.Value
-        If rbCentral1.Checked = True Then
-            documento.Bookmarks.Item("rbPeriferico1").Range.Text = "X"
-        Else
-            documento.Bookmarks.Item("rbPeriferico2").Range.Text = "X"
-        End If
+            documento.Bookmarks.Item("nudPeriferico1").Range.Text = nudPeriferico1.Value
+            documento.Bookmarks.Item("nudPeriferico2").Range.Text = nudPeriferico2.Value
+            If rbCentral1.Checked = True Then
+                documento.Bookmarks.Item("rbPeriferico1").Range.Text = "X"
+            Else
+                documento.Bookmarks.Item("rbPeriferico2").Range.Text = "X"
+            End If
 
-        If (cbA.Checked = True) Then
-            documento.Bookmarks.Item("cbA").Range.Text = "X"
-        End If
+            If (cbA.Checked = True) Then
+                documento.Bookmarks.Item("cbA").Range.Text = "X"
+            End If
 
-        If (cbB.Checked = True) Then
-            documento.Bookmarks.Item("cbB").Range.Text = "X"
-        End If
+            If (cbB.Checked = True) Then
+                documento.Bookmarks.Item("cbB").Range.Text = "X"
+            End If
 
-        If (cbE.Checked = True) Then
-            documento.Bookmarks.Item("cbE").Range.Text = "X"
-        End If
+            If (cbE.Checked = True) Then
+                documento.Bookmarks.Item("cbE").Range.Text = "X"
+            End If
 
-        If (cbC.Checked = True) Then
-            documento.Bookmarks.Item("cbC").Range.Text = "X"
-        End If
+            If (cbC.Checked = True) Then
+                documento.Bookmarks.Item("cbC").Range.Text = "X"
+            End If
 
-        If (cbM.Checked = True) Then
-            documento.Bookmarks.Item("cbM").Range.Text = "X"
-        End If
+            If (cbM.Checked = True) Then
+                documento.Bookmarks.Item("cbM").Range.Text = "X"
+            End If
 
-        If (cbNinguna.Checked = True) Then
-            documento.Bookmarks.Item("cbNinguna").Range.Text = "X"
-        End If
+            If (cbNinguna.Checked = True) Then
+                documento.Bookmarks.Item("cbNinguna").Range.Text = "X"
+            End If
 
-        documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
+            documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
+        Catch ex As Exception
+
+        Finally
+            documento.Save()
+            MSWord.Quit()
+        End Try
+
     End Sub
 
     ':::PROCEDIMIENTO para limpiar los campos
@@ -713,7 +726,6 @@ Public Class Form1
     ':::LIMPIAR el programa
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         limpiar()
-
     End Sub
 
     ':::Instrucción para mostrar la información en el formulario desde el DataGridView
@@ -928,29 +940,37 @@ Public Class Form1
     ':::Instrucción para calcular la edad del paciente
     Private Sub txtDate1_CloseUp(sender As Object, e As System.EventArgs) Handles txtDate1.CloseUp
         ':::Variable para obtener el valor del día, mes y año actuales
-        Dim vHoyDia As String = Date.Now.Date.Day
-        Dim vHoyMes As String = Date.Now.Date.Month
-        Dim vHoyAnio As String = Date.Now.Date.Year
+        Dim DiaHoy As String = Date.Now.Date.Day
+        Dim MesHoy As String = Date.Now.Date.Month
+        Dim AnioHoy As String = Date.Now.Date.Year
 
         ':::Variable para obtener el valor del día, mes y año de nacimiento
-        Dim vDia As String = txtDate1.Value.Day
-        Dim vMes As String = txtDate1.Value.Month
-        Dim vAnio As String = txtDate1.Value.Year
+        Dim DiaNacer As String = txtDate1.Value.Day
+        Dim MesNacer As String = txtDate1.Value.Month
+        Dim AnioNacer As String = txtDate1.Value.Year
 
         ':::La variable edad se encarga de restar el año actual con el año de nacimiento para obtener la "edad"
-        Dim edad = vHoyAnio - vAnio
+        Dim edad = AnioHoy - AnioNacer
 
         ':::La instrucción If se encarga de verificar que el día y mes actuales sean iguales a los de nacimiento para confirmar si ya cumplio años
-        If (vHoyDia <= vDia And vHoyMes <= vMes) Then
+        If (edad < 0) Then
+            MsgBox("Ingrese una fecha de nacimiento valida", vbExclamation, "AVISO")
+            txtDate1.Value = Date.Now.Date
+        ElseIf (edad = 0) Then
             txtEdad.Text = "Tiene " & edad & " años."
-
-            ':::La instrucción Else se encarga de restarle uno a edad, ya que el día y mes actuales no son igual a los de nacimiento
-        Else
-            If (vHoyDia <> vDia And vHoyAnio = vAnio) Then
-                txtEdad.Text = "Tiene 0 años"
-            Else
-                Dim nuevaEdad = edad - 1
-                txtEdad.Text = "Tiene " & nuevaEdad & " años."
+        ElseIf (edad > 0) Then
+            If (MesNacer < MesHoy) Then
+                txtEdad.Text = "Tiene " & edad & " años."
+            ElseIf (MesNacer > MesHoy) Then
+                txtEdad.Text = "Tiene " & edad - 1 & " años."
+            ElseIf (MesNacer = MesHoy) Then
+                If (DiaNacer < DiaHoy) Then
+                    txtEdad.Text = "Tiene " & edad & " años."
+                ElseIf (DiaNacer = DiaHoy) Then
+                    txtEdad.Text = "¡Cumpleaños! Tiene " & edad & " años."
+                ElseIf (DiaNacer > DiaHoy) Then
+                    txtEdad.Text = "Tiene " & edad - 1 & " años."
+                End If
             End If
         End If
 
@@ -1060,7 +1080,61 @@ Public Class Form1
 
     ':::Boton para imprimir los REPORTES en word
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        reporte()
+        gbBotones.Visible = True
+        rbGenerar.Visible = True
+        rbGenerar.Location = New Drawing.Point(205, 25)
+        rbBuscar.Visible = True
+        rbBuscar.Location = New Drawing.Point(330, 25)
+        rbAbrir.Visible = True
+        rbAbrir.Location = New Drawing.Point(420, 25)
+        Button6.Image = Nothing
+        Button6.Image = pbCargando.Image
+        GroupBox3.Enabled = False
+        GroupBox2.Enabled = False
+        txtAPaciente.Enabled = False
+        txtDpi.Enabled = False
+        cbDepartamento.Enabled = False
+        cbMunicipio.Enabled = False
+        txtDate1.Enabled = False
+        cbGenero.Enabled = False
+        txtResidencia.Enabled = False
+        pbFoto.Enabled = False
+        BtnGuardar.Enabled = False
+        Button5.Enabled = False
+        Button4.Enabled = False
+
+        If txtNPaciente.Text = Nothing Then
+            MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
+        ElseIf (rbAbrir.Checked = True) Then
+            reporte()
+        ElseIf (rbGenerar.Checked = True) Then
+
+        ElseIf (rbBuscar.Checked = True) Then
+
+        End If
+
+    End Sub
+
+    ':::"BOTON" para sali del submenu de la generacion de reportes y la busqueda de paciente.
+    Private Sub pbSalir_Click(sender As Object, e As EventArgs) Handles pbSalir.Click
+        Button6.Image = pbImpresora.Image
+        gbBotones.Visible = False
+        rbGenerar.Visible = False
+        rbBuscar.Visible = False
+        rbAbrir.Visible = False
+        GroupBox3.Enabled = True
+        GroupBox2.Enabled = True
+        txtAPaciente.Enabled = True
+        txtDpi.Enabled = True
+        cbDepartamento.Enabled = True
+        cbMunicipio.Enabled = True
+        txtDate1.Enabled = True
+        cbGenero.Enabled = True
+        txtResidencia.Enabled = True
+        pbFoto.Enabled = True
+        BtnGuardar.Enabled = True
+        Button5.Enabled = True
+        Button4.Enabled = True
     End Sub
 
     ':::Instrucción para colocar los #'s de registro cuando se selecciona al profesional en cbProfesional
@@ -1318,6 +1392,7 @@ Public Class Form1
 
         'Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
         Dim access As String = "Select * from Datos_Paciente"
+        Me.dgvTabla.Columns(0).HeaderText = "Profesional"
 
         ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos (2) parametros (dgvTabla, access)
         Me.consulta(dgvTabla, access)
@@ -1494,6 +1569,7 @@ Public Class Form1
         Me.OpenPreviewWindowCliente()
         cmdCamara.Enabled = False
     End Sub
+
 
 #End Region
 
