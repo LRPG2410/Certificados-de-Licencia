@@ -16,6 +16,9 @@ Imports System.Windows.Controls
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Media.Media3D
 Imports stdole
+Imports System.Runtime.InteropServices.ComTypes
+Imports System.Security.Authentication.ExtendedProtection
+
 
 
 #End Region
@@ -121,7 +124,6 @@ Public Class Form1
             Me.lcontador.Text = CStr(codigo) + 1
         End If
 
-
     End Sub
 
     ':::PROCEDIMIENTO para generar los reportes en word
@@ -135,8 +137,8 @@ Public Class Form1
             ':::A documento se le asigna el documento de word que este especificado en la ruta.
             documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
-            MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
-                   MsgBoxStyle.Information, "INFORMACIÓN")
+            'MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
+            'MsgBoxStyle.Information, "INFORMACIÓN")
 
             ':::Aqui hacemos referencia al documento de word, al marcador al que queres que se exporte la info y por ultimo la herramienta de la cual se tomara la información
             documento.Bookmarks.Item("lcontador").Range.Text = lcontador.Text
@@ -147,6 +149,7 @@ Public Class Form1
             documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
 
             documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text & " " & txtAPaciente.Text
+            documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
             documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
             documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
 
@@ -249,11 +252,12 @@ Public Class Form1
             End If
 
             documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
+
         Catch ex As Exception
 
         Finally
             documento.Save()
-            MSWord.Quit()
+            'MSWord.Quit()
         End Try
 
     End Sub
@@ -332,6 +336,32 @@ Public Class Form1
         lcontador.Visible = True
     End Sub
 
+    ':::PROCEDIMIENTO para generar el reporte en pdf
+    Sub generarpdf()
+        Dim wordApplication As New Microsoft.Office.Interop.Word.Application
+        Dim wordDocument As Microsoft.Office.Interop.Word.Document = Nothing
+        Dim outputFilename As String
+        Try
+            wordDocument = wordApplication.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            outputFilename = System.IO.Path.ChangeExtension("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx", "pdf")
+
+            If Not wordDocument Is Nothing Then
+                wordDocument.ExportAsFixedFormat(outputFilename, Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF, True, Microsoft.Office.Interop.Word.WdExportOptimizeFor.wdExportOptimizeForOnScreen, Microsoft.Office.Interop.Word.WdExportRange.wdExportAllDocument, 0, 0, Microsoft.Office.Interop.Word.WdExportItem.wdExportDocumentContent, True, True, Microsoft.Office.Interop.Word.WdExportCreateBookmarks.wdExportCreateNoBookmarks, True, True, False)
+            End If
+        Catch ex As Exception
+            'TODO: handle exception
+        Finally
+            If Not wordDocument Is Nothing Then
+                wordDocument.Close(False)
+                wordDocument = Nothing
+            End If
+
+            If Not wordApplication Is Nothing Then
+                wordApplication.Quit()
+                wordApplication = Nothing
+            End If
+        End Try
+    End Sub
 
 #End Region
 
@@ -1081,12 +1111,12 @@ Public Class Form1
     ':::Boton para imprimir los REPORTES en word
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         gbBotones.Visible = True
-        rbGenerar.Visible = True
-        rbGenerar.Location = New Drawing.Point(205, 25)
-        rbBuscar.Visible = True
-        rbBuscar.Location = New Drawing.Point(330, 25)
+        rbGenerarpdf.Visible = True
+        rbGenerarpdf.Location = New Drawing.Point(138, 25)
+        rbGenerarword.Visible = True
+        rbGenerarword.Location = New Drawing.Point(276, 25)
         rbAbrir.Visible = True
-        rbAbrir.Location = New Drawing.Point(420, 25)
+        rbAbrir.Location = New Drawing.Point(430, 25)
         Button6.Image = Nothing
         Button6.Image = pbCargando.Image
         GroupBox3.Enabled = False
@@ -1103,14 +1133,17 @@ Public Class Form1
         Button5.Enabled = False
         Button4.Enabled = False
 
-        If txtNPaciente.Text = Nothing Then
+        If (txtNPaciente.Text = Nothing) Then
             MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
-        ElseIf (rbAbrir.Checked = True) Then
-            reporte()
-        ElseIf (rbGenerar.Checked = True) Then
-
-        ElseIf (rbBuscar.Checked = True) Then
-
+            pbSalir_Click(sender, e)
+        Else
+            If rbGenerarpdf.Checked = True Then
+                generarpdf()
+            ElseIf rbGenerarword.Checked = True Then
+                reporte()
+            ElseIf rbAbrir.Checked = True Then
+                Call Shell("explorer.exe " & "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
+            End If
         End If
 
     End Sub
@@ -1118,13 +1151,29 @@ Public Class Form1
     ':::"BOTON" para sali del submenu de la generacion de reportes y la busqueda de paciente.
     Private Sub pbSalir_Click(sender As Object, e As EventArgs) Handles pbSalir.Click
         Button6.Image = pbImpresora.Image
+        Button4.Image = pbLupa.Image
         gbBotones.Visible = False
-        rbGenerar.Visible = False
-        rbBuscar.Visible = False
+
+        rbGenerarpdf.Visible = False
+        rbGenerarpdf.Checked = False
+        rbGenerarword.Visible = False
+        rbGenerarword.Checked = False
         rbAbrir.Visible = False
+        rbAbrir.Checked = False
+
+        rbNombre.Visible = False
+        rbNombre.Checked = False
+        rbApellido.Visible = False
+        rbApellido.Checked = False
+        rbDpi.Visible = False
+        rbDpi.Checked = False
+        rbTodos.Visible = False
+        rbTodos.Checked = False
+
         GroupBox3.Enabled = True
         GroupBox2.Enabled = True
         txtAPaciente.Enabled = True
+        txtNPaciente.Enabled = True
         txtDpi.Enabled = True
         cbDepartamento.Enabled = True
         cbMunicipio.Enabled = True
@@ -1133,6 +1182,7 @@ Public Class Form1
         txtResidencia.Enabled = True
         pbFoto.Enabled = True
         BtnGuardar.Enabled = True
+        Button6.Enabled = True
         Button5.Enabled = True
         Button4.Enabled = True
     End Sub
@@ -1144,6 +1194,27 @@ Public Class Form1
             txtSalud.Text = "404"
         End If
 
+    End Sub
+
+    ':::Instrucción para habilitar txtNPaciente si se selecciona en el menu de [BUSCAR]
+    Private Sub rbNombre_Click(sender As Object, e As EventArgs) Handles rbNombre.Click
+        txtNPaciente.Enabled = True
+        txtAPaciente.Enabled = False
+        txtDpi.Enabled = False
+    End Sub
+
+    ':::Instrucción para habilitar txtAPaciente si se selecciona en el menu de [BUSCAR]
+    Private Sub rbApellido_Click(sender As Object, e As EventArgs) Handles rbApellido.Click
+        txtNPaciente.Enabled = False
+        txtAPaciente.Enabled = True
+        txtDpi.Enabled = False
+    End Sub
+
+    ':::Instrucción para habilitar txtDpi si se selecciona en el menu de [BUSCAR]
+    Private Sub rbDpi_Click(sender As Object, e As EventArgs) Handles rbDpi.Click
+        txtNPaciente.Enabled = False
+        txtAPaciente.Enabled = False
+        txtDpi.Enabled = True
     End Sub
 
 #End Region
@@ -1161,6 +1232,8 @@ Public Class Form1
 
         Me.rtb1.ForeColor = Color.Gray
         Me.rtb1.Text = "Observaciones: "
+
+        cbProfesional.Text = "Ramiro Faillace Poggio"
 
         ':::Instrucción Try para capturar errores
         Try
@@ -1370,12 +1443,12 @@ Public Class Form1
             End If
 
             comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
-
             comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
 
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
             comandos.ExecuteNonQuery()
             MsgBox("DATOS GUARDADOS EXITOSAMENTE", vbInformation, "CORRECTO")
+            'reporte()
             actualizar()
             limpiar()
         Catch ex As Exception
@@ -1386,16 +1459,71 @@ Public Class Form1
 
     ':::Boton que MUESTRA [VER] la información almacenada en la base de datos
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
+        gbBotones.Visible = True
+        rbNombre.Visible = True
+        rbNombre.Location = New Drawing.Point(228, 25)
+        rbApellido.Visible = True
+        rbApellido.Location = New Drawing.Point(318, 25)
+        rbDpi.Visible = True
+        rbDpi.Location = New Drawing.Point(175, 25)
+        rbTodos.Visible = True
+        rbTodos.Location = New Drawing.Point(413, 25)
+        Button4.Image = Nothing
+        Button4.Image = pbCargando.Image
+        GroupBox3.Enabled = False
+        GroupBox2.Enabled = False
+        txtAPaciente.Enabled = False
+        txtNPaciente.Enabled = False
+        txtDpi.Enabled = False
+        cbDepartamento.Enabled = False
+        cbMunicipio.Enabled = False
+        txtDate1.Enabled = False
+        cbGenero.Enabled = False
+        txtResidencia.Enabled = False
+        pbFoto.Enabled = False
+        BtnGuardar.Enabled = False
+        Button6.Enabled = False
+        Button5.Enabled = False
+        Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
+        Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtNPaciente.Text & "'"
+        Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtNPaciente.Text & "'"
+        Dim access As String = "Select * from Datos_Paciente"
+
+        If (rbNombre.Checked = True) Then
+            If (txtNPaciente.Text = Nothing) Then
+                MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, nombre)
+            End If
+        ElseIf (rbApellido.Checked = True) Then
+            If (txtNPaciente.Text = Nothing) Then
+                MsgBox("No ha ingresado el apellido del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, apellido)
+            End If
+        ElseIf (rbDpi.Checked = True) Then
+            If (txtNPaciente.Text = Nothing) Then
+                MsgBox("No ha ingresado el DPI del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, dpi)
+            End If
+        ElseIf (rbTodos.Checked = True) Then
+            Me.consulta(dgvTabla, access)
+        End If
+
+
+
         ':::Creamos la variable access que guarda la instruccion de tipo SQL
 
         ':::Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
 
         'Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
-        Dim access As String = "Select * from Datos_Paciente"
-        Me.dgvTabla.Columns(0).HeaderText = "Profesional"
 
         ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos (2) parametros (dgvTabla, access)
-        Me.consulta(dgvTabla, access)
+
     End Sub
 
     ':::Boton que ACTUALIZA [ACTUALIZAR] la informacion almacenada en la base de datos
@@ -1422,154 +1550,6 @@ Public Class Form1
         ':::Instrucción "Delete * From [tabla] Where [nombrecelda1]=" & [nombreherramienta1] & ""
 
     End Sub
-
-#End Region
-
-#Region "FOTOGRAFÍA */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
-    Dim DATOS As IDataObject
-    Dim IMAGEN As Image
-    Dim CARPETA As String
-    Dim FECHA As String = DateTime.Now.ToShortDateString().Replace("/", "_") + "_" + DateTime.Now.ToLongTimeString().Replace(":", "_")
-    Dim DIRECTORIO As String = "C:\Users\sistemas.INTEVISA\Desktop\" ' AQUI COLOCA LA RUTA A TU ESCRITORIO
-    Dim DESTINO As String
-    Dim CONTADOR As Integer = 1
-    Dim CARPETAS_DIARIAS As String
-    Public Const WM_CAP As Short = &H400S
-    Public Const WM_CAP_DLG_VIDEOFORMAT As Integer = WM_CAP + 41
-    Public Const WM_CAP_DRIVER_CONNECT As Integer = WM_CAP + 10
-    Public Const WM_CAP_DRIVER_DISCONNECT As Integer = WM_CAP + 11
-    Public Const WM_CAP_EDIT_COPY As Integer = WM_CAP + 30
-    Public Const WM_CAP_SEQUENCE As Integer = WM_CAP + 62
-    Public Const WM_CAP_FILE_SAVEAS As Integer = WM_CAP + 23
-    Public Const WM_CAP_SET_PREVIEW As Integer = WM_CAP + 50
-    Public Const WM_CAP_SET_PREVIEWRATE As Integer = WM_CAP + 52
-    Public Const WM_CAP_SET_SCALE As Integer = WM_CAP + 53
-    Public Const WS_CHILD As Integer = &H40000000
-    Public Const WS_VISIBLE As Integer = &H10000000
-    Public Const SWP_NOMOVE As Short = &H2S
-    Public Const SWP_NOSIZE As Short = 1
-    Public Const SWP_NOZORDER As Short = &H4S
-    Public Const HWND_BOTTOM As Short = 1
-    Public Const WM_CAP_STOP As Integer = WM_CAP + 68
-
-    Public iDevice As Integer = 0 ' Current device ID
-    Public hHwnd As Integer ' Handle to preview window
-
-    Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, <MarshalAs(UnmanagedType.AsAny)> ByVal lParam As Object) As Integer
-
-    Declare Function SetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hwnd As Integer, ByVal hWndInsertAfter As Integer, ByVal x As Integer, ByVal y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal wFlags As Integer) As Integer
-
-    Declare Function DestroyWindow Lib "user32" (ByVal hndw As Integer) As Boolean
-
-    Declare Function capCreateCaptureWindowA Lib "avicap32.dll" (ByVal lpszWindowName As String, ByVal dwStyle As Integer, ByVal x As Integer, ByVal y As Integer, ByVal nWidth As Integer, ByVal nHeight As Short, ByVal hWndParent As Integer, ByVal nID As Integer) As Integer
-
-    Declare Function capGetDriverDescriptionA Lib "avicap32.dll" (ByVal wDriver As Short, ByVal lpszName As String, ByVal cbName As Integer, ByVal lpszVer As String, ByVal cbVer As Integer) As Boolean
-
-    ':::Abrir la vista
-    Public Sub OpenPreviewWindow()
-
-        ' Open Preview window in picturebox
-        '
-        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 640, 480, VISOR.Handle.ToInt32, 0)
-
-        ' Connect to device
-        '
-        SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0)
-        If SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0) Then
-            '
-            'Set the preview scale
-
-            SendMessage(hHwnd, WM_CAP_SET_SCALE, True, 0)
-
-            'Set the preview rate in milliseconds
-            '
-            SendMessage(hHwnd, WM_CAP_SET_PREVIEWRATE, 66, 0)
-
-            'Start previewing the image from the camera
-            '
-            SendMessage(hHwnd, WM_CAP_SET_PREVIEW, True, 0)
-
-            ' Resize window to fit in picturebox
-            '
-            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, VISOR.Width, VISOR.Height, SWP_NOMOVE Or SWP_NOZORDER)
-
-        Else
-            ' Error connecting to device close window
-            ' 
-            DestroyWindow(hHwnd)
-
-        End If
-    End Sub
-
-    ':::Abrir la prevista 
-    Public Sub OpenPreviewWindowCliente()
-
-        ' Open Preview window in picturebox
-        '
-        hHwnd = capCreateCaptureWindowA(iDevice, WS_VISIBLE Or WS_CHILD, 0, 0, 600, 480, Me.pbFoto.Handle.ToInt32, 0)
-
-        ' Connect to device
-        '
-        SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0)
-        If SendMessage(hHwnd, WM_CAP_DRIVER_CONNECT, iDevice, 0) Then
-            '
-            'Set the preview scale
-
-            SendMessage(hHwnd, WM_CAP_SET_SCALE, True, 0)
-
-            'Set the preview rate in milliseconds
-            '
-            SendMessage(hHwnd, WM_CAP_SET_PREVIEWRATE, 66, 0)
-
-            'Start previewing the image from the camera
-            '
-            SendMessage(hHwnd, WM_CAP_SET_PREVIEW, True, 0)
-
-            ' Resize window to fit in picturebox
-            '
-            SetWindowPos(hHwnd, HWND_BOTTOM, 0, 0, Me.pbFoto.Width, Me.pbFoto.Height, SWP_NOMOVE Or SWP_NOZORDER)
-
-        Else
-            ' Error connecting to device close window
-            ' 
-            DestroyWindow(hHwnd)
-
-        End If
-    End Sub
-
-    ':::Capturar la fotografia
-    Public Sub CapturarCliente()
-        ' Copy image to clipboard
-        '
-        SendMessage(hHwnd, WM_CAP_EDIT_COPY, 0, 0)
-
-        ' Get image from clipboard and convert it to a bitmap
-        '
-        DATOS = Clipboard.GetDataObject()
-
-        IMAGEN = CType(DATOS.GetData(GetType(System.Drawing.Bitmap)), Image)
-        'Me.pbFoto.Image = IMAGEN
-        'GUARDAR.Visible = True
-    End Sub
-
-    ':::Cerrar ventana anterior
-    Public Sub ClosePreviewWindow()
-        '
-        ' Disconnect from device
-        '
-        SendMessage(hHwnd, WM_CAP_DRIVER_DISCONNECT, 0, 0)
-        '
-        ' close window
-        '
-        DestroyWindow(hHwnd)
-    End Sub
-
-    ':::Abrir camara
-    Private Sub cmdCamara_Click(sender As Object, e As EventArgs) Handles cmdCamara.Click
-        Me.OpenPreviewWindowCliente()
-        cmdCamara.Enabled = False
-    End Sub
-
 
 #End Region
 

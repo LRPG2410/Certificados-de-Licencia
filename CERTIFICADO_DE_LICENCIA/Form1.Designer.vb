@@ -51,6 +51,10 @@ Partial Class Form1
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtOftal = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.rbTodos = New System.Windows.Forms.RadioButton()
+        Me.rbApellido = New System.Windows.Forms.RadioButton()
+        Me.rbDpi = New System.Windows.Forms.RadioButton()
+        Me.rbNombre = New System.Windows.Forms.RadioButton()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.cbNinguna = New System.Windows.Forms.CheckBox()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
@@ -115,15 +119,11 @@ Partial Class Form1
         Me.Label14 = New System.Windows.Forms.Label()
         Me.lpaciente = New System.Windows.Forms.Label()
         Me.lFReporte = New System.Windows.Forms.Label()
-        Me.rbGenerar = New System.Windows.Forms.RadioButton()
-        Me.rbBuscar = New System.Windows.Forms.RadioButton()
+        Me.rbGenerarpdf = New System.Windows.Forms.RadioButton()
+        Me.rbGenerarword = New System.Windows.Forms.RadioButton()
         Me.rbAbrir = New System.Windows.Forms.RadioButton()
         Me.gbBotones = New System.Windows.Forms.GroupBox()
         Me.pbSalir = New System.Windows.Forms.PictureBox()
-        Me.RadioButton7 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton4 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton5 = New System.Windows.Forms.RadioButton()
-        Me.rnNombre = New System.Windows.Forms.RadioButton()
         Me.pbCargando = New System.Windows.Forms.PictureBox()
         Me.pbImpresora = New System.Windows.Forms.PictureBox()
         Me.pbLupa = New System.Windows.Forms.PictureBox()
@@ -433,6 +433,58 @@ Partial Class Form1
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "NÚMERO DE REGISTRO:"
         '
+        'rbTodos
+        '
+        Me.rbTodos.AutoSize = True
+        Me.rbTodos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbTodos.Location = New System.Drawing.Point(410, 35)
+        Me.rbTodos.Name = "rbTodos"
+        Me.rbTodos.Size = New System.Drawing.Size(104, 20)
+        Me.rbTodos.TabIndex = 63
+        Me.rbTodos.TabStop = True
+        Me.rbTodos.Text = "VER TODOS"
+        Me.rbTodos.UseVisualStyleBackColor = True
+        Me.rbTodos.Visible = False
+        '
+        'rbApellido
+        '
+        Me.rbApellido.AutoSize = True
+        Me.rbApellido.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbApellido.Location = New System.Drawing.Point(597, 35)
+        Me.rbApellido.Name = "rbApellido"
+        Me.rbApellido.Size = New System.Drawing.Size(89, 20)
+        Me.rbApellido.TabIndex = 62
+        Me.rbApellido.TabStop = True
+        Me.rbApellido.Text = "APELLIDO"
+        Me.rbApellido.UseVisualStyleBackColor = True
+        Me.rbApellido.Visible = False
+        '
+        'rbDpi
+        '
+        Me.rbDpi.AutoSize = True
+        Me.rbDpi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbDpi.Location = New System.Drawing.Point(520, 35)
+        Me.rbDpi.Name = "rbDpi"
+        Me.rbDpi.Size = New System.Drawing.Size(47, 20)
+        Me.rbDpi.TabIndex = 60
+        Me.rbDpi.TabStop = True
+        Me.rbDpi.Text = "DPI"
+        Me.rbDpi.UseVisualStyleBackColor = True
+        Me.rbDpi.Visible = False
+        '
+        'rbNombre
+        '
+        Me.rbNombre.AutoSize = True
+        Me.rbNombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbNombre.Location = New System.Drawing.Point(483, 9)
+        Me.rbNombre.Name = "rbNombre"
+        Me.rbNombre.Size = New System.Drawing.Size(84, 20)
+        Me.rbNombre.TabIndex = 61
+        Me.rbNombre.TabStop = True
+        Me.rbNombre.Text = "NOMBRE"
+        Me.rbNombre.UseVisualStyleBackColor = True
+        Me.rbNombre.Visible = False
+        '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.cbNinguna)
@@ -483,7 +535,7 @@ Partial Class Form1
         'rbLentes2
         '
         Me.rbLentes2.AutoSize = True
-        Me.rbLentes2.Location = New System.Drawing.Point(126, 25)
+        Me.rbLentes2.Location = New System.Drawing.Point(128, 26)
         Me.rbLentes2.Name = "rbLentes2"
         Me.rbLentes2.Size = New System.Drawing.Size(41, 17)
         Me.rbLentes2.TabIndex = 44
@@ -494,7 +546,7 @@ Partial Class Form1
         'rbLentes1
         '
         Me.rbLentes1.AutoSize = True
-        Me.rbLentes1.Location = New System.Drawing.Point(67, 25)
+        Me.rbLentes1.Location = New System.Drawing.Point(69, 26)
         Me.rbLentes1.Name = "rbLentes1"
         Me.rbLentes1.Size = New System.Drawing.Size(35, 17)
         Me.rbLentes1.TabIndex = 43
@@ -549,7 +601,7 @@ Partial Class Form1
         'rbAnteojos2
         '
         Me.rbAnteojos2.AutoSize = True
-        Me.rbAnteojos2.Location = New System.Drawing.Point(126, 25)
+        Me.rbAnteojos2.Location = New System.Drawing.Point(128, 23)
         Me.rbAnteojos2.Name = "rbAnteojos2"
         Me.rbAnteojos2.Size = New System.Drawing.Size(41, 17)
         Me.rbAnteojos2.TabIndex = 41
@@ -560,7 +612,7 @@ Partial Class Form1
         'rbAnteojos1
         '
         Me.rbAnteojos1.AutoSize = True
-        Me.rbAnteojos1.Location = New System.Drawing.Point(67, 25)
+        Me.rbAnteojos1.Location = New System.Drawing.Point(69, 23)
         Me.rbAnteojos1.Name = "rbAnteojos1"
         Me.rbAnteojos1.Size = New System.Drawing.Size(35, 17)
         Me.rbAnteojos1.TabIndex = 40
@@ -582,7 +634,7 @@ Partial Class Form1
         'rbSensibilidad1
         '
         Me.rbSensibilidad1.AutoSize = True
-        Me.rbSensibilidad1.Location = New System.Drawing.Point(40, 28)
+        Me.rbSensibilidad1.Location = New System.Drawing.Point(32, 28)
         Me.rbSensibilidad1.Name = "rbSensibilidad1"
         Me.rbSensibilidad1.Size = New System.Drawing.Size(71, 17)
         Me.rbSensibilidad1.TabIndex = 31
@@ -593,7 +645,7 @@ Partial Class Form1
         'rbSensibilidad2
         '
         Me.rbSensibilidad2.AutoSize = True
-        Me.rbSensibilidad2.Location = New System.Drawing.Point(129, 28)
+        Me.rbSensibilidad2.Location = New System.Drawing.Point(121, 28)
         Me.rbSensibilidad2.Name = "rbSensibilidad2"
         Me.rbSensibilidad2.Size = New System.Drawing.Size(88, 17)
         Me.rbSensibilidad2.TabIndex = 32
@@ -615,7 +667,7 @@ Partial Class Form1
         'rbSeg2
         '
         Me.rbSeg2.AutoSize = True
-        Me.rbSeg2.Location = New System.Drawing.Point(126, 25)
+        Me.rbSeg2.Location = New System.Drawing.Point(128, 25)
         Me.rbSeg2.Name = "rbSeg2"
         Me.rbSeg2.Size = New System.Drawing.Size(41, 17)
         Me.rbSeg2.TabIndex = 38
@@ -626,7 +678,7 @@ Partial Class Form1
         'rbSeg1
         '
         Me.rbSeg1.AutoSize = True
-        Me.rbSeg1.Location = New System.Drawing.Point(67, 25)
+        Me.rbSeg1.Location = New System.Drawing.Point(69, 25)
         Me.rbSeg1.Name = "rbSeg1"
         Me.rbSeg1.Size = New System.Drawing.Size(35, 17)
         Me.rbSeg1.TabIndex = 37
@@ -983,7 +1035,7 @@ Partial Class Form1
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(532, 503)
+        Me.Button4.Location = New System.Drawing.Point(358, 503)
         Me.Button4.Name = "Button4"
         Me.Button4.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
         Me.Button4.Size = New System.Drawing.Size(168, 40)
@@ -995,7 +1047,7 @@ Partial Class Form1
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
         Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button5.Location = New System.Drawing.Point(358, 503)
+        Me.Button5.Location = New System.Drawing.Point(532, 503)
         Me.Button5.Name = "Button5"
         Me.Button5.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
         Me.Button5.Size = New System.Drawing.Size(168, 40)
@@ -1136,55 +1188,55 @@ Partial Class Form1
         Me.lFReporte.Text = "Label20"
         Me.lFReporte.Visible = False
         '
-        'rbGenerar
+        'rbGenerarpdf
         '
-        Me.rbGenerar.AutoSize = True
-        Me.rbGenerar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbGenerar.Location = New System.Drawing.Point(6, 9)
-        Me.rbGenerar.Name = "rbGenerar"
-        Me.rbGenerar.Size = New System.Drawing.Size(122, 20)
-        Me.rbGenerar.TabIndex = 57
-        Me.rbGenerar.TabStop = True
-        Me.rbGenerar.Text = "GENERAR PDF"
-        Me.rbGenerar.UseVisualStyleBackColor = True
-        Me.rbGenerar.Visible = False
+        Me.rbGenerarpdf.AutoSize = True
+        Me.rbGenerarpdf.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbGenerarpdf.Location = New System.Drawing.Point(2, 9)
+        Me.rbGenerarpdf.Name = "rbGenerarpdf"
+        Me.rbGenerarpdf.Size = New System.Drawing.Size(122, 20)
+        Me.rbGenerarpdf.TabIndex = 57
+        Me.rbGenerarpdf.TabStop = True
+        Me.rbGenerarpdf.Text = "GENERAR PDF"
+        Me.rbGenerarpdf.UseVisualStyleBackColor = True
+        Me.rbGenerarpdf.Visible = False
         '
-        'rbBuscar
+        'rbGenerarword
         '
-        Me.rbBuscar.AutoSize = True
-        Me.rbBuscar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbBuscar.Location = New System.Drawing.Point(6, 35)
-        Me.rbBuscar.Name = "rbBuscar"
-        Me.rbBuscar.Size = New System.Drawing.Size(81, 20)
-        Me.rbBuscar.TabIndex = 58
-        Me.rbBuscar.TabStop = True
-        Me.rbBuscar.Text = "BUSCAR"
-        Me.rbBuscar.UseVisualStyleBackColor = True
-        Me.rbBuscar.Visible = False
+        Me.rbGenerarword.AutoSize = True
+        Me.rbGenerarword.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbGenerarword.Location = New System.Drawing.Point(0, 30)
+        Me.rbGenerarword.Name = "rbGenerarword"
+        Me.rbGenerarword.Size = New System.Drawing.Size(138, 20)
+        Me.rbGenerarword.TabIndex = 58
+        Me.rbGenerarword.TabStop = True
+        Me.rbGenerarword.Text = "GENERAR WORD"
+        Me.rbGenerarword.UseVisualStyleBackColor = True
+        Me.rbGenerarword.Visible = False
         '
         'rbAbrir
         '
         Me.rbAbrir.AutoSize = True
         Me.rbAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAbrir.Location = New System.Drawing.Point(104, 9)
+        Me.rbAbrir.Location = New System.Drawing.Point(2, 42)
         Me.rbAbrir.Name = "rbAbrir"
-        Me.rbAbrir.Size = New System.Drawing.Size(66, 20)
+        Me.rbAbrir.Size = New System.Drawing.Size(141, 20)
         Me.rbAbrir.TabIndex = 59
         Me.rbAbrir.TabStop = True
-        Me.rbAbrir.Text = "ABRIR"
+        Me.rbAbrir.Text = "ABRIR UBICACIÓN"
         Me.rbAbrir.UseVisualStyleBackColor = True
         Me.rbAbrir.Visible = False
         '
         'gbBotones
         '
         Me.gbBotones.Controls.Add(Me.pbSalir)
-        Me.gbBotones.Controls.Add(Me.RadioButton7)
-        Me.gbBotones.Controls.Add(Me.RadioButton4)
+        Me.gbBotones.Controls.Add(Me.rbTodos)
         Me.gbBotones.Controls.Add(Me.rbAbrir)
-        Me.gbBotones.Controls.Add(Me.RadioButton5)
-        Me.gbBotones.Controls.Add(Me.rbGenerar)
-        Me.gbBotones.Controls.Add(Me.rnNombre)
-        Me.gbBotones.Controls.Add(Me.rbBuscar)
+        Me.gbBotones.Controls.Add(Me.rbGenerarpdf)
+        Me.gbBotones.Controls.Add(Me.rbApellido)
+        Me.gbBotones.Controls.Add(Me.rbGenerarword)
+        Me.gbBotones.Controls.Add(Me.rbNombre)
+        Me.gbBotones.Controls.Add(Me.rbDpi)
         Me.gbBotones.Location = New System.Drawing.Point(10, 549)
         Me.gbBotones.Name = "gbBotones"
         Me.gbBotones.Size = New System.Drawing.Size(688, 62)
@@ -1201,58 +1253,6 @@ Partial Class Form1
         Me.pbSalir.Size = New System.Drawing.Size(25, 25)
         Me.pbSalir.TabIndex = 64
         Me.pbSalir.TabStop = False
-        '
-        'RadioButton7
-        '
-        Me.RadioButton7.AutoSize = True
-        Me.RadioButton7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton7.Location = New System.Drawing.Point(406, 35)
-        Me.RadioButton7.Name = "RadioButton7"
-        Me.RadioButton7.Size = New System.Drawing.Size(104, 20)
-        Me.RadioButton7.TabIndex = 63
-        Me.RadioButton7.TabStop = True
-        Me.RadioButton7.Text = "VER TODOS"
-        Me.RadioButton7.UseVisualStyleBackColor = True
-        Me.RadioButton7.Visible = False
-        '
-        'RadioButton4
-        '
-        Me.RadioButton4.AutoSize = True
-        Me.RadioButton4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton4.Location = New System.Drawing.Point(593, 35)
-        Me.RadioButton4.Name = "RadioButton4"
-        Me.RadioButton4.Size = New System.Drawing.Size(89, 20)
-        Me.RadioButton4.TabIndex = 62
-        Me.RadioButton4.TabStop = True
-        Me.RadioButton4.Text = "APELLIDO"
-        Me.RadioButton4.UseVisualStyleBackColor = True
-        Me.RadioButton4.Visible = False
-        '
-        'RadioButton5
-        '
-        Me.RadioButton5.AutoSize = True
-        Me.RadioButton5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton5.Location = New System.Drawing.Point(516, 35)
-        Me.RadioButton5.Name = "RadioButton5"
-        Me.RadioButton5.Size = New System.Drawing.Size(47, 20)
-        Me.RadioButton5.TabIndex = 60
-        Me.RadioButton5.TabStop = True
-        Me.RadioButton5.Text = "DPI"
-        Me.RadioButton5.UseVisualStyleBackColor = True
-        Me.RadioButton5.Visible = False
-        '
-        'rnNombre
-        '
-        Me.rnNombre.AutoSize = True
-        Me.rnNombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rnNombre.Location = New System.Drawing.Point(479, 9)
-        Me.rnNombre.Name = "rnNombre"
-        Me.rnNombre.Size = New System.Drawing.Size(84, 20)
-        Me.rnNombre.TabIndex = 61
-        Me.rnNombre.TabStop = True
-        Me.rnNombre.Text = "NOMBRE"
-        Me.rnNombre.UseVisualStyleBackColor = True
-        Me.rnNombre.Visible = False
         '
         'pbCargando
         '
@@ -1302,6 +1302,7 @@ Partial Class Form1
         Me.Controls.Add(Me.lFReporte)
         Me.Controls.Add(Me.lpaciente)
         Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.Label19)
@@ -1314,7 +1315,6 @@ Partial Class Form1
         Me.Controls.Add(Me.lFecha)
         Me.Controls.Add(Me.btnAgregar)
         Me.Controls.Add(Me.dgvTabla)
-        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.BtnGuardar)
@@ -1460,14 +1460,14 @@ Partial Class Form1
     Friend WithEvents lpaciente As Label
     Friend WithEvents lFReporte As Label
     Friend WithEvents txtDate1 As DateTimePicker
-    Friend WithEvents rbGenerar As RadioButton
-    Friend WithEvents rbBuscar As RadioButton
+    Friend WithEvents rbGenerarpdf As RadioButton
+    Friend WithEvents rbGenerarword As RadioButton
     Friend WithEvents rbAbrir As RadioButton
     Friend WithEvents gbBotones As GroupBox
-    Friend WithEvents RadioButton7 As RadioButton
-    Friend WithEvents RadioButton4 As RadioButton
-    Friend WithEvents RadioButton5 As RadioButton
-    Friend WithEvents rnNombre As RadioButton
+    Friend WithEvents rbTodos As RadioButton
+    Friend WithEvents rbApellido As RadioButton
+    Friend WithEvents rbDpi As RadioButton
+    Friend WithEvents rbNombre As RadioButton
     Friend WithEvents pbCargando As PictureBox
     Friend WithEvents pbImpresora As PictureBox
     Friend WithEvents pbLupa As PictureBox
