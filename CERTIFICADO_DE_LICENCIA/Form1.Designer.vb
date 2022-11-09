@@ -107,12 +107,8 @@ Partial Class Form1
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.dgvTabla = New System.Windows.Forms.DataGridView()
-        Me.btnAgregar = New System.Windows.Forms.Button()
         Me.lFecha = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
-        Me.cmdCamara = New System.Windows.Forms.Button()
-        Me.cmdCapturar = New System.Windows.Forms.Button()
-        Me.btnGuardarArch = New System.Windows.Forms.Button()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
@@ -127,7 +123,8 @@ Partial Class Form1
         Me.pbCargando = New System.Windows.Forms.PictureBox()
         Me.pbImpresora = New System.Windows.Forms.PictureBox()
         Me.pbLupa = New System.Windows.Forms.PictureBox()
-        Me.VISOR = New System.Windows.Forms.PictureBox()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label21 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -151,7 +148,6 @@ Partial Class Form1
         CType(Me.pbCargando, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbImpresora, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbLupa, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.VISOR, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -1066,15 +1062,6 @@ Partial Class Form1
         Me.dgvTabla.Size = New System.Drawing.Size(1240, 225)
         Me.dgvTabla.TabIndex = 16
         '
-        'btnAgregar
-        '
-        Me.btnAgregar.Location = New System.Drawing.Point(605, 12)
-        Me.btnAgregar.Name = "btnAgregar"
-        Me.btnAgregar.Size = New System.Drawing.Size(53, 23)
-        Me.btnAgregar.TabIndex = 0
-        Me.btnAgregar.Text = "Agregar"
-        Me.btnAgregar.UseVisualStyleBackColor = True
-        '
         'lFecha
         '
         Me.lFecha.AutoSize = True
@@ -1095,45 +1082,15 @@ Partial Class Form1
         Me.Label12.TabIndex = 22
         Me.Label12.Text = "Hoy es:"
         '
-        'cmdCamara
-        '
-        Me.cmdCamara.Location = New System.Drawing.Point(386, 12)
-        Me.cmdCamara.Name = "cmdCamara"
-        Me.cmdCamara.Size = New System.Drawing.Size(52, 23)
-        Me.cmdCamara.TabIndex = 0
-        Me.cmdCamara.Text = "Camara"
-        Me.cmdCamara.UseVisualStyleBackColor = True
-        Me.cmdCamara.Visible = False
-        '
-        'cmdCapturar
-        '
-        Me.cmdCapturar.Location = New System.Drawing.Point(444, 12)
-        Me.cmdCapturar.Name = "cmdCapturar"
-        Me.cmdCapturar.Size = New System.Drawing.Size(56, 23)
-        Me.cmdCapturar.TabIndex = 0
-        Me.cmdCapturar.Text = "Capturar"
-        Me.cmdCapturar.UseVisualStyleBackColor = True
-        Me.cmdCapturar.Visible = False
-        '
-        'btnGuardarArch
-        '
-        Me.btnGuardarArch.Location = New System.Drawing.Point(506, 12)
-        Me.btnGuardarArch.Name = "btnGuardarArch"
-        Me.btnGuardarArch.Size = New System.Drawing.Size(93, 23)
-        Me.btnGuardarArch.TabIndex = 0
-        Me.btnGuardarArch.Text = "Guardar Archivo"
-        Me.btnGuardarArch.UseVisualStyleBackColor = True
-        Me.btnGuardarArch.Visible = False
-        '
         'Label19
         '
         Me.Label19.AutoSize = True
         Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(706, 13)
+        Me.Label19.Location = New System.Drawing.Point(795, 13)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(128, 24)
+        Me.Label19.Size = New System.Drawing.Size(42, 24)
         Me.Label19.TabIndex = 29
-        Me.Label19.Text = "No. Paciente: "
+        Me.Label19.Text = "no: "
         '
         'lcontador
         '
@@ -1281,20 +1238,33 @@ Partial Class Form1
         Me.pbLupa.TabIndex = 59
         Me.pbLupa.TabStop = False
         '
-        'VISOR
+        'Label20
         '
-        Me.VISOR.Location = New System.Drawing.Point(665, 13)
-        Me.VISOR.Name = "VISOR"
-        Me.VISOR.Size = New System.Drawing.Size(10, 10)
-        Me.VISOR.TabIndex = 60
-        Me.VISOR.TabStop = False
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(657, 13)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(143, 24)
+        Me.Label20.TabIndex = 60
+        Me.Label20.Text = "Nuevo paciente"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(637, 37)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(163, 24)
+        Me.Label21.TabIndex = 61
+        Me.Label21.Text = "Paciente existente"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
-        Me.Controls.Add(Me.VISOR)
+        Me.Controls.Add(Me.Label21)
+        Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.pbLupa)
         Me.Controls.Add(Me.pbImpresora)
         Me.Controls.Add(Me.pbCargando)
@@ -1306,14 +1276,10 @@ Partial Class Form1
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.Label19)
-        Me.Controls.Add(Me.btnGuardarArch)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.cmdCapturar)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.cmdCamara)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.lFecha)
-        Me.Controls.Add(Me.btnAgregar)
         Me.Controls.Add(Me.dgvTabla)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
@@ -1363,7 +1329,6 @@ Partial Class Form1
         CType(Me.pbCargando, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbImpresora, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbLupa, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.VISOR, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1442,14 +1407,10 @@ Partial Class Form1
     Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
     Friend WithEvents txtEdad As System.Windows.Forms.Label
     Friend WithEvents cbNinguna As System.Windows.Forms.CheckBox
-    Friend WithEvents btnAgregar As System.Windows.Forms.Button
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Protected Friend WithEvents lFecha As System.Windows.Forms.Label
     Friend WithEvents txtAPaciente As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
-    Friend WithEvents cmdCamara As Button
-    Friend WithEvents cmdCapturar As Button
-    Friend WithEvents btnGuardarArch As Button
     Friend WithEvents Label19 As Label
     Friend WithEvents lcontador As Label
     Friend WithEvents Button6 As Button
@@ -1471,6 +1432,7 @@ Partial Class Form1
     Friend WithEvents pbCargando As PictureBox
     Friend WithEvents pbImpresora As PictureBox
     Friend WithEvents pbLupa As PictureBox
-    Friend WithEvents VISOR As PictureBox
     Friend WithEvents pbSalir As PictureBox
+    Friend WithEvents Label20 As Label
+    Friend WithEvents Label21 As Label
 End Class

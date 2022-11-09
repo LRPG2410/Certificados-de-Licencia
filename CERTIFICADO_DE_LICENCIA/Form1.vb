@@ -7,9 +7,7 @@ Imports System.Data ':::Ofrece acceso a clases que representan la arquitectura d
 Imports System.Data.OleDb ':::Es el proveedor de datos .NET Framework para OLE DB.
 
 Imports Microsoft.Office.Interop.Word ':::Para activar esta referencia se va a proyecto luego en agregar referencia com y se agrega Microsoft Word 9.0 Object Library dependiendo de la version de office
-
 Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivos y secuencias de datos, así como tipos que proporcionan compatibilidad básica con los archivos y directorios.
-
 Imports Microsoft.Office.Interop
 Imports System.Runtime.InteropServices
 Imports System.Windows.Controls
@@ -18,7 +16,6 @@ Imports System.Windows.Media.Media3D
 Imports stdole
 Imports System.Runtime.InteropServices.ComTypes
 Imports System.Security.Authentication.ExtendedProtection
-
 
 
 #End Region
@@ -773,7 +770,6 @@ Public Class Form1
         Me.txtDate1.Value = dgvTabla.Rows(I).Cells(9).Value.ToString
         Me.cbGenero.Text = dgvTabla.Rows(I).Cells(10).Value.ToString
         Me.txtResidencia.Text = dgvTabla.Rows(I).Cells(11).Value.ToString
-
         Me.cbAgudeza1.Text = dgvTabla.Rows(I).Cells(12).Value.ToString
         Me.cbAgudeza2.Text = dgvTabla.Rows(I).Cells(13).Value.ToString
         Me.cbAgudeza3.Text = dgvTabla.Rows(I).Cells(14).Value.ToString
@@ -915,33 +911,33 @@ Public Class Form1
     End Sub
 
     ':::Boton para LLENAR todos los campos
-    Private Sub btnAgregar_Click(sender As System.Object, e As System.EventArgs) Handles btnAgregar.Click
-        cbProfesional.Text = "Luis Porras"
-        txtTransito.Text = "123"
-        txtSalud.Text = "456"
-        txtOftal.Text = "789"
-        txtNPaciente.Text = "Alejandro Polares"
-        txtDpi.Text = "457"
-        cbDepartamento.Text = "Guatemala"
-        cbMunicipio.Text = "Ciudad de Guatemala"
-        cbGenero.Text = "Masculino"
-        txtResidencia.Text = "Vivo por ahi"
-        cbAgudeza1.Text = "67"
-        cbAgudeza2.Text = "34"
-        cbAgudeza3.Text = "90"
-        rbVision1.Checked = True
-        nudCentral1.Value = "45"
-        nudCentral2.Value = "32"
-        rbCentral1.Checked = True
-        nudPeriferico1.Value = "5"
-        nudPeriferico2.Value = "57"
-        rbPeriferico1.Checked = True
-        rbSensibilidad1.Checked = True
-        rbPrueba1.Checked = True
-        rbSeg1.Checked = True
-        rbAnteojos1.Checked = True
-        rbLentes1.Checked = True
-        rtb1.Text = "Esto es una prueba"
+    Private Sub btnAgregar_Click(sender As System.Object, e As System.EventArgs)
+        'cbProfesional.Text = "Luis Porras"
+        'txtTransito.Text = "123"
+        'txtSalud.Text = "456"
+        'txtOftal.Text = "789"
+        'txtNPaciente.Text = "Alejandro Polares"
+        'txtDpi.Text = "457"
+        'cbDepartamento.Text = "Guatemala"
+        'cbMunicipio.Text = "Ciudad de Guatemala"
+        'cbGenero.Text = "Masculino"
+        'txtResidencia.Text = "Vivo por ahi"
+        'cbAgudeza1.Text = "67"
+        'cbAgudeza2.Text = "34"
+        'cbAgudeza3.Text = "90"
+        'rbVision1.Checked = True
+        'nudCentral1.Value = "45"
+        'nudCentral2.Value = "32"
+        'rbCentral1.Checked = True
+        'nudPeriferico1.Value = "5"
+        'nudPeriferico2.Value = "57"
+        'rbPeriferico1.Checked = True
+        'rbSensibilidad1.Checked = True
+        'rbPrueba1.Checked = True
+        'rbSeg1.Checked = True
+        'rbAnteojos1.Checked = True
+        'rbLentes1.Checked = True
+        'rtb1.Text = "Esto es una prueba"
     End Sub
 
     ':::Instrucción para abrir el explorador de archivos y buscar la FOTO
@@ -968,13 +964,13 @@ Public Class Form1
     End Sub
 
     ':::Instrucción para calcular la edad del paciente
-    Private Sub txtDate1_CloseUp(sender As Object, e As System.EventArgs) Handles txtDate1.CloseUp
-        ':::Variable para obtener el valor del día, mes y año actuales
+    Private Sub txtDate1_ValueChanged(sender As Object, e As EventArgs) Handles txtDate1.ValueChanged
+        ':::Variables para obtener el valor del día, mes y año actuales
         Dim DiaHoy As String = Date.Now.Date.Day
         Dim MesHoy As String = Date.Now.Date.Month
         Dim AnioHoy As String = Date.Now.Date.Year
 
-        ':::Variable para obtener el valor del día, mes y año de nacimiento
+        ':::Variables para obtener el valor del día, mes y año de nacimiento
         Dim DiaNacer As String = txtDate1.Value.Day
         Dim MesNacer As String = txtDate1.Value.Month
         Dim AnioNacer As String = txtDate1.Value.Year
@@ -1006,7 +1002,6 @@ Public Class Form1
 
         '::::Hacemos visible el Label
         txtEdad.Visible = True
-
     End Sub
 
     ':::Instrucción para que solo acepte número en el txtTransito
@@ -1485,8 +1480,8 @@ Public Class Form1
         Button6.Enabled = False
         Button5.Enabled = False
         Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
-        Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtNPaciente.Text & "'"
-        Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtNPaciente.Text & "'"
+        Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtAPaciente.Text & "'"
+        Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtDpi.Text & "'"
         Dim access As String = "Select * from Datos_Paciente"
 
         If (rbNombre.Checked = True) Then
@@ -1530,9 +1525,12 @@ Public Class Form1
     Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
         ':::Creamos la variable access que guardar la instruccion de tipo SQL
 
-        ':::Instrucción "Update [tabla] set [nombrecelda1]='" & [nombreherramienta1] & "'" where [nombrecelda2]= " & [nombreherramienta1] & "" 
-        Dim access As String = "Update Datos_Paciente Set NombrePaciente='" & txtNPaciente.Text & "', Genero='" & cbGenero.Text & "' where Id=" & txtOftal.Text & ""
+        ':::Instrucción "Update [tabla] set [nombrecelda1]='" & [nombreherramienta1] & "'" where [nombrecelda2]= " & [nombreherramienta1] & ""
+        'Dim access As String = "Update Datos_Paciente Set Pac_Apellido = '" & txtAPaciente.Text & " where Contador = " & lpaciente.Text & ""
+        Dim access As String = "Update Datos_Paciente Set Pac_Apellido='" & txtAPaciente.Text & "' where Contador=" & lcontador.Text & ""
+
         Me.operaciones(dgvTabla, access)
+
         actualizar()
         limpiar()
     End Sub
