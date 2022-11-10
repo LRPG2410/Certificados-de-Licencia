@@ -125,6 +125,9 @@ Partial Class Form1
         Me.pbLupa = New System.Windows.Forms.PictureBox()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
+        Me.pbload = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -148,6 +151,9 @@ Partial Class Form1
         CType(Me.pbCargando, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbImpresora, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbLupa, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbload, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -994,7 +1000,7 @@ Partial Class Form1
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(327, 7)
+        Me.Button2.Location = New System.Drawing.Point(358, 13)
         Me.Button2.Name = "Button2"
         Me.Button2.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
         Me.Button2.Size = New System.Drawing.Size(58, 40)
@@ -1258,11 +1264,41 @@ Partial Class Form1
         Me.Label21.TabIndex = 61
         Me.Label21.Text = "Paciente existente"
         '
+        'pbload
+        '
+        Me.pbload.Image = CType(resources.GetObject("pbload.Image"), System.Drawing.Image)
+        Me.pbload.Location = New System.Drawing.Point(914, 24)
+        Me.pbload.Name = "pbload"
+        Me.pbload.Size = New System.Drawing.Size(10, 10)
+        Me.pbload.TabIndex = 62
+        Me.pbload.TabStop = False
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(930, 24)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(10, 10)
+        Me.PictureBox1.TabIndex = 63
+        Me.PictureBox1.TabStop = False
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(946, 23)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(10, 10)
+        Me.PictureBox2.TabIndex = 64
+        Me.PictureBox2.TabStop = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1263, 852)
+        Me.Controls.Add(Me.PictureBox2)
+        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.pbload)
         Me.Controls.Add(Me.Label21)
         Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.pbLupa)
@@ -1329,6 +1365,9 @@ Partial Class Form1
         CType(Me.pbCargando, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbImpresora, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbLupa, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbload, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1390,7 +1429,6 @@ Partial Class Form1
     Friend WithEvents cbA As System.Windows.Forms.CheckBox
     Friend WithEvents Label25 As System.Windows.Forms.Label
     Friend WithEvents BtnGuardar As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button4 As System.Windows.Forms.Button
@@ -1435,4 +1473,8 @@ Partial Class Form1
     Friend WithEvents pbSalir As PictureBox
     Friend WithEvents Label20 As Label
     Friend WithEvents Label21 As Label
+    Friend WithEvents pbload As PictureBox
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents Button2 As Button
 End Class

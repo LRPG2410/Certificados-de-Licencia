@@ -67,6 +67,52 @@ Public Class Form1
 
             ':::Ahora mostramos los datos en el DataGridView
             tabla.DataSource = DT
+
+            dgvTabla.Columns("Pro_Nombre").Visible = False
+            dgvTabla.Columns("Pro_regTransito").Visible = False
+            dgvTabla.Columns("Pro_regSalud").Visible = False
+            dgvTabla.Columns("Pro_regOft").Visible = False
+
+            dgvTabla.Columns("Contador").DisplayIndex = 0
+            dgvTabla.Columns("Pac_Nombre").DisplayIndex = 1
+            dgvTabla.Columns("Pac_Apellido").DisplayIndex = 2
+            dgvTabla.Columns("Pac_Dpi").DisplayIndex = 3
+
+            dgvTabla.Columns("Pac_Nombre").HeaderText = "Nombre"
+            dgvTabla.Columns("Pac_Apellido").HeaderText = "Apellido"
+            dgvTabla.Columns("Pac_Dpi").HeaderText = "DPI"
+            dgvTabla.Columns("Pac_Departamento").HeaderText = "Departamento"
+            dgvTabla.Columns("Pac_Municipio").HeaderText = "Municipio"
+            dgvTabla.Columns("Pac_Nacimiento").HeaderText = "Fecha de Nacimiento"
+            dgvTabla.Columns("Pac_Genero").HeaderText = "Género"
+            dgvTabla.Columns("Pac_Residencia").HeaderText = "Dirección"
+
+            dgvTabla.Columns("Res_Agudeza1").HeaderText = "Agudeza Visual 1"
+            dgvTabla.Columns("Res_Agudeza2").HeaderText = "Agudeza Visual 2"
+            dgvTabla.Columns("Res_Agudeza3").HeaderText = "Agudeza Visual 3"
+            dgvTabla.Columns("Res_Vision").HeaderText = "Visión de Colores"
+            dgvTabla.Columns("Res_CampoCentralOD").HeaderText = "Campo visual Central OD"
+            dgvTabla.Columns("Res_CampoCentralOI").HeaderText = "Campo visual Central OI"
+            dgvTabla.Columns("Res_CampoCentral").HeaderText = "Campo visual Central"
+            dgvTabla.Columns("Res_CampoPerifericoOD").HeaderText = "Campo visual Periferico OD"
+            dgvTabla.Columns("Res_CampoPerifericoOI").HeaderText = "Campo visual Periferico OI"
+            dgvTabla.Columns("Res_CampoPeriferico").HeaderText = "Campo visual Periferico"
+
+            dgvTabla.Columns("Res_Sensibilidad").HeaderText = "Sensibilidad al contraste"
+            dgvTabla.Columns("Res_Prueba").HeaderText = "Prueba estereoscopia"
+            dgvTabla.Columns("Res_Seg").HeaderText = "A 600 seg."
+            dgvTabla.Columns("Res_Anteojos").HeaderText = "Usa anteojos"
+            dgvTabla.Columns("Res_Lentes").HeaderText = "Usa lentes de contacto"
+
+            dgvTabla.Columns("Res_Licencia1").HeaderText = "Licencia A"
+            dgvTabla.Columns("Res_Licencia2").HeaderText = "Licencia B"
+            dgvTabla.Columns("Res_Licencia3").HeaderText = "Licencia E"
+            dgvTabla.Columns("Res_Licencia4").HeaderText = "Licencia C"
+            dgvTabla.Columns("Res_Licencia5").HeaderText = "Licencia M"
+            dgvTabla.Columns("Res_Licencia6").HeaderText = "Ninguna licencia"
+
+            dgvTabla.Columns("Res_Obs").HeaderText = "Observaciones"
+
         Catch ex As Exception
             MsgBox("No se logro realizar la consulta por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
         End Try
@@ -74,6 +120,7 @@ Public Class Form1
 
     ':::PROCEDIMIENTO para Agregar, Actualizar y Eliminar ademas le indicamos que debe pedir 2 parametros para ejecutarse correctamente (tabla, access)
     Sub operaciones(ByVal tabla As DataGridView, ByVal access As String)
+
         ':::Instruccion Try para capturar errores
         Try
 
@@ -84,9 +131,11 @@ Public Class Form1
             '::Realiza operaciones de catálogo (por ejemplo, consultar la estructura de una base de datos o crear objetos de base de datos como tablas)
             '::o cambiar los datos de una base de datos sin usar, mediante DataSet, la ejecución de instrucciones UPDATE, INSERT o DELETE.
             cmd.ExecuteNonQuery()
+            MsgBox("DATOS ACTUALIZADOS EXITOSAMENTE", vbInformation, "CORRECTO")
         Catch ex As Exception
             MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
         End Try
+
     End Sub
 
     ':::PROCEDIMIENTO para actualizar el DataGridView al momento de accionar cualquier boton
@@ -322,6 +371,10 @@ Public Class Form1
         cbC.Checked = False
         cbE.Checked = False
         cbM.Checked = False
+
+        'dgvTabla.Columns("Pro_Nombre").HeaderText = "CODIGO ART"
+        'dgvTabla.Columns("Pro_Nombre").Visible = False
+        'dgvTabla.Columns("Pac_Nombre").DisplayIndex = 0
 
         ':::Limpiar la foto
         pbFoto.ImageLocation = "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\usuario.png"
@@ -1113,7 +1166,7 @@ Public Class Form1
         rbAbrir.Visible = True
         rbAbrir.Location = New Drawing.Point(430, 25)
         Button6.Image = Nothing
-        Button6.Image = pbCargando.Image
+        Button6.Image = pbload.Image
         GroupBox3.Enabled = False
         GroupBox2.Enabled = False
         txtAPaciente.Enabled = False
@@ -1526,13 +1579,28 @@ Public Class Form1
         ':::Creamos la variable access que guardar la instruccion de tipo SQL
 
         ':::Instrucción "Update [tabla] set [nombrecelda1]='" & [nombreherramienta1] & "'" where [nombrecelda2]= " & [nombreherramienta1] & ""
-        'Dim access As String = "Update Datos_Paciente Set Pac_Apellido = '" & txtAPaciente.Text & " where Contador = " & lpaciente.Text & ""
-        Dim access As String = "Update Datos_Paciente Set Pac_Apellido='" & txtAPaciente.Text & "' where Contador=" & lcontador.Text & ""
 
-        Me.operaciones(dgvTabla, access)
+        'Dim access As String = "Update Datos_Paciente Set Pac_Apellido='" & txtAPaciente.Text & "' where Contador='" & lpaciente.Text & "'"
+        Try
 
-        actualizar()
-        limpiar()
+            Dim access As String = "Update Datos_Paciente Set Pac_Apellido= @Pac_Apellido where Contador= @Contador"
+
+            'actualizar()
+            'limpiar()
+
+            comandos.CommandType = CommandType.Text
+            comandos.CommandText = access
+
+            comandos.Parameters.AddWithValue("@Pac_Apellido", txtAPaciente.Text)
+            comandos.ExecuteNonQuery()
+            Me.operaciones(dgvTabla, access)
+
+        Catch ex As Exception
+            MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
+        End Try
+
+
+
     End Sub
 
     ':::Boton que ELIMINA [ELIMINAR] la información de la base de datos
