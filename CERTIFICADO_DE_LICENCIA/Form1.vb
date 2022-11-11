@@ -72,14 +72,19 @@ Public Class Form1
             dgvTabla.Columns("Pro_regTransito").Visible = False
             dgvTabla.Columns("Pro_regSalud").Visible = False
             dgvTabla.Columns("Pro_regOft").Visible = False
+            dgvTabla.Columns("Pac_Departamento").Visible = False
+            dgvTabla.Columns("Pac_Municipio").Visible = False
+            dgvTabla.Columns("Pac_Nacimiento").Visible = False
+            dgvTabla.Columns("Pac_Genero").Visible = False
+            dgvTabla.Columns("Pac_Residencia").Visible = False
 
             dgvTabla.Columns("Contador").DisplayIndex = 0
             dgvTabla.Columns("Pac_Nombre").DisplayIndex = 1
             dgvTabla.Columns("Pac_Apellido").DisplayIndex = 2
             dgvTabla.Columns("Pac_Dpi").DisplayIndex = 3
 
-            dgvTabla.Columns("Pac_Nombre").HeaderText = "Nombre"
-            dgvTabla.Columns("Pac_Apellido").HeaderText = "Apellido"
+            dgvTabla.Columns("Pac_Nombre").HeaderText = "Nombre del Paciente"
+            dgvTabla.Columns("Pac_Apellido").HeaderText = "Apellido del Paciente"
             dgvTabla.Columns("Pac_Dpi").HeaderText = "DPI"
             dgvTabla.Columns("Pac_Departamento").HeaderText = "Departamento"
             dgvTabla.Columns("Pac_Municipio").HeaderText = "Municipio"
