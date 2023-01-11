@@ -143,7 +143,7 @@ Public Class Form1
 
     End Sub
 
-    ':::PROCEDIMIENTO para actualizar el DataGridView al momento de accionar cualquier boton
+    ':::PROCEDIMIENTO para actualizar el DataGridView al momento de accionar cualquier boton.
     Sub actualizar()
         ':Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
         ':Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
@@ -160,7 +160,7 @@ Public Class Form1
     ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes.
     Sub num()
 
-        Dim Sql As String = "Select max(Contador) from Datos_Paciente"
+        Dim Sql As String = "Select max(Contador +1) from Datos_Paciente"
         Dim cmd As New OleDbCommand(Sql, conexion)
 
         ':::ExecuteScalar es una operación que se utiliza para devolver un valor único
@@ -172,7 +172,7 @@ Public Class Form1
         Else
 
             ':::CStr se encarga de convertir un valor numérico en un tipo String
-            Me.lcontador.Text = CStr(codigo) + 1
+            Me.lcontador.Text = CInt(codigo)
         End If
 
     End Sub
@@ -192,7 +192,13 @@ Public Class Form1
             'MsgBoxStyle.Information, "INFORMACIÓN")
 
             ':::Aqui hacemos referencia al documento de word, al marcador al que queres que se exporte la info y por ultimo la herramienta de la cual se tomara la información
-            documento.Bookmarks.Item("lcontador").Range.Text = lcontador.Text
+
+            If lcontador.Visible = True Then
+                documento.Bookmarks.Item("lcontador").Range.Text = lcontador.Text
+            ElseIf lpaciente.Visible = True Then
+                documento.Bookmarks.Item("lcontador").Range.Text = lpaciente.Text
+            End If
+
             documento.Bookmarks.Item("lFReporte").Range.Text = lFReporte.Text
             documento.Bookmarks.Item("cbProfesional").Range.Text = cbProfesional.SelectedItem
             documento.Bookmarks.Item("txtTransito").Range.Text = txtTransito.Text
@@ -200,7 +206,7 @@ Public Class Form1
             documento.Bookmarks.Item("txtOftal").Range.Text = txtOftal.Text
 
             documento.Bookmarks.Item("txtNPaciente").Range.Text = txtNPaciente.Text & " " & txtAPaciente.Text
-            documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+
             documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
             documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
 
@@ -221,7 +227,6 @@ Public Class Form1
             documento.Bookmarks.Item("cbDepartamento").Range.Text = cbDepartamento.SelectedItem
             documento.Bookmarks.Item("cbMunicipio").Range.Text = cbMunicipio.SelectedItem
             documento.Bookmarks.Item("txtResidencia").Range.Text = txtResidencia.Text
-
             documento.Bookmarks.Item("cbAgudeza1").Range.Text = cbAgudeza1.Text
             documento.Bookmarks.Item("cbAgudeza2").Range.Text = cbAgudeza2.Text
             documento.Bookmarks.Item("cbAgudeza3").Range.Text = cbAgudeza3.Text
@@ -307,8 +312,12 @@ Public Class Form1
         Catch ex As Exception
 
         Finally
-            documento.Save()
+
+            'documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            'Process.Start("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            'documento.Save()
             'MSWord.Quit()
+            'MSWord.Activate()
         End Try
 
     End Sub
@@ -376,6 +385,7 @@ Public Class Form1
         cbC.Checked = False
         cbE.Checked = False
         cbM.Checked = False
+        cbNinguna.Checked = False
 
         'dgvTabla.Columns("Pro_Nombre").HeaderText = "CODIGO ART"
         'dgvTabla.Columns("Pro_Nombre").Visible = False
@@ -389,11 +399,23 @@ Public Class Form1
         lpaciente.Text = Nothing
         num()
         lcontador.Visible = True
+        lcontador.ForeColor = Color.Crimson
+        Me.lpaciente.Visible = False
+        lPacienteN.Visible = True
+        lPacienteE.Location = New Drawing.Point(637, 13)
+        lPacienteE.Visible = False
+        lNo.ForeColor = Color.Crimson
+
+
     End Sub
 
     ':::PROCEDIMIENTO para generar el reporte en pdf
     Sub generarpdf()
+
         Dim wordApplication As New Microsoft.Office.Interop.Word.Application
+
+        reporte()
+
         Dim wordDocument As Microsoft.Office.Interop.Word.Document = Nothing
         Dim outputFilename As String
         Try
@@ -815,6 +837,8 @@ Public Class Form1
 
     ':::Instrucción para mostrar la información en el formulario desde el DataGridView
     Private Sub dgvTabla_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTabla.CellDoubleClick
+        limpiar()
+
         Dim I As Integer = e.RowIndex
         Me.cbProfesional.Text = dgvTabla.Rows(I).Cells(0).Value.ToString
         Me.txtTransito.Text = dgvTabla.Rows(I).Cells(1).Value.ToString
@@ -915,10 +939,16 @@ Public Class Form1
 
         Me.rtb1.Text = dgvTabla.Rows(I).Cells(33).Value.ToString
 
+        Me.pbFoto.ImageLocation = dgvTabla.Rows(I).Cells(34).Value.ToString
         Me.lpaciente.Text = dgvTabla.Rows(I).Cells(35).Value.ToString
+
         Me.lcontador.Visible = False
         Me.lpaciente.Location = New Drawing.Point(840, 13)
         Me.lpaciente.Visible = True
+        lPacienteN.Visible = False
+        lPacienteE.Location = New Drawing.Point(637, 13)
+        lPacienteE.Visible = True
+        lNo.ForeColor = Color.RoyalBlue
 
     End Sub
 
@@ -1171,7 +1201,7 @@ Public Class Form1
         rbAbrir.Visible = True
         rbAbrir.Location = New Drawing.Point(430, 25)
         Button6.Image = Nothing
-        Button6.Image = pbload.Image
+        Button6.Image = pbCargando.Image
         GroupBox3.Enabled = False
         GroupBox2.Enabled = False
         txtAPaciente.Enabled = False
@@ -1194,6 +1224,7 @@ Public Class Form1
                 generarpdf()
             ElseIf rbGenerarword.Checked = True Then
                 reporte()
+
             ElseIf rbAbrir.Checked = True Then
                 Call Shell("explorer.exe " & "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
             End If
@@ -1297,7 +1328,7 @@ Public Class Form1
             num()
             MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
         Catch ex As Exception
-            MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NIGUN DATO", vbCritical, "ERROR")
+            MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NINGUN DATO", vbCritical, "ERROR")
             MsgBox(ex.Message)
         End Try
     End Sub
@@ -1308,7 +1339,7 @@ Public Class Form1
         Try
 
             ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
-            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs, Contador) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @)", conexion)
+            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs, Contador, Fotografia) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @lcontador , @pbFoto)", conexion)
 
             ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
             If cbProfesional.SelectedItem = Nothing Then
@@ -1498,10 +1529,12 @@ Public Class Form1
             comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
             comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
 
+            comandos.Parameters.AddWithValue("@Fotografia", Label14.Text)
+
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
             comandos.ExecuteNonQuery()
             MsgBox("DATOS GUARDADOS EXITOSAMENTE", vbInformation, "CORRECTO")
-            'reporte()
+            reporte()
             actualizar()
             limpiar()
         Catch ex As Exception

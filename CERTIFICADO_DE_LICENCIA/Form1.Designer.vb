@@ -109,7 +109,7 @@ Partial Class Form1
         Me.dgvTabla = New System.Windows.Forms.DataGridView()
         Me.lFecha = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
-        Me.Label19 = New System.Windows.Forms.Label()
+        Me.lNo = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -123,8 +123,8 @@ Partial Class Form1
         Me.pbCargando = New System.Windows.Forms.PictureBox()
         Me.pbImpresora = New System.Windows.Forms.PictureBox()
         Me.pbLupa = New System.Windows.Forms.PictureBox()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.Label21 = New System.Windows.Forms.Label()
+        Me.lPacienteN = New System.Windows.Forms.Label()
+        Me.lPacienteE = New System.Windows.Forms.Label()
         Me.pbload = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -257,9 +257,9 @@ Partial Class Form1
         'pbFoto
         '
         Me.pbFoto.Image = CType(resources.GetObject("pbFoto.Image"), System.Drawing.Image)
-        Me.pbFoto.Location = New System.Drawing.Point(455, 41)
+        Me.pbFoto.Location = New System.Drawing.Point(457, 48)
         Me.pbFoto.Name = "pbFoto"
-        Me.pbFoto.Size = New System.Drawing.Size(212, 209)
+        Me.pbFoto.Size = New System.Drawing.Size(206, 199)
         Me.pbFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFoto.TabIndex = 12
         Me.pbFoto.TabStop = False
@@ -1088,20 +1088,22 @@ Partial Class Form1
         Me.Label12.TabIndex = 22
         Me.Label12.Text = "Hoy es:"
         '
-        'Label19
+        'lNo
         '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(795, 13)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(42, 24)
-        Me.Label19.TabIndex = 29
-        Me.Label19.Text = "no: "
+        Me.lNo.AutoSize = True
+        Me.lNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lNo.ForeColor = System.Drawing.Color.Crimson
+        Me.lNo.Location = New System.Drawing.Point(795, 13)
+        Me.lNo.Name = "lNo"
+        Me.lNo.Size = New System.Drawing.Size(42, 24)
+        Me.lNo.TabIndex = 29
+        Me.lNo.Text = "no: "
         '
         'lcontador
         '
         Me.lcontador.AutoSize = True
         Me.lcontador.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lcontador.ForeColor = System.Drawing.Color.Crimson
         Me.lcontador.Location = New System.Drawing.Point(840, 13)
         Me.lcontador.Name = "lcontador"
         Me.lcontador.Size = New System.Drawing.Size(20, 24)
@@ -1134,6 +1136,7 @@ Partial Class Form1
         '
         Me.lpaciente.AutoSize = True
         Me.lpaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lpaciente.ForeColor = System.Drawing.Color.RoyalBlue
         Me.lpaciente.Location = New System.Drawing.Point(840, 40)
         Me.lpaciente.Name = "lpaciente"
         Me.lpaciente.Size = New System.Drawing.Size(20, 24)
@@ -1244,25 +1247,28 @@ Partial Class Form1
         Me.pbLupa.TabIndex = 59
         Me.pbLupa.TabStop = False
         '
-        'Label20
+        'lPacienteN
         '
-        Me.Label20.AutoSize = True
-        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(657, 13)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(143, 24)
-        Me.Label20.TabIndex = 60
-        Me.Label20.Text = "Nuevo paciente"
+        Me.lPacienteN.AutoSize = True
+        Me.lPacienteN.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lPacienteN.ForeColor = System.Drawing.Color.Crimson
+        Me.lPacienteN.Location = New System.Drawing.Point(657, 13)
+        Me.lPacienteN.Name = "lPacienteN"
+        Me.lPacienteN.Size = New System.Drawing.Size(143, 24)
+        Me.lPacienteN.TabIndex = 60
+        Me.lPacienteN.Text = "Nuevo paciente"
         '
-        'Label21
+        'lPacienteE
         '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(637, 37)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(163, 24)
-        Me.Label21.TabIndex = 61
-        Me.Label21.Text = "Paciente existente"
+        Me.lPacienteE.AutoSize = True
+        Me.lPacienteE.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lPacienteE.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.lPacienteE.Location = New System.Drawing.Point(637, 37)
+        Me.lPacienteE.Name = "lPacienteE"
+        Me.lPacienteE.Size = New System.Drawing.Size(163, 24)
+        Me.lPacienteE.TabIndex = 61
+        Me.lPacienteE.Text = "Paciente existente"
+        Me.lPacienteE.Visible = False
         '
         'pbload
         '
@@ -1299,8 +1305,8 @@ Partial Class Form1
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.pbload)
-        Me.Controls.Add(Me.Label21)
-        Me.Controls.Add(Me.Label20)
+        Me.Controls.Add(Me.lPacienteE)
+        Me.Controls.Add(Me.lPacienteN)
         Me.Controls.Add(Me.pbLupa)
         Me.Controls.Add(Me.pbImpresora)
         Me.Controls.Add(Me.pbCargando)
@@ -1311,7 +1317,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.lcontador)
-        Me.Controls.Add(Me.Label19)
+        Me.Controls.Add(Me.lNo)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label12)
@@ -1449,7 +1455,7 @@ Partial Class Form1
     Protected Friend WithEvents lFecha As System.Windows.Forms.Label
     Friend WithEvents txtAPaciente As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
-    Friend WithEvents Label19 As Label
+    Friend WithEvents lNo As Label
     Friend WithEvents lcontador As Label
     Friend WithEvents Button6 As Button
     Friend WithEvents cbAgudeza3 As ComboBox
@@ -1471,8 +1477,8 @@ Partial Class Form1
     Friend WithEvents pbImpresora As PictureBox
     Friend WithEvents pbLupa As PictureBox
     Friend WithEvents pbSalir As PictureBox
-    Friend WithEvents Label20 As Label
-    Friend WithEvents Label21 As Label
+    Friend WithEvents lPacienteN As Label
+    Friend WithEvents lPacienteE As Label
     Friend WithEvents pbload As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
