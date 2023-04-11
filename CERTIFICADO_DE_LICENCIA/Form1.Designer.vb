@@ -100,18 +100,18 @@ Partial Class Form1
         Me.cbB = New System.Windows.Forms.CheckBox()
         Me.cbA = New System.Windows.Forms.CheckBox()
         Me.Label25 = New System.Windows.Forms.Label()
-        Me.BtnGuardar = New System.Windows.Forms.Button()
+        Me.btnGuardar = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
-        Me.Button5 = New System.Windows.Forms.Button()
+        Me.btnBuscar = New System.Windows.Forms.Button()
+        Me.btnActualizar = New System.Windows.Forms.Button()
         Me.dgvTabla = New System.Windows.Forms.DataGridView()
         Me.lFecha = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.lNo = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
-        Me.Button6 = New System.Windows.Forms.Button()
+        Me.btnReporte = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.lpaciente = New System.Windows.Forms.Label()
         Me.lFReporte = New System.Windows.Forms.Label()
@@ -178,7 +178,7 @@ Partial Class Form1
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Location = New System.Drawing.Point(10, 225)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(688, 272)
+        Me.GroupBox1.Size = New System.Drawing.Size(690, 272)
         Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "CERTIFICA QUE:"
@@ -357,7 +357,7 @@ Partial Class Form1
         Me.GroupBox2.Location = New System.Drawing.Point(10, 71)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(0)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(688, 148)
+        Me.GroupBox2.Size = New System.Drawing.Size(690, 148)
         Me.GroupBox2.TabIndex = 1
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "DATOS DEL PROFESIONAL:"
@@ -441,7 +441,7 @@ Partial Class Form1
         Me.rbTodos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbTodos.Location = New System.Drawing.Point(410, 35)
         Me.rbTodos.Name = "rbTodos"
-        Me.rbTodos.Size = New System.Drawing.Size(104, 20)
+        Me.rbTodos.Size = New System.Drawing.Size(105, 20)
         Me.rbTodos.TabIndex = 63
         Me.rbTodos.TabStop = True
         Me.rbTodos.Text = "VER TODOS"
@@ -454,7 +454,7 @@ Partial Class Form1
         Me.rbApellido.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbApellido.Location = New System.Drawing.Point(597, 35)
         Me.rbApellido.Name = "rbApellido"
-        Me.rbApellido.Size = New System.Drawing.Size(89, 20)
+        Me.rbApellido.Size = New System.Drawing.Size(90, 20)
         Me.rbApellido.TabIndex = 62
         Me.rbApellido.TabStop = True
         Me.rbApellido.Text = "APELLIDO"
@@ -467,7 +467,7 @@ Partial Class Form1
         Me.rbDpi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbDpi.Location = New System.Drawing.Point(520, 35)
         Me.rbDpi.Name = "rbDpi"
-        Me.rbDpi.Size = New System.Drawing.Size(47, 20)
+        Me.rbDpi.Size = New System.Drawing.Size(48, 20)
         Me.rbDpi.TabIndex = 60
         Me.rbDpi.TabStop = True
         Me.rbDpi.Text = "DPI"
@@ -480,7 +480,7 @@ Partial Class Form1
         Me.rbNombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbNombre.Location = New System.Drawing.Point(483, 9)
         Me.rbNombre.Name = "rbNombre"
-        Me.rbNombre.Size = New System.Drawing.Size(84, 20)
+        Me.rbNombre.Size = New System.Drawing.Size(85, 20)
         Me.rbNombre.TabIndex = 61
         Me.rbNombre.TabStop = True
         Me.rbNombre.Text = "NOMBRE"
@@ -984,17 +984,17 @@ Partial Class Form1
         Me.Label25.TabIndex = 39
         Me.Label25.Text = "EN BASE A LOS PARÁMETROS DE VISIÓN AUTORIZADOS POR EL DEPARTAMENTO DE TRANSITO, " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "EL PACIENTE SE ENCONTRÓ APTO PARA OBTENER LICENCIA DE CONDUCIR:"
         '
-        'BtnGuardar
+        'btnGuardar
         '
-        Me.BtnGuardar.Image = CType(resources.GetObject("BtnGuardar.Image"), System.Drawing.Image)
-        Me.BtnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnGuardar.Location = New System.Drawing.Point(10, 503)
-        Me.BtnGuardar.Name = "BtnGuardar"
-        Me.BtnGuardar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.BtnGuardar.Size = New System.Drawing.Size(168, 40)
-        Me.BtnGuardar.TabIndex = 52
-        Me.BtnGuardar.Text = "GUARDAR"
-        Me.BtnGuardar.UseVisualStyleBackColor = True
+        Me.btnGuardar.Image = CType(resources.GetObject("btnGuardar.Image"), System.Drawing.Image)
+        Me.btnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGuardar.Location = New System.Drawing.Point(10, 503)
+        Me.btnGuardar.Name = "btnGuardar"
+        Me.btnGuardar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.btnGuardar.Size = New System.Drawing.Size(168, 40)
+        Me.btnGuardar.TabIndex = 52
+        Me.btnGuardar.Text = "GUARDAR"
+        Me.btnGuardar.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -1033,29 +1033,29 @@ Partial Class Form1
         Me.Button1.UseVisualStyleBackColor = True
         Me.Button1.Visible = False
         '
-        'Button4
+        'btnBuscar
         '
-        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(358, 503)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
-        Me.Button4.Size = New System.Drawing.Size(168, 40)
-        Me.Button4.TabIndex = 0
-        Me.Button4.Text = "BUSCAR"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.btnBuscar.Image = CType(resources.GetObject("btnBuscar.Image"), System.Drawing.Image)
+        Me.btnBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnBuscar.Location = New System.Drawing.Point(358, 503)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
+        Me.btnBuscar.Size = New System.Drawing.Size(168, 40)
+        Me.btnBuscar.TabIndex = 0
+        Me.btnBuscar.Text = "BUSCAR"
+        Me.btnBuscar.UseVisualStyleBackColor = True
         '
-        'Button5
+        'btnActualizar
         '
-        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button5.Location = New System.Drawing.Point(532, 503)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.Button5.Size = New System.Drawing.Size(168, 40)
-        Me.Button5.TabIndex = 53
-        Me.Button5.Text = "ACTUALIZAR"
-        Me.Button5.UseVisualStyleBackColor = True
+        Me.btnActualizar.Image = CType(resources.GetObject("btnActualizar.Image"), System.Drawing.Image)
+        Me.btnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnActualizar.Location = New System.Drawing.Point(532, 503)
+        Me.btnActualizar.Name = "btnActualizar"
+        Me.btnActualizar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.btnActualizar.Size = New System.Drawing.Size(168, 40)
+        Me.btnActualizar.TabIndex = 53
+        Me.btnActualizar.Text = "ACTUALIZAR"
+        Me.btnActualizar.UseVisualStyleBackColor = True
         '
         'dgvTabla
         '
@@ -1110,17 +1110,17 @@ Partial Class Form1
         Me.lcontador.TabIndex = 30
         Me.lcontador.Text = "#"
         '
-        'Button6
+        'btnReporte
         '
-        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(184, 503)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
-        Me.Button6.Size = New System.Drawing.Size(168, 40)
-        Me.Button6.TabIndex = 54
-        Me.Button6.Text = "REPORTE"
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.btnReporte.Image = CType(resources.GetObject("btnReporte.Image"), System.Drawing.Image)
+        Me.btnReporte.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnReporte.Location = New System.Drawing.Point(184, 503)
+        Me.btnReporte.Name = "btnReporte"
+        Me.btnReporte.Padding = New System.Windows.Forms.Padding(30, 0, 3, 0)
+        Me.btnReporte.Size = New System.Drawing.Size(168, 40)
+        Me.btnReporte.TabIndex = 54
+        Me.btnReporte.Text = "REPORTE"
+        Me.btnReporte.UseVisualStyleBackColor = True
         '
         'Label14
         '
@@ -1160,7 +1160,7 @@ Partial Class Form1
         Me.rbGenerarpdf.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbGenerarpdf.Location = New System.Drawing.Point(2, 9)
         Me.rbGenerarpdf.Name = "rbGenerarpdf"
-        Me.rbGenerarpdf.Size = New System.Drawing.Size(122, 20)
+        Me.rbGenerarpdf.Size = New System.Drawing.Size(123, 20)
         Me.rbGenerarpdf.TabIndex = 57
         Me.rbGenerarpdf.TabStop = True
         Me.rbGenerarpdf.Text = "GENERAR PDF"
@@ -1173,7 +1173,7 @@ Partial Class Form1
         Me.rbGenerarword.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbGenerarword.Location = New System.Drawing.Point(0, 30)
         Me.rbGenerarword.Name = "rbGenerarword"
-        Me.rbGenerarword.Size = New System.Drawing.Size(138, 20)
+        Me.rbGenerarword.Size = New System.Drawing.Size(139, 20)
         Me.rbGenerarword.TabIndex = 58
         Me.rbGenerarword.TabStop = True
         Me.rbGenerarword.Text = "GENERAR WORD"
@@ -1186,7 +1186,7 @@ Partial Class Form1
         Me.rbAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbAbrir.Location = New System.Drawing.Point(2, 42)
         Me.rbAbrir.Name = "rbAbrir"
-        Me.rbAbrir.Size = New System.Drawing.Size(141, 20)
+        Me.rbAbrir.Size = New System.Drawing.Size(142, 20)
         Me.rbAbrir.TabIndex = 59
         Me.rbAbrir.TabStop = True
         Me.rbAbrir.Text = "ABRIR UBICACIÓN"
@@ -1314,8 +1314,8 @@ Partial Class Form1
         Me.Controls.Add(Me.lFReporte)
         Me.Controls.Add(Me.lpaciente)
         Me.Controls.Add(Me.Label14)
-        Me.Controls.Add(Me.Button5)
-        Me.Controls.Add(Me.Button6)
+        Me.Controls.Add(Me.btnActualizar)
+        Me.Controls.Add(Me.btnReporte)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.lNo)
         Me.Controls.Add(Me.Button2)
@@ -1323,9 +1323,9 @@ Partial Class Form1
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.lFecha)
         Me.Controls.Add(Me.dgvTabla)
-        Me.Controls.Add(Me.Button4)
+        Me.Controls.Add(Me.btnBuscar)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.BtnGuardar)
+        Me.Controls.Add(Me.btnGuardar)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -1434,11 +1434,11 @@ Partial Class Form1
     Friend WithEvents cbB As System.Windows.Forms.CheckBox
     Friend WithEvents cbA As System.Windows.Forms.CheckBox
     Friend WithEvents Label25 As System.Windows.Forms.Label
-    Friend WithEvents BtnGuardar As System.Windows.Forms.Button
+    Friend WithEvents btnGuardar As System.Windows.Forms.Button
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button4 As System.Windows.Forms.Button
-    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents btnBuscar As System.Windows.Forms.Button
+    Friend WithEvents btnActualizar As System.Windows.Forms.Button
     Friend WithEvents dgvTabla As System.Windows.Forms.DataGridView
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
@@ -1457,7 +1457,7 @@ Partial Class Form1
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents lNo As Label
     Friend WithEvents lcontador As Label
-    Friend WithEvents Button6 As Button
+    Friend WithEvents btnReporte As Button
     Friend WithEvents cbAgudeza3 As ComboBox
     Friend WithEvents cbAgudeza2 As ComboBox
     Friend WithEvents cbAgudeza1 As ComboBox

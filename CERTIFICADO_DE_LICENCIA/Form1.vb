@@ -182,11 +182,11 @@ Public Class Form1
 
         Try
             ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
-            FileCopy("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
-            "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            FileCopy("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
+            "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
             ':::A documento se le asigna el documento de word que este especificado en la ruta.
-            documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            documento = MSWord.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
 
             'MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
             'MsgBoxStyle.Information, "INFORMACIÓN")
@@ -419,8 +419,8 @@ Public Class Form1
         Dim wordDocument As Microsoft.Office.Interop.Word.Document = Nothing
         Dim outputFilename As String
         Try
-            wordDocument = wordApplication.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
-            outputFilename = System.IO.Path.ChangeExtension("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx", "pdf")
+            wordDocument = wordApplication.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            outputFilename = System.IO.Path.ChangeExtension("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx", "pdf")
 
             If Not wordDocument Is Nothing Then
                 wordDocument.ExportAsFixedFormat(outputFilename, Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF, True, Microsoft.Office.Interop.Word.WdExportOptimizeFor.wdExportOptimizeForOnScreen, Microsoft.Office.Interop.Word.WdExportRange.wdExportAllDocument, 0, 0, Microsoft.Office.Interop.Word.WdExportItem.wdExportDocumentContent, True, True, Microsoft.Office.Interop.Word.WdExportCreateBookmarks.wdExportCreateNoBookmarks, True, True, False)
@@ -440,6 +440,268 @@ Public Class Form1
         End Try
     End Sub
 
+    ':::PROCEDIMIENTO del profesional
+    Sub profesional()
+        ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
+        If cbProfesional.SelectedItem = Nothing Then
+            MsgBox("Aún no ha selecciona a un médico", vbExclamation, "ERROR")
+        Else
+            comandos.Parameters.AddWithValue("@Pro_Nombre", cbProfesional.SelectedItem)
+            comandos.Parameters.AddWithValue("@Pro_regTransito", txtTransito.Text)
+            comandos.Parameters.AddWithValue("@Pro_regSalud", txtSalud.Text)
+            comandos.Parameters.AddWithValue("@Pro_regOft", txtOftal.Text)
+            apellidoPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO apellido del paciente
+    Sub apellidoPaciente()
+        If txtAPaciente.Text = Nothing Then
+            MsgBox("Ingrese apellido del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Apellido", txtAPaciente.Text)
+            nombrePaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO nombre del paciente
+    Sub nombrePaciente()
+        If txtNPaciente.Text = Nothing Then
+            MsgBox("Ingrese nombre del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Nombre", txtNPaciente.Text)
+            dpiPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO dpi del paciente
+    Sub dpiPaciente()
+        If txtDpi.Text = Nothing Then
+            MsgBox("Ingrese DPI del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Dpi", txtDpi.Text)
+            departamentoPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO departamento del paciente
+    Sub departamentoPaciente()
+        If cbDepartamento.SelectedItem = Nothing Then
+            MsgBox("Debe ingresar el departamento en el que reside el paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Departamento", cbDepartamento.SelectedItem)
+            municipioPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO municipio del paciente
+    Sub municipioPaciente()
+        If cbMunicipio.SelectedItem = Nothing Then
+            MsgBox("Debe ingresar el municipio en el que reside el paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Municipio", cbMunicipio.SelectedItem)
+            fechaPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO fecha de nacimiento del paciente
+    Sub fechaPaciente()
+
+        If txtDate1.Text = Nothing Then
+            MsgBox("Debe ingresar la fecha de nacimiento del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Nacimiento", txtDate1.Text)
+            generoPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO genero del paciente
+    Sub generoPaciente()
+        If cbGenero.SelectedItem = Nothing Then
+            MsgBox("Debe ingresar el género del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Genero", cbGenero.SelectedItem)
+            residenciaPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO residencia del paciente
+    Sub residenciaPaciente()
+        If txtResidencia.Text = Nothing Then
+            MsgBox("Debe ingresar la dirección en la que reside del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Pac_Residencia", txtResidencia.Text)
+            comandos.Parameters.AddWithValue("@Res_Agudeza1", cbAgudeza1.SelectedItem)
+            comandos.Parameters.AddWithValue("@Res_Agudeza2", cbAgudeza2.SelectedItem)
+            comandos.Parameters.AddWithValue("@Res_Agudeza3", cbAgudeza3.SelectedItem)
+            visionPaciente()
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO vision de colores del paciente
+    Sub visionPaciente()
+        If rbVision1.Checked = Nothing And rbVision2.Checked = Nothing Then
+            MsgBox("Debe ingresar la visión de colores del paciente", vbExclamation, "AVISO")
+        Else
+            ':::Instrucción If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
+            If (rbVision1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Vision", rbVision1.Text)
+                centralPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_Vision", rbVision2.Text)
+                centralPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO campo central del paciente
+    Sub centralPaciente()
+        If rbCentral1.Checked = Nothing And rbCentral2.Checked = Nothing Then
+            MsgBox("Debe ingresar el campo visual central del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Res_CampoCentralOD", nudCentral1.Value)
+            comandos.Parameters.AddWithValue("@Res_CampoCentralOI", nudCentral2.Value)
+            If (rbCentral1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral1.Text)
+                perifericoPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral2.Text)
+                perifericoPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO campo periferico del paciente
+    Sub perifericoPaciente()
+        If rbPeriferico1.Checked = Nothing And rbPeriferico2.Checked = Nothing Then
+            MsgBox("Debe ingresar el campo visual periférico del paciente", vbExclamation, "AVISO")
+        Else
+            comandos.Parameters.AddWithValue("@Res_CampoPerifericoOD", nudPeriferico1.Value)
+            comandos.Parameters.AddWithValue("@Res_CampoPerifericoOI", nudPeriferico2.Value)
+            If (rbPeriferico1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico1.Text)
+                sensibilidadPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico2.Text)
+                sensibilidadPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO sensibilidad al contraste del paciente
+    Sub sensibilidadPaciente()
+        If rbSensibilidad1.Checked = Nothing And rbSensibilidad2.Checked = Nothing Then
+            MsgBox("Debe seleccionar la sensibilidad al contraste del paciente", vbExclamation, "AVISO")
+        Else
+            If (rbSensibilidad1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad1.Text)
+                estereoscopiaPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad2.Text)
+                estereoscopiaPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO estereoscopia del paciente 
+    Sub estereoscopiaPaciente()
+        If rbPrueba1.Checked = Nothing And rbPrueba2.Checked = Nothing Then
+            MsgBox("Debe seleccionar la prueba estereoscopia para visión lejana del paciente:", vbExclamation, "AVISO")
+        Else
+            If (rbPrueba1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbPrueba1.Text)
+                segPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbPrueba2.Text)
+                segPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO a 600 segundos del paciente
+    Sub segPaciente()
+        If rbSeg1.Checked = Nothing And rbSeg2.Checked = Nothing Then
+            MsgBox("Debe seleccionar a 600 segundos del paciente", vbExclamation, "AVISO")
+        Else
+            If (rbSeg1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Seg", rbSeg1.Text)
+                anteojosPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_Seg", rbSeg2.Text)
+                anteojosPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO anteojos del paciente
+    Sub anteojosPaciente()
+        If rbAnteojos1.Checked = Nothing And rbAnteojos2.Checked = Nothing Then
+            MsgBox("Debe seleccionar si el paciente usa lentes o no.", vbExclamation, "AVISO")
+        Else
+            If (rbAnteojos1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos1.Text)
+                lentesPaciente()
+            Else
+                comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos2.Text)
+                lentesPaciente()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO lentes de contacto del paciente
+    Sub lentesPaciente()
+        If rbLentes1.Checked = Nothing And rbLentes2.Checked = Nothing Then
+            MsgBox("Debe seleccionar si el paciente usa lentes de contacto o no.", vbExclamation, "AVISO")
+        Else
+            If (rbLentes1.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes1.Text)
+                licenciasPacientes()
+            Else
+                comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes2.Text)
+                licenciasPacientes()
+            End If
+        End If
+    End Sub
+
+    ':::PROCEDIMIENTO licencias del paciente
+    Sub licenciasPacientes()
+        If cbA.Checked = Nothing And cbB.Checked = Nothing And cbE.Checked = Nothing And cbC.Checked = Nothing And cbM.Checked = Nothing And cbNinguna.Checked = Nothing Then
+            MsgBox("Debe seleccionar para que tipo de licencia se encuentra apto el paciente.", vbExclamation, "AVISO")
+        Else
+            If (cbA.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text)
+            Else
+                comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text = " ")
+            End If
+
+            If (cbB.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text)
+            Else
+                comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text = " ")
+            End If
+            If (cbE.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text)
+            Else
+                comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text = " ")
+            End If
+            If (cbC.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text)
+            Else
+                comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text = " ")
+            End If
+            If (cbM.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text)
+            Else
+                comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text = " ")
+            End If
+
+            If (cbNinguna.Checked = True) Then
+                comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text)
+            Else
+                comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text = " ")
+            End If
+        End If
+    End Sub
 #End Region
 
 #Region "INSTRUCCIONES  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
@@ -1037,7 +1299,7 @@ Public Class Form1
         ':::Buscamos la imagen a grabar
         Dim SaveImage As Boolean = False
         Dim openDlg As OpenFileDialog = New OpenFileDialog()
-        openDlg.Filter = "Todos los archivos JPEG|*.jpg"
+        openDlg.Filter = "Archivos de imagen|*.jpg;*.png"
         Dim filter As String = openDlg.Filter
         openDlg.Title = "Abrir archivos JPEG"
         If (openDlg.ShowDialog() = DialogResult.OK) Then
@@ -1192,7 +1454,7 @@ Public Class Form1
     End Sub
 
     ':::Boton para imprimir los REPORTES en word
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnReporte.Click
         gbBotones.Visible = True
         rbGenerarpdf.Visible = True
         rbGenerarpdf.Location = New Drawing.Point(138, 25)
@@ -1200,8 +1462,8 @@ Public Class Form1
         rbGenerarword.Location = New Drawing.Point(276, 25)
         rbAbrir.Visible = True
         rbAbrir.Location = New Drawing.Point(430, 25)
-        Button6.Image = Nothing
-        Button6.Image = pbCargando.Image
+        btnReporte.Image = Nothing
+        btnReporte.Image = pbCargando.Image
         GroupBox3.Enabled = False
         GroupBox2.Enabled = False
         txtAPaciente.Enabled = False
@@ -1212,9 +1474,9 @@ Public Class Form1
         cbGenero.Enabled = False
         txtResidencia.Enabled = False
         pbFoto.Enabled = False
-        BtnGuardar.Enabled = False
-        Button5.Enabled = False
-        Button4.Enabled = False
+        btnGuardar.Enabled = False
+        btnActualizar.Enabled = False
+        btnBuscar.Enabled = False
 
         If (txtNPaciente.Text = Nothing) Then
             MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
@@ -1226,7 +1488,7 @@ Public Class Form1
                 reporte()
 
             ElseIf rbAbrir.Checked = True Then
-                Call Shell("explorer.exe " & "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
+                Call Shell("explorer.exe " & "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
             End If
         End If
 
@@ -1234,8 +1496,8 @@ Public Class Form1
 
     ':::"BOTON" para sali del submenu de la generacion de reportes y la busqueda de paciente.
     Private Sub pbSalir_Click(sender As Object, e As EventArgs) Handles pbSalir.Click
-        Button6.Image = pbImpresora.Image
-        Button4.Image = pbLupa.Image
+        btnReporte.Image = pbImpresora.Image
+        btnBuscar.Image = pbLupa.Image
         gbBotones.Visible = False
 
         rbGenerarpdf.Visible = False
@@ -1265,10 +1527,10 @@ Public Class Form1
         cbGenero.Enabled = True
         txtResidencia.Enabled = True
         pbFoto.Enabled = True
-        BtnGuardar.Enabled = True
-        Button6.Enabled = True
-        Button5.Enabled = True
-        Button4.Enabled = True
+        btnGuardar.Enabled = True
+        btnReporte.Enabled = True
+        btnActualizar.Enabled = True
+        btnBuscar.Enabled = True
     End Sub
 
     ':::Instrucción para colocar los #'s de registro cuando se selecciona al profesional en cbProfesional
@@ -1323,7 +1585,7 @@ Public Class Form1
         Try
 
             ':::Usamos la variable conexion para el enlace a la base de datos
-            conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
+            conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
             conexion.Open()
             num()
             MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
@@ -1334,201 +1596,25 @@ Public Class Form1
     End Sub
 
     ':::Boton que ENVIA [GUARDAR] la información a la base de datos
-    Private Sub BtnGuardar_Click(sender As System.Object, e As System.EventArgs) Handles BtnGuardar.Click
+    Private Sub BtnGuardar_Click(sender As System.Object, e As System.EventArgs) Handles btnGuardar.Click
         ':::Instrucción Try para capturar errores
         Try
 
             ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
-            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, Res_Licencia6, Res_Obs, Contador, Fotografia) VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @lcontador , @pbFoto)", conexion)
+            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, 
+                                                                     Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, 
+                                                                     Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, 
+                                                                     Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, 
+                                                                     Res_Licencia6, Res_Obs, Contador, Fotografia) 
+                                                                     VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, 
+                                                                     @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, 
+                                                                     @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, 
+                                                                     @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @lcontador, @pbFoto)", conexion)
 
-            ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
-            If cbProfesional.SelectedItem = Nothing Then
-                MsgBox("Aún no ha selecciona a un médico", vbExclamation, "ERROR")
-            Else
-                comandos.Parameters.AddWithValue("@Pro_Nombre", cbProfesional.SelectedItem)
-            End If
-
-            comandos.Parameters.AddWithValue("@Pro_regTransito", txtTransito.Text)
-            comandos.Parameters.AddWithValue("@Pro_regSalud", txtSalud.Text)
-            comandos.Parameters.AddWithValue("@Pro_regOft", txtOftal.Text)
-
-            If txtAPaciente.Text = Nothing Then
-                MsgBox("Ingrese apellido del paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Apellido", txtAPaciente.Text)
-            End If
-
-            If txtNPaciente.Text = Nothing Then
-                MsgBox("Ingrese nombre del paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Nombre", txtNPaciente.Text)
-            End If
-
-            If txtDpi.Text = Nothing Then
-                MsgBox("Ingrese DPI del paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Dpi", txtDpi.Text)
-            End If
-
-            If cbDepartamento.SelectedItem = Nothing Then
-                MsgBox("Debe ingresar el departamento en el que reside el paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Departamento", cbDepartamento.SelectedItem)
-            End If
-
-            If cbMunicipio.SelectedItem = Nothing Then
-                MsgBox("Debe ingresar el municipio en el que reside el paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Municipio", cbMunicipio.SelectedItem)
-            End If
-
-            If txtDate1.Text = Nothing Then
-                MsgBox("Debe ingresar la fecha de nacimiento del paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Nacimiento", txtDate1.Text)
-            End If
-
-            If cbGenero.SelectedItem = Nothing Then
-                MsgBox("Debe ingresar el género del paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Genero", cbGenero.SelectedItem)
-            End If
-
-            If txtResidencia.Text = Nothing Then
-                MsgBox("Debe ingresar la dirección en la que reside del paciente", vbExclamation, "AVISO")
-            Else
-                comandos.Parameters.AddWithValue("@Pac_Residencia", txtResidencia.Text)
-            End If
-
-            comandos.Parameters.AddWithValue("@Res_Agudeza1", cbAgudeza1.SelectedItem)
-            comandos.Parameters.AddWithValue("@Res_Agudeza2", cbAgudeza2.SelectedItem)
-            comandos.Parameters.AddWithValue("@Res_Agudeza3", cbAgudeza3.SelectedItem)
-
-            If rbVision1.Checked = Nothing And rbVision2.Checked = Nothing Then
-                MsgBox("Debe ingresar la visión de colores del paciente", vbExclamation, "AVISO")
-            Else
-                ':::Instrucción If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
-                If (rbVision1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Vision", rbVision1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Vision", rbVision2.Text)
-                End If
-            End If
-
-            comandos.Parameters.AddWithValue("@Res_CampoCentralOD", nudCentral1.Value)
-            comandos.Parameters.AddWithValue("@Res_CampoCentralOI", nudCentral2.Value)
-            If rbCentral1.Checked = Nothing And rbCentral2.Checked = Nothing Then
-                MsgBox("Debe ingresar el campo visual central del paciente", vbExclamation, "AVISO")
-            Else
-                If (rbCentral1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_CampoCentral", rbCentral2.Text)
-                End If
-            End If
-
-            comandos.Parameters.AddWithValue("@Res_CampoPerifericoOD", nudPeriferico1.Value)
-            comandos.Parameters.AddWithValue("@Res_CampoPerifericoOI", nudPeriferico2.Value)
-            If rbPeriferico1.Checked = Nothing And rbPeriferico2.Checked = Nothing Then
-                MsgBox("Debe ingresar el campo visual periférico del paciente", vbExclamation, "AVISO")
-            Else
-                If (rbPeriferico1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_CampoPeriferico", rbPeriferico2.Text)
-                End If
-            End If
-
-            If rbSensibilidad1.Checked = Nothing And rbSensibilidad2.Checked = Nothing Then
-                MsgBox("Debe seleccionar la sensibilidad al contraste del paciente", vbExclamation, "AVISO")
-            Else
-                If (rbSensibilidad1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Sensibilidad", rbSensibilidad2.Text)
-                End If
-            End If
-
-            If rbPrueba1.Checked = Nothing And rbPrueba2.Checked = Nothing Then
-                MsgBox("Debe seleccionar la sensibilidad al contraste del paciente", vbExclamation, "AVISO")
-            Else
-                If (rbPrueba1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Prueba", rbPrueba1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Prueba", rbPrueba2.Text)
-                End If
-            End If
-
-            If rbSeg1.Checked = Nothing And rbSeg2.Checked = Nothing Then
-                MsgBox("Debe seleccionar a 600 segundos del paciente", vbExclamation, "AVISO")
-            Else
-                If (rbSeg1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Seg", rbSeg1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Seg", rbSeg2.Text)
-                End If
-            End If
-
-            If rbAnteojos1.Checked = Nothing And rbAnteojos2.Checked = Nothing Then
-                MsgBox("Debe seleccionar si el paciente usa lentes o no.", vbExclamation, "AVISO")
-            Else
-                If (rbAnteojos1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Anteojos", rbAnteojos2.Text)
-                End If
-            End If
-
-            If rbLentes1.Checked = Nothing And rbLentes2.Checked = Nothing Then
-                MsgBox("Debe seleccionar si el paciente usa lentes de contacto o no.", vbExclamation, "AVISO")
-            Else
-                If (rbLentes1.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes1.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Lentes", rbLentes2.Text)
-                End If
-            End If
-
-            If cbA.Checked = Nothing And cbB.Checked = Nothing And cbE.Checked = Nothing And cbC.Checked = Nothing And cbM.Checked = Nothing And cbNinguna.Checked = Nothing Then
-                MsgBox("Debe seleccionar para que tipo de licencia se encuentra apto el paciente.", vbExclamation, "AVISO")
-            Else
-                If (cbA.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Licencia1", cbA.Text = " ")
-                End If
-
-                If (cbB.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Licencia2", cbB.Text = " ")
-                End If
-                If (cbE.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Licencia3", cbE.Text = " ")
-                End If
-                If (cbC.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Licencia4", cbC.Text = " ")
-                End If
-                If (cbM.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Licencia5", cbM.Text = " ")
-                End If
-
-                If (cbNinguna.Checked = True) Then
-                    comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text)
-                Else
-                    comandos.Parameters.AddWithValue("@Res_Licencia6", cbNinguna.Text = " ")
-                End If
-            End If
+            profesional()
 
             comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
             comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
-
             comandos.Parameters.AddWithValue("@Fotografia", Label14.Text)
 
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
@@ -1544,7 +1630,7 @@ Public Class Form1
     End Sub
 
     ':::Boton que MUESTRA [VER] la información almacenada en la base de datos
-    Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
+    Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles btnBuscar.Click
         gbBotones.Visible = True
         rbNombre.Visible = True
         rbNombre.Location = New Drawing.Point(228, 25)
@@ -1554,8 +1640,8 @@ Public Class Form1
         rbDpi.Location = New Drawing.Point(175, 25)
         rbTodos.Visible = True
         rbTodos.Location = New Drawing.Point(413, 25)
-        Button4.Image = Nothing
-        Button4.Image = pbCargando.Image
+        btnBuscar.Image = Nothing
+        btnBuscar.Image = pbCargando.Image
         GroupBox3.Enabled = False
         GroupBox2.Enabled = False
         txtAPaciente.Enabled = False
@@ -1567,9 +1653,9 @@ Public Class Form1
         cbGenero.Enabled = False
         txtResidencia.Enabled = False
         pbFoto.Enabled = False
-        BtnGuardar.Enabled = False
-        Button6.Enabled = False
-        Button5.Enabled = False
+        btnGuardar.Enabled = False
+        btnReporte.Enabled = False
+        btnActualizar.Enabled = False
         Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
         Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtAPaciente.Text & "'"
         Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtDpi.Text & "'"
@@ -1600,8 +1686,6 @@ Public Class Form1
             Me.consulta(dgvTabla, access)
         End If
 
-
-
         ':::Creamos la variable access que guarda la instruccion de tipo SQL
 
         ':::Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
@@ -1613,7 +1697,7 @@ Public Class Form1
     End Sub
 
     ':::Boton que ACTUALIZA [ACTUALIZAR] la informacion almacenada en la base de datos
-    Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
+    Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles btnActualizar.Click
         ':::Creamos la variable access que guardar la instruccion de tipo SQL
 
         ':::Instrucción "Update [tabla] set [nombrecelda1]='" & [nombreherramienta1] & "'" where [nombrecelda2]= " & [nombreherramienta1] & ""
