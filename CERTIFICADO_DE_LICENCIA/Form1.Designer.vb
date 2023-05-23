@@ -257,9 +257,9 @@ Partial Class Form1
         'pbFoto
         '
         Me.pbFoto.Image = CType(resources.GetObject("pbFoto.Image"), System.Drawing.Image)
-        Me.pbFoto.Location = New System.Drawing.Point(457, 48)
+        Me.pbFoto.Location = New System.Drawing.Point(462, 50)
         Me.pbFoto.Name = "pbFoto"
-        Me.pbFoto.Size = New System.Drawing.Size(206, 199)
+        Me.pbFoto.Size = New System.Drawing.Size(198, 176)
         Me.pbFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFoto.TabIndex = 12
         Me.pbFoto.TabStop = False
@@ -439,7 +439,7 @@ Partial Class Form1
         '
         Me.rbTodos.AutoSize = True
         Me.rbTodos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbTodos.Location = New System.Drawing.Point(410, 35)
+        Me.rbTodos.Location = New System.Drawing.Point(10, 40)
         Me.rbTodos.Name = "rbTodos"
         Me.rbTodos.Size = New System.Drawing.Size(105, 20)
         Me.rbTodos.TabIndex = 63
@@ -452,7 +452,7 @@ Partial Class Form1
         '
         Me.rbApellido.AutoSize = True
         Me.rbApellido.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbApellido.Location = New System.Drawing.Point(597, 35)
+        Me.rbApellido.Location = New System.Drawing.Point(101, 14)
         Me.rbApellido.Name = "rbApellido"
         Me.rbApellido.Size = New System.Drawing.Size(90, 20)
         Me.rbApellido.TabIndex = 62
@@ -465,7 +465,7 @@ Partial Class Form1
         '
         Me.rbDpi.AutoSize = True
         Me.rbDpi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbDpi.Location = New System.Drawing.Point(520, 35)
+        Me.rbDpi.Location = New System.Drawing.Point(197, 15)
         Me.rbDpi.Name = "rbDpi"
         Me.rbDpi.Size = New System.Drawing.Size(48, 20)
         Me.rbDpi.TabIndex = 60
@@ -478,7 +478,7 @@ Partial Class Form1
         '
         Me.rbNombre.AutoSize = True
         Me.rbNombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbNombre.Location = New System.Drawing.Point(483, 9)
+        Me.rbNombre.Location = New System.Drawing.Point(10, 14)
         Me.rbNombre.Name = "rbNombre"
         Me.rbNombre.Size = New System.Drawing.Size(85, 20)
         Me.rbNombre.TabIndex = 61
@@ -1158,7 +1158,7 @@ Partial Class Form1
         '
         Me.rbGenerarpdf.AutoSize = True
         Me.rbGenerarpdf.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbGenerarpdf.Location = New System.Drawing.Point(2, 9)
+        Me.rbGenerarpdf.Location = New System.Drawing.Point(122, 41)
         Me.rbGenerarpdf.Name = "rbGenerarpdf"
         Me.rbGenerarpdf.Size = New System.Drawing.Size(123, 20)
         Me.rbGenerarpdf.TabIndex = 57
@@ -1171,7 +1171,7 @@ Partial Class Form1
         '
         Me.rbGenerarword.AutoSize = True
         Me.rbGenerarword.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbGenerarword.Location = New System.Drawing.Point(0, 30)
+        Me.rbGenerarword.Location = New System.Drawing.Point(255, 14)
         Me.rbGenerarword.Name = "rbGenerarword"
         Me.rbGenerarword.Size = New System.Drawing.Size(139, 20)
         Me.rbGenerarword.TabIndex = 58
@@ -1184,7 +1184,7 @@ Partial Class Form1
         '
         Me.rbAbrir.AutoSize = True
         Me.rbAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAbrir.Location = New System.Drawing.Point(2, 42)
+        Me.rbAbrir.Location = New System.Drawing.Point(255, 40)
         Me.rbAbrir.Name = "rbAbrir"
         Me.rbAbrir.Size = New System.Drawing.Size(142, 20)
         Me.rbAbrir.TabIndex = 59
@@ -1196,13 +1196,13 @@ Partial Class Form1
         'gbBotones
         '
         Me.gbBotones.Controls.Add(Me.pbSalir)
-        Me.gbBotones.Controls.Add(Me.rbTodos)
         Me.gbBotones.Controls.Add(Me.rbAbrir)
-        Me.gbBotones.Controls.Add(Me.rbGenerarpdf)
-        Me.gbBotones.Controls.Add(Me.rbApellido)
-        Me.gbBotones.Controls.Add(Me.rbGenerarword)
         Me.gbBotones.Controls.Add(Me.rbNombre)
+        Me.gbBotones.Controls.Add(Me.rbTodos)
         Me.gbBotones.Controls.Add(Me.rbDpi)
+        Me.gbBotones.Controls.Add(Me.rbGenerarword)
+        Me.gbBotones.Controls.Add(Me.rbApellido)
+        Me.gbBotones.Controls.Add(Me.rbGenerarpdf)
         Me.gbBotones.Location = New System.Drawing.Point(10, 549)
         Me.gbBotones.Name = "gbBotones"
         Me.gbBotones.Size = New System.Drawing.Size(688, 62)

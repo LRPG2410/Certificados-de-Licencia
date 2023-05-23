@@ -10,7 +10,9 @@ Imports Microsoft.Office.Interop.Word ':::Para activar esta referencia se va a p
 Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivos y secuencias de datos, así como tipos que proporcionan compatibilidad básica con los archivos y directorios.
 Imports Microsoft.Office.Interop
 Imports System.Runtime.InteropServices
+Imports SpireDoc = Spire.Doc
 Imports System.Windows.Controls
+Imports System.Drawing
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Media.Media3D
 Imports stdole
@@ -179,11 +181,15 @@ Public Class Form1
 
     ':::PROCEDIMIENTO para generar los reportes en word
     Sub reporte()
-
         Try
             ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
             FileCopy("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
             "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+
+            ':::Reinstanciar MSWord antes de intentar abrir otro documento.
+            If MSWord Is Nothing Then
+                MSWord = New Word.Application
+            End If
 
             ':::A documento se le asigna el documento de word que este especificado en la ruta.
             documento = MSWord.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
@@ -210,11 +216,29 @@ Public Class Form1
             documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
             documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
 
+            ' Obtiene la relación de aspecto de la imagen original
+            Dim aspectRatio As Double = pbFoto.Image.Width / pbFoto.Image.Height
+
+            ' Determina el nuevo ancho de la imagen
+            Dim newWidth As Integer = 130 ' Puedes ajustar este valor según tus necesidades
+
+            ' Calcula el nuevo alto de la imagen manteniendo la relación de aspecto
+            Dim newHeight As Integer = CInt(newWidth / aspectRatio)
+
+            ' Crea una nueva imagen con el tamaño deseado
+            Dim nuevaImagen As New Bitmap(pbFoto.Image, New Size(newWidth, newHeight))
+
+            ' Copia la nueva imagen al portapapeles
+            Clipboard.SetImage(nuevaImagen)
+
+            'Pega la imagen en el marcador del documento
+            documento.Range.Bookmarks.Item("prueba").Range.Paste()
+
             ':::Se copia al portapapeles la imagen que este en el PictureBox
-            Clipboard.SetImage(Me.pbFoto.Image)
+            'Clipboard.SetImage(Me.pbFoto.Image)
 
             ':::Se busca en el documento de word el marcador y se pega la imagen anteriormente copiada
-            documento.Range.Bookmarks.Item("prueba").Range.Paste()
+            'documento.Range.Bookmarks.Item("prueba").Range.Paste()
 
             ':::Se crea una condición para que, dependiendo de la elección, se marque en el documento de word.
             If cbGenero.SelectedItem = "Femenino" Then
@@ -313,11 +337,26 @@ Public Class Form1
 
         Finally
 
-            'documento = MSWord.Documents.Open("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
-            'Process.Start("C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
-            'documento.Save()
-            'MSWord.Quit()
-            'MSWord.Activate()
+            documento = MSWord.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+
+            ' Asegurarse de que el documento se guarda y se cierra correctamente
+            If Not documento Is Nothing Then
+                documento.Save()
+                documento.Close(False)
+                Marshal.ReleaseComObject(documento)
+                documento = Nothing
+            End If
+
+            ' Asegurarse de que la aplicación Word se cierra correctamente
+            If Not MSWord Is Nothing Then
+                MSWord.Quit()
+                Marshal.ReleaseComObject(MSWord)
+                MSWord = Nothing
+            End If
+
+            ' Limpieza del recolector de basura
+            GC.Collect()
+            GC.WaitForPendingFinalizers()
         End Try
 
     End Sub
@@ -410,34 +449,20 @@ Public Class Form1
     End Sub
 
     ':::PROCEDIMIENTO para generar el reporte en pdf
-    Sub generarpdf()
+    Sub generarpdf(ByVal wordFileName As String, ByVal pdfFileName As String)
+        ' Crea una nueva aplicación de Word
+        Dim wordApp As New Word.Application
 
-        Dim wordApplication As New Microsoft.Office.Interop.Word.Application
+        ' Abre el documento de Word
+        Dim wordDoc As Word.Document = wordApp.Documents.Open(wordFileName)
 
-        reporte()
+        ' Guarda el documento como PDF
+        pdfFileName = "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".pdf"
+        wordDoc.SaveAs2(pdfFileName, Word.WdSaveFormat.wdFormatPDF)
 
-        Dim wordDocument As Microsoft.Office.Interop.Word.Document = Nothing
-        Dim outputFilename As String
-        Try
-            wordDocument = wordApplication.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
-            outputFilename = System.IO.Path.ChangeExtension("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx", "pdf")
-
-            If Not wordDocument Is Nothing Then
-                wordDocument.ExportAsFixedFormat(outputFilename, Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF, True, Microsoft.Office.Interop.Word.WdExportOptimizeFor.wdExportOptimizeForOnScreen, Microsoft.Office.Interop.Word.WdExportRange.wdExportAllDocument, 0, 0, Microsoft.Office.Interop.Word.WdExportItem.wdExportDocumentContent, True, True, Microsoft.Office.Interop.Word.WdExportCreateBookmarks.wdExportCreateNoBookmarks, True, True, False)
-            End If
-        Catch ex As Exception
-            'TODO: handle exception
-        Finally
-            If Not wordDocument Is Nothing Then
-                wordDocument.Close(False)
-                wordDocument = Nothing
-            End If
-
-            If Not wordApplication Is Nothing Then
-                wordApplication.Quit()
-                wordApplication = Nothing
-            End If
-        End Try
+        ' Cierra el documento y la aplicación de Word
+        wordDoc.Close()
+        wordApp.Quit()
     End Sub
 
     ':::PROCEDIMIENTO del profesional
@@ -506,7 +531,6 @@ Public Class Form1
 
     ':::PROCEDIMIENTO fecha de nacimiento del paciente
     Sub fechaPaciente()
-
         If txtDate1.Text = Nothing Then
             MsgBox("Debe ingresar la fecha de nacimiento del paciente", vbExclamation, "AVISO")
         Else
@@ -1315,42 +1339,38 @@ Public Class Form1
 
     ':::Instrucción para calcular la edad del paciente
     Private Sub txtDate1_ValueChanged(sender As Object, e As EventArgs) Handles txtDate1.ValueChanged
-        ':::Variables para obtener el valor del día, mes y año actuales
-        Dim DiaHoy As String = Date.Now.Date.Day
-        Dim MesHoy As String = Date.Now.Date.Month
-        Dim AnioHoy As String = Date.Now.Date.Year
+        Dim fechaHoy As Date = Date.Now.Date
+        Dim fechaNacimiento As Date = txtDate1.Value
 
-        ':::Variables para obtener el valor del día, mes y año de nacimiento
-        Dim DiaNacer As String = txtDate1.Value.Day
-        Dim MesNacer As String = txtDate1.Value.Month
-        Dim AnioNacer As String = txtDate1.Value.Year
+        Dim anios As Integer = fechaHoy.Year - fechaNacimiento.Year
+        Dim meses As Integer = fechaHoy.Month - fechaNacimiento.Month
+        Dim dias As Integer = fechaHoy.Day - fechaNacimiento.Day
 
-        ':::La variable edad se encarga de restar el año actual con el año de nacimiento para obtener la "edad"
-        Dim edad = AnioHoy - AnioNacer
-
-        ':::La instrucción If se encarga de verificar que el día y mes actuales sean iguales a los de nacimiento para confirmar si ya cumplio años
-        If (edad < 0) Then
-            MsgBox("Ingrese una fecha de nacimiento valida", vbExclamation, "AVISO")
-            txtDate1.Value = Date.Now.Date
-        ElseIf (edad = 0) Then
-            txtEdad.Text = "Tiene " & edad & " años."
-        ElseIf (edad > 0) Then
-            If (MesNacer < MesHoy) Then
-                txtEdad.Text = "Tiene " & edad & " años."
-            ElseIf (MesNacer > MesHoy) Then
-                txtEdad.Text = "Tiene " & edad - 1 & " años."
-            ElseIf (MesNacer = MesHoy) Then
-                If (DiaNacer < DiaHoy) Then
-                    txtEdad.Text = "Tiene " & edad & " años."
-                ElseIf (DiaNacer = DiaHoy) Then
-                    txtEdad.Text = "¡Cumpleaños! Tiene " & edad & " años."
-                ElseIf (DiaNacer > DiaHoy) Then
-                    txtEdad.Text = "Tiene " & edad - 1 & " años."
-                End If
-            End If
+        If meses < 0 Or (meses = 0 And dias < 0) Then
+            anios -= 1
         End If
 
-        '::::Hacemos visible el Label
+        If meses < 0 Then
+            meses += 12
+        End If
+
+        If dias < 0 Then
+            Dim fechaMesAnterior As Date = fechaHoy.AddMonths(-1)
+            dias += Date.DaysInMonth(fechaMesAnterior.Year, fechaMesAnterior.Month)
+            meses -= 1
+        End If
+
+        If anios < 0 Then
+            MsgBox("Ingrese una fecha de nacimiento valida", vbExclamation, "AVISO")
+            txtDate1.Value = Date.Now.Date
+        ElseIf anios >= 0 And meses = 0 And dias = 0 Then
+            txtEdad.Text = "¡Cumpleaños! Tiene " & anios & " años."
+        ElseIf anios = 0 And meses = 0 And dias = 0 Then
+            txtEdad.Text = "Acaba de nacer."
+        Else
+            txtEdad.Text = String.Format("Tiene {0} años. ", anios, meses, dias)
+        End If
+
         txtEdad.Visible = True
     End Sub
 
@@ -1454,39 +1474,68 @@ Public Class Form1
     End Sub
 
     ':::Boton para imprimir los REPORTES en word
+    Private estaGifEnEjecucion As Boolean = False
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnReporte.Click
-        gbBotones.Visible = True
-        rbGenerarpdf.Visible = True
-        rbGenerarpdf.Location = New Drawing.Point(138, 25)
-        rbGenerarword.Visible = True
-        rbGenerarword.Location = New Drawing.Point(276, 25)
-        rbAbrir.Visible = True
-        rbAbrir.Location = New Drawing.Point(430, 25)
-        btnReporte.Image = Nothing
-        btnReporte.Image = pbCargando.Image
-        GroupBox3.Enabled = False
-        GroupBox2.Enabled = False
-        txtAPaciente.Enabled = False
-        txtDpi.Enabled = False
-        cbDepartamento.Enabled = False
-        cbMunicipio.Enabled = False
-        txtDate1.Enabled = False
-        cbGenero.Enabled = False
-        txtResidencia.Enabled = False
-        pbFoto.Enabled = False
-        btnGuardar.Enabled = False
-        btnActualizar.Enabled = False
-        btnBuscar.Enabled = False
-
-        If (txtNPaciente.Text = Nothing) Then
-            MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
-            pbSalir_Click(sender, e)
+        If (txtNPaciente.Text = Nothing Or txtAPaciente.Text = Nothing Or txtDpi.Text = Nothing) Then
+            If (rbAbrir.Checked = False) Then
+                MsgBox("Falta información del paciente", vbExclamation, "AVISO")
+                If estaGifEnEjecucion = False Then
+                    btnReporte.Image = pbCargando.Image
+                    estaGifEnEjecucion = True
+                End If
+                gbBotones.Visible = True
+                rbAbrir.Visible = True
+                rbAbrir.Location = New Drawing.Point(276, 25)
+                GroupBox3.Enabled = False
+                GroupBox2.Enabled = False
+                txtAPaciente.Enabled = False
+                txtDpi.Enabled = False
+                cbDepartamento.Enabled = False
+                cbMunicipio.Enabled = False
+                txtDate1.Enabled = False
+                cbGenero.Enabled = False
+                txtResidencia.Enabled = False
+                pbFoto.Enabled = False
+                btnGuardar.Enabled = False
+                btnActualizar.Enabled = False
+                btnBuscar.Enabled = False
+                estaGifEnEjecucion = False
+            End If
+            If (rbAbrir.Checked = True) Then
+                Call Shell("explorer.exe " & "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
+                pbSalir_Click(sender, e)
+            End If
         Else
+            If Not estaGifEnEjecucion Then
+                btnReporte.Image = pbCargando.Image
+                estaGifEnEjecucion = True
+            End If
+            gbBotones.Visible = True
+            rbGenerarpdf.Visible = True
+            rbGenerarpdf.Location = New Drawing.Point(138, 25)
+            rbGenerarword.Visible = True
+            rbGenerarword.Location = New Drawing.Point(276, 25)
+            rbAbrir.Visible = True
+            rbAbrir.Location = New Drawing.Point(430, 25)
+            GroupBox3.Enabled = False
+            GroupBox2.Enabled = False
+            txtAPaciente.Enabled = False
+            txtDpi.Enabled = False
+            cbDepartamento.Enabled = False
+            cbMunicipio.Enabled = False
+            txtDate1.Enabled = False
+            cbGenero.Enabled = False
+            txtResidencia.Enabled = False
+            pbFoto.Enabled = False
+            btnGuardar.Enabled = False
+            btnActualizar.Enabled = False
+            btnBuscar.Enabled = False
+            estaGifEnEjecucion = False
             If rbGenerarpdf.Checked = True Then
-                generarpdf()
+                generarpdf("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx",
+                "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".pdf")
             ElseIf rbGenerarword.Checked = True Then
                 reporte()
-
             ElseIf rbAbrir.Checked = True Then
                 Call Shell("explorer.exe " & "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
             End If
@@ -1494,7 +1543,7 @@ Public Class Form1
 
     End Sub
 
-    ':::"BOTON" para sali del submenu de la generacion de reportes y la busqueda de paciente.
+    ':::"BOTON" para salir del submenu de la generacion de reportes y la busqueda de paciente.
     Private Sub pbSalir_Click(sender As Object, e As EventArgs) Handles pbSalir.Click
         btnReporte.Image = pbImpresora.Image
         btnBuscar.Image = pbLupa.Image
@@ -1629,7 +1678,7 @@ Public Class Form1
         End Try
     End Sub
 
-    ':::Boton que MUESTRA [VER] la información almacenada en la base de datos
+    ':::Boton que MUESTRA [BUSCAR] la información almacenada en la base de datos
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles btnBuscar.Click
         gbBotones.Visible = True
         rbNombre.Visible = True
