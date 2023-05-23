@@ -120,6 +120,7 @@ Public Class Form1
 
             dgvTabla.Columns("Res_Obs").HeaderText = "Observaciones"
 
+            dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
         Catch ex As Exception
             MsgBox("No se logro realizar la consulta por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
         End Try
@@ -372,7 +373,7 @@ Public Class Form1
         txtDpi.Text = ""
         txtResidencia.Text = ""
         txtEdad.Visible = False
-        txtEdad.Text = ""
+        txtEdad.Text = " "
 
         ':::Limpiar los ComboBox
         'cbProfesional.SelectedValue = Nothing
@@ -388,7 +389,7 @@ Public Class Form1
         cbAgudeza3.Text = "20/25"
 
         ':::Limpiar la fecha
-        txtDate1.Text = Nothing
+        'txtDate1.Text = Nothing
 
         ':::Limpiar los RadioButton
         rbVision1.Checked = False
@@ -431,7 +432,7 @@ Public Class Form1
         'dgvTabla.Columns("Pac_Nombre").DisplayIndex = 0
 
         ':::Limpiar la foto
-        pbFoto.ImageLocation = "C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\usuario.png"
+        pbFoto.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\usuario.png")
 
         ':::Instrucción para evitar que el # de paciente y correlativo del paciente actual se mezclen
         lpaciente.Visible = False
@@ -444,7 +445,6 @@ Public Class Form1
         lPacienteE.Location = New Drawing.Point(637, 13)
         lPacienteE.Visible = False
         lNo.ForeColor = Color.Crimson
-
 
     End Sub
 
@@ -1235,7 +1235,7 @@ Public Class Form1
         lPacienteE.Location = New Drawing.Point(637, 13)
         lPacienteE.Visible = True
         lNo.ForeColor = Color.RoyalBlue
-
+        dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
     End Sub
 
     ':::Instrucción que verifica el estado del CheckBox NINGUNA
@@ -1331,7 +1331,7 @@ Public Class Form1
             SaveImage = True
             'Mostrando la foto en el picture
             Me.pbFoto.ImageLocation = curFileName.ToString
-            Label14.Text = curFileName
+            lDirFoto.Text = curFileName
         Else
             Exit Sub
         End If
@@ -1480,7 +1480,7 @@ Public Class Form1
             If (rbAbrir.Checked = False) Then
                 MsgBox("Falta información del paciente", vbExclamation, "AVISO")
                 If estaGifEnEjecucion = False Then
-                    btnReporte.Image = pbCargando.Image
+                    btnReporte.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Iconos\cargando-loading-012.gif")
                     estaGifEnEjecucion = True
                 End If
                 gbBotones.Visible = True
@@ -1506,8 +1506,8 @@ Public Class Form1
                 pbSalir_Click(sender, e)
             End If
         Else
-            If Not estaGifEnEjecucion Then
-                btnReporte.Image = pbCargando.Image
+            If estaGifEnEjecucion = False Then
+                btnReporte.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Iconos\cargando-loading-012.gif")
                 estaGifEnEjecucion = True
             End If
             gbBotones.Visible = True
@@ -1664,7 +1664,7 @@ Public Class Form1
 
             comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
             comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
-            comandos.Parameters.AddWithValue("@Fotografia", Label14.Text)
+            comandos.Parameters.AddWithValue("@Fotografia", lDirFoto.Text)
 
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
             comandos.ExecuteNonQuery()
@@ -1673,13 +1673,18 @@ Public Class Form1
             actualizar()
             limpiar()
         Catch ex As Exception
-            MsgBox("ERROR AL GUARDAR EL FORMULARIO", vbCritical, "ERROR")
-            MsgBox(ex.Message)
+            'MsgBox("ERROR AL GUARDAR EL FORMULARIO", vbCritical, "ERROR")
+            'MsgBox(ex.Message)
         End Try
     End Sub
 
     ':::Boton que MUESTRA [BUSCAR] la información almacenada en la base de datos
+    Private estaGifEnEjecucionB As Boolean
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles btnBuscar.Click
+        If estaGifEnEjecucionB = False Then
+            btnBuscar.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Iconos\cargando-loading-012.gif")
+            estaGifEnEjecucionB = True
+        End If
         gbBotones.Visible = True
         rbNombre.Visible = True
         rbNombre.Location = New Drawing.Point(228, 25)
@@ -1689,8 +1694,8 @@ Public Class Form1
         rbDpi.Location = New Drawing.Point(175, 25)
         rbTodos.Visible = True
         rbTodos.Location = New Drawing.Point(413, 25)
-        btnBuscar.Image = Nothing
-        btnBuscar.Image = pbCargando.Image
+        'btnBuscar.Image = Nothing
+        'btnBuscar.Image = pbCargando.Image
         GroupBox3.Enabled = False
         GroupBox2.Enabled = False
         txtAPaciente.Enabled = False
@@ -1705,6 +1710,7 @@ Public Class Form1
         btnGuardar.Enabled = False
         btnReporte.Enabled = False
         btnActualizar.Enabled = False
+        estaGifEnEjecucionB = False
         Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
         Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtAPaciente.Text & "'"
         Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtDpi.Text & "'"
@@ -1735,42 +1741,48 @@ Public Class Form1
             Me.consulta(dgvTabla, access)
         End If
 
-        ':::Creamos la variable access que guarda la instruccion de tipo SQL
-
-        ':::Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
-
-        'Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
-
-        ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos (2) parametros (dgvTabla, access)
-
     End Sub
 
     ':::Boton que ACTUALIZA [ACTUALIZAR] la informacion almacenada en la base de datos
     Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles btnActualizar.Click
-        ':::Creamos la variable access que guardar la instruccion de tipo SQL
 
-        ':::Instrucción "Update [tabla] set [nombrecelda1]='" & [nombreherramienta1] & "'" where [nombrecelda2]= " & [nombreherramienta1] & ""
+        If (txtNPaciente.Text = Nothing Or txtAPaciente.Text = Nothing Or txtDpi.Text = Nothing Or lcontador.Visible = True) Then
+            MsgBox("Ningún paciente seleccionado, por favor seleccione un paciente en el botón BUSCAR.", vbExclamation, "AVISO")
+        Else
+            Try
 
-        'Dim access As String = "Update Datos_Paciente Set Pac_Apellido='" & txtAPaciente.Text & "' where Contador='" & lpaciente.Text & "'"
-        Try
+                ':::Usamos el comando y le indicamos con la instrucción "UPDATE [tabla] SET [columna1] = [@nombreherramienta1], [columna2] = [@nombreherramienta2] WHERE Contador = [@contador]", conexion)
+                comandos = New OleDbCommand("UPDATE Datos_Paciente SET Pro_Nombre = @cbProfesional, Pro_regTransito = @txtTransito, Pro_regSalud = @txtSalud, Pro_regOft = @txtOftal, 
+                                     Pac_Apellido = @txtAPaciente, Pac_Nombre = @txtNPaciente, Pac_Dpi = @txtDpi, Pac_Departamento = @cbDepartamento, Pac_Municipio = @cbMunicipio,
+                                     Pac_Nacimiento = @txtDate1, Pac_Genero = @cbGenero, Pac_Residencia = @txtResidencia, Res_Agudeza1 = @cbAgudeza1, Res_Agudeza2 = @cbAgudeza2, 
+                                     Res_Agudeza3 = @cbAgudeza3, Res_Vision = @rbVision1, Res_CampoCentralOD = @nudCentral1, Res_CampoCentralOI = @nudCentral2, Res_CampoCentral = @rbCentral1, 
+                                     Res_CampoPerifericoOD = @nudPeriferico1, Res_CampoPerifericoOI = @nudPeriferico2, Res_CampoPeriferico = @rbPeriferico1, Res_Sensibilidad = @rbSensibilidad1, 
+                                     Res_Prueba = @rbPrueba1, Res_Seg = @rbSeg1, Res_Anteojos = @rbAnteojos1, Res_Lentes = @rbLentes1, Res_Licencia1 = @cbA, Res_Licencia2 = @cbB, 
+                                     Res_Licencia3 = @cbE, Res_Licencia4 = @cbC, Res_Licencia5 = @cbM, Res_Licencia6 = @cbNinguna, Res_Obs = @rtb1, Fotografia = @pbFoto
+                                     WHERE Contador = @contador", conexion)
 
-            Dim access As String = "Update Datos_Paciente Set Pac_Apellido= @Pac_Apellido where Contador= @Contador"
+                profesional()
 
-            'actualizar()
-            'limpiar()
+                comandos.Parameters.AddWithValue("@rtb1", rtb1.Text)
+                comandos.Parameters.AddWithValue("@pbFoto", lDirFoto.Text)
+                comandos.Parameters.AddWithValue("@Contador", lpaciente.Text)
 
-            comandos.CommandType = CommandType.Text
-            comandos.CommandText = access
+                ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
+                comandos.ExecuteNonQuery()
+                MsgBox("DATOS ACTUALIZADOS EXITOSAMENTE", vbInformation, "CORRECTO")
+                actualizar()
+                limpiar()
 
-            comandos.Parameters.AddWithValue("@Pac_Apellido", txtAPaciente.Text)
-            comandos.ExecuteNonQuery()
-            Me.operaciones(dgvTabla, access)
+            Catch ex As OleDbException ' Excepciones específicas de la base de datos
+                MsgBox("Error en la base de datos: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
 
-        Catch ex As Exception
-            MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
-        End Try
+            Catch ex As ArgumentNullException ' Excepciones específicas para argumentos nulos
+                MsgBox("Uno de los parámetros es nulo: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
 
-
+            Catch ex As Exception
+                MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
+            End Try
+        End If
 
     End Sub
 

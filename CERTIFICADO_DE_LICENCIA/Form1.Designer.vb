@@ -112,7 +112,7 @@ Partial Class Form1
         Me.lNo = New System.Windows.Forms.Label()
         Me.lcontador = New System.Windows.Forms.Label()
         Me.btnReporte = New System.Windows.Forms.Button()
-        Me.Label14 = New System.Windows.Forms.Label()
+        Me.lDirFoto = New System.Windows.Forms.Label()
         Me.lpaciente = New System.Windows.Forms.Label()
         Me.lFReporte = New System.Windows.Forms.Label()
         Me.rbGenerarpdf = New System.Windows.Forms.RadioButton()
@@ -257,9 +257,9 @@ Partial Class Form1
         'pbFoto
         '
         Me.pbFoto.Image = CType(resources.GetObject("pbFoto.Image"), System.Drawing.Image)
-        Me.pbFoto.Location = New System.Drawing.Point(462, 50)
+        Me.pbFoto.Location = New System.Drawing.Point(462, 39)
         Me.pbFoto.Name = "pbFoto"
-        Me.pbFoto.Size = New System.Drawing.Size(198, 176)
+        Me.pbFoto.Size = New System.Drawing.Size(198, 187)
         Me.pbFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFoto.TabIndex = 12
         Me.pbFoto.TabStop = False
@@ -1122,15 +1122,15 @@ Partial Class Form1
         Me.btnReporte.Text = "REPORTE"
         Me.btnReporte.UseVisualStyleBackColor = True
         '
-        'Label14
+        'lDirFoto
         '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(24, 48)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(45, 13)
-        Me.Label14.TabIndex = 32
-        Me.Label14.Text = "Label14"
-        Me.Label14.Visible = False
+        Me.lDirFoto.AutoSize = True
+        Me.lDirFoto.Location = New System.Drawing.Point(24, 48)
+        Me.lDirFoto.Name = "lDirFoto"
+        Me.lDirFoto.Size = New System.Drawing.Size(80, 13)
+        Me.lDirFoto.TabIndex = 32
+        Me.lDirFoto.Text = "Ruta de la Foto"
+        Me.lDirFoto.Visible = False
         '
         'lpaciente
         '
@@ -1313,7 +1313,7 @@ Partial Class Form1
         Me.Controls.Add(Me.gbBotones)
         Me.Controls.Add(Me.lFReporte)
         Me.Controls.Add(Me.lpaciente)
-        Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.lDirFoto)
         Me.Controls.Add(Me.btnActualizar)
         Me.Controls.Add(Me.btnReporte)
         Me.Controls.Add(Me.lcontador)
@@ -1461,7 +1461,7 @@ Partial Class Form1
     Friend WithEvents cbAgudeza3 As ComboBox
     Friend WithEvents cbAgudeza2 As ComboBox
     Friend WithEvents cbAgudeza1 As ComboBox
-    Friend WithEvents Label14 As Label
+    Friend WithEvents lDirFoto As Label
     Friend WithEvents lpaciente As Label
     Friend WithEvents lFReporte As Label
     Friend WithEvents txtDate1 As DateTimePicker
