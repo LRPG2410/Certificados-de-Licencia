@@ -24,6 +24,8 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.txtSalus = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.txtAPaciente = New System.Windows.Forms.TextBox()
         Me.txtEdad = New System.Windows.Forms.Label()
         Me.txtResidencia = New System.Windows.Forms.TextBox()
@@ -51,6 +53,7 @@ Partial Class Form1
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtOftal = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.btnLimpiar = New System.Windows.Forms.Button()
         Me.rbTodos = New System.Windows.Forms.RadioButton()
         Me.rbApellido = New System.Windows.Forms.RadioButton()
         Me.rbDpi = New System.Windows.Forms.RadioButton()
@@ -101,7 +104,6 @@ Partial Class Form1
         Me.cbA = New System.Windows.Forms.CheckBox()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.btnGuardar = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.btnBuscar = New System.Windows.Forms.Button()
@@ -119,6 +121,7 @@ Partial Class Form1
         Me.rbGenerarword = New System.Windows.Forms.RadioButton()
         Me.rbAbrir = New System.Windows.Forms.RadioButton()
         Me.gbBotones = New System.Windows.Forms.GroupBox()
+        Me.rbSalus = New System.Windows.Forms.RadioButton()
         Me.pbSalir = New System.Windows.Forms.PictureBox()
         Me.pbCargando = New System.Windows.Forms.PictureBox()
         Me.pbImpresora = New System.Windows.Forms.PictureBox()
@@ -158,6 +161,8 @@ Partial Class Form1
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.txtSalus)
+        Me.GroupBox1.Controls.Add(Me.Label14)
         Me.GroupBox1.Controls.Add(Me.txtAPaciente)
         Me.GroupBox1.Controls.Add(Me.txtEdad)
         Me.GroupBox1.Controls.Add(Me.txtResidencia)
@@ -183,6 +188,22 @@ Partial Class Form1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "CERTIFICA QUE:"
         '
+        'txtSalus
+        '
+        Me.txtSalus.Location = New System.Drawing.Point(462, 230)
+        Me.txtSalus.Name = "txtSalus"
+        Me.txtSalus.Size = New System.Drawing.Size(198, 20)
+        Me.txtSalus.TabIndex = 19
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(459, 213)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(90, 13)
+        Me.Label14.TabIndex = 18
+        Me.Label14.Text = "CÓDIGO SALUS:"
+        '
         'txtAPaciente
         '
         Me.txtAPaciente.Location = New System.Drawing.Point(10, 39)
@@ -196,9 +217,9 @@ Partial Class Form1
         Me.txtEdad.ForeColor = System.Drawing.Color.Red
         Me.txtEdad.Location = New System.Drawing.Point(147, 159)
         Me.txtEdad.Name = "txtEdad"
-        Me.txtEdad.Size = New System.Drawing.Size(45, 13)
+        Me.txtEdad.Size = New System.Drawing.Size(32, 13)
         Me.txtEdad.TabIndex = 16
-        Me.txtEdad.Text = "Label12"
+        Me.txtEdad.Text = "Edad"
         Me.txtEdad.Visible = False
         '
         'txtResidencia
@@ -257,7 +278,7 @@ Partial Class Form1
         'pbFoto
         '
         Me.pbFoto.Image = CType(resources.GetObject("pbFoto.Image"), System.Drawing.Image)
-        Me.pbFoto.Location = New System.Drawing.Point(462, 39)
+        Me.pbFoto.Location = New System.Drawing.Point(462, 23)
         Me.pbFoto.Name = "pbFoto"
         Me.pbFoto.Size = New System.Drawing.Size(198, 187)
         Me.pbFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -267,7 +288,7 @@ Partial Class Form1
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(238, 159)
+        Me.Label9.Location = New System.Drawing.Point(374, 159)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(56, 13)
         Me.Label9.TabIndex = 11
@@ -295,7 +316,7 @@ Partial Class Form1
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(238, 112)
+        Me.Label7.Location = New System.Drawing.Point(365, 112)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(66, 13)
         Me.Label7.TabIndex = 6
@@ -337,7 +358,7 @@ Partial Class Form1
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(238, 23)
+        Me.Label1.Location = New System.Drawing.Point(293, 23)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(137, 13)
         Me.Label1.TabIndex = 0
@@ -353,6 +374,7 @@ Partial Class Form1
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.txtOftal)
         Me.GroupBox2.Controls.Add(Me.Label3)
+        Me.GroupBox2.Controls.Add(Me.btnLimpiar)
         Me.GroupBox2.ForeColor = System.Drawing.SystemColors.InfoText
         Me.GroupBox2.Location = New System.Drawing.Point(10, 71)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(0)
@@ -435,11 +457,23 @@ Partial Class Form1
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "NÚMERO DE REGISTRO:"
         '
+        'btnLimpiar
+        '
+        Me.btnLimpiar.Image = CType(resources.GetObject("btnLimpiar.Image"), System.Drawing.Image)
+        Me.btnLimpiar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnLimpiar.Location = New System.Drawing.Point(480, 53)
+        Me.btnLimpiar.Name = "btnLimpiar"
+        Me.btnLimpiar.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
+        Me.btnLimpiar.Size = New System.Drawing.Size(168, 40)
+        Me.btnLimpiar.TabIndex = 55
+        Me.btnLimpiar.Text = "LIMPIAR"
+        Me.btnLimpiar.UseVisualStyleBackColor = True
+        '
         'rbTodos
         '
         Me.rbTodos.AutoSize = True
         Me.rbTodos.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbTodos.Location = New System.Drawing.Point(10, 40)
+        Me.rbTodos.Location = New System.Drawing.Point(151, 14)
         Me.rbTodos.Name = "rbTodos"
         Me.rbTodos.Size = New System.Drawing.Size(105, 20)
         Me.rbTodos.TabIndex = 63
@@ -452,7 +486,7 @@ Partial Class Form1
         '
         Me.rbApellido.AutoSize = True
         Me.rbApellido.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbApellido.Location = New System.Drawing.Point(101, 14)
+        Me.rbApellido.Location = New System.Drawing.Point(6, 36)
         Me.rbApellido.Name = "rbApellido"
         Me.rbApellido.Size = New System.Drawing.Size(90, 20)
         Me.rbApellido.TabIndex = 62
@@ -465,7 +499,7 @@ Partial Class Form1
         '
         Me.rbDpi.AutoSize = True
         Me.rbDpi.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbDpi.Location = New System.Drawing.Point(197, 15)
+        Me.rbDpi.Location = New System.Drawing.Point(97, 14)
         Me.rbDpi.Name = "rbDpi"
         Me.rbDpi.Size = New System.Drawing.Size(48, 20)
         Me.rbDpi.TabIndex = 60
@@ -478,7 +512,7 @@ Partial Class Form1
         '
         Me.rbNombre.AutoSize = True
         Me.rbNombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbNombre.Location = New System.Drawing.Point(10, 14)
+        Me.rbNombre.Location = New System.Drawing.Point(6, 14)
         Me.rbNombre.Name = "rbNombre"
         Me.rbNombre.Size = New System.Drawing.Size(85, 20)
         Me.rbNombre.TabIndex = 61
@@ -996,20 +1030,9 @@ Partial Class Form1
         Me.btnGuardar.Text = "GUARDAR"
         Me.btnGuardar.UseVisualStyleBackColor = True
         '
-        'Button2
-        '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(358, 13)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.Button2.Size = New System.Drawing.Size(58, 40)
-        Me.Button2.TabIndex = 55
-        Me.Button2.Text = "LIMPIAR"
-        Me.Button2.UseVisualStyleBackColor = True
-        '
         'Button3
         '
+        Me.Button3.Enabled = False
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button3.Location = New System.Drawing.Point(1091, 12)
@@ -1019,6 +1042,7 @@ Partial Class Form1
         Me.Button3.TabIndex = 16
         Me.Button3.Text = "SALIR"
         Me.Button3.UseVisualStyleBackColor = True
+        Me.Button3.Visible = False
         '
         'Button1
         '
@@ -1158,7 +1182,7 @@ Partial Class Form1
         '
         Me.rbGenerarpdf.AutoSize = True
         Me.rbGenerarpdf.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbGenerarpdf.Location = New System.Drawing.Point(122, 41)
+        Me.rbGenerarpdf.Location = New System.Drawing.Point(262, 14)
         Me.rbGenerarpdf.Name = "rbGenerarpdf"
         Me.rbGenerarpdf.Size = New System.Drawing.Size(123, 20)
         Me.rbGenerarpdf.TabIndex = 57
@@ -1171,7 +1195,7 @@ Partial Class Form1
         '
         Me.rbGenerarword.AutoSize = True
         Me.rbGenerarword.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbGenerarword.Location = New System.Drawing.Point(255, 14)
+        Me.rbGenerarword.Location = New System.Drawing.Point(178, 36)
         Me.rbGenerarword.Name = "rbGenerarword"
         Me.rbGenerarword.Size = New System.Drawing.Size(139, 20)
         Me.rbGenerarword.TabIndex = 58
@@ -1184,7 +1208,7 @@ Partial Class Form1
         '
         Me.rbAbrir.AutoSize = True
         Me.rbAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAbrir.Location = New System.Drawing.Point(255, 40)
+        Me.rbAbrir.Location = New System.Drawing.Point(323, 36)
         Me.rbAbrir.Name = "rbAbrir"
         Me.rbAbrir.Size = New System.Drawing.Size(142, 20)
         Me.rbAbrir.TabIndex = 59
@@ -1195,13 +1219,14 @@ Partial Class Form1
         '
         'gbBotones
         '
+        Me.gbBotones.Controls.Add(Me.rbSalus)
         Me.gbBotones.Controls.Add(Me.pbSalir)
         Me.gbBotones.Controls.Add(Me.rbAbrir)
         Me.gbBotones.Controls.Add(Me.rbNombre)
         Me.gbBotones.Controls.Add(Me.rbTodos)
         Me.gbBotones.Controls.Add(Me.rbDpi)
-        Me.gbBotones.Controls.Add(Me.rbGenerarword)
         Me.gbBotones.Controls.Add(Me.rbApellido)
+        Me.gbBotones.Controls.Add(Me.rbGenerarword)
         Me.gbBotones.Controls.Add(Me.rbGenerarpdf)
         Me.gbBotones.Location = New System.Drawing.Point(10, 549)
         Me.gbBotones.Name = "gbBotones"
@@ -1209,6 +1234,18 @@ Partial Class Form1
         Me.gbBotones.TabIndex = 56
         Me.gbBotones.TabStop = False
         Me.gbBotones.Visible = False
+        '
+        'rbSalus
+        '
+        Me.rbSalus.AutoSize = True
+        Me.rbSalus.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
+        Me.rbSalus.Location = New System.Drawing.Point(102, 36)
+        Me.rbSalus.Name = "rbSalus"
+        Me.rbSalus.Size = New System.Drawing.Size(70, 20)
+        Me.rbSalus.TabIndex = 65
+        Me.rbSalus.TabStop = True
+        Me.rbSalus.Text = "SALUS"
+        Me.rbSalus.UseVisualStyleBackColor = True
         '
         'pbSalir
         '
@@ -1222,30 +1259,36 @@ Partial Class Form1
         '
         'pbCargando
         '
+        Me.pbCargando.Enabled = False
         Me.pbCargando.Image = CType(resources.GetObject("pbCargando.Image"), System.Drawing.Image)
         Me.pbCargando.Location = New System.Drawing.Point(914, 7)
         Me.pbCargando.Name = "pbCargando"
         Me.pbCargando.Size = New System.Drawing.Size(10, 10)
         Me.pbCargando.TabIndex = 57
         Me.pbCargando.TabStop = False
+        Me.pbCargando.Visible = False
         '
         'pbImpresora
         '
+        Me.pbImpresora.Enabled = False
         Me.pbImpresora.Image = CType(resources.GetObject("pbImpresora.Image"), System.Drawing.Image)
         Me.pbImpresora.Location = New System.Drawing.Point(930, 7)
         Me.pbImpresora.Name = "pbImpresora"
         Me.pbImpresora.Size = New System.Drawing.Size(10, 10)
         Me.pbImpresora.TabIndex = 58
         Me.pbImpresora.TabStop = False
+        Me.pbImpresora.Visible = False
         '
         'pbLupa
         '
+        Me.pbLupa.Enabled = False
         Me.pbLupa.Image = CType(resources.GetObject("pbLupa.Image"), System.Drawing.Image)
         Me.pbLupa.Location = New System.Drawing.Point(946, 7)
         Me.pbLupa.Name = "pbLupa"
         Me.pbLupa.Size = New System.Drawing.Size(10, 10)
         Me.pbLupa.TabIndex = 59
         Me.pbLupa.TabStop = False
+        Me.pbLupa.Visible = False
         '
         'lPacienteN
         '
@@ -1272,30 +1315,36 @@ Partial Class Form1
         '
         'pbload
         '
+        Me.pbload.Enabled = False
         Me.pbload.Image = CType(resources.GetObject("pbload.Image"), System.Drawing.Image)
         Me.pbload.Location = New System.Drawing.Point(914, 24)
         Me.pbload.Name = "pbload"
         Me.pbload.Size = New System.Drawing.Size(10, 10)
         Me.pbload.TabIndex = 62
         Me.pbload.TabStop = False
+        Me.pbload.Visible = False
         '
         'PictureBox1
         '
+        Me.PictureBox1.Enabled = False
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(930, 24)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(10, 10)
         Me.PictureBox1.TabIndex = 63
         Me.PictureBox1.TabStop = False
+        Me.PictureBox1.Visible = False
         '
         'PictureBox2
         '
+        Me.PictureBox2.Enabled = False
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
         Me.PictureBox2.Location = New System.Drawing.Point(946, 23)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(10, 10)
         Me.PictureBox2.TabIndex = 64
         Me.PictureBox2.TabStop = False
+        Me.PictureBox2.Visible = False
         '
         'Form1
         '
@@ -1318,7 +1367,6 @@ Partial Class Form1
         Me.Controls.Add(Me.btnReporte)
         Me.Controls.Add(Me.lcontador)
         Me.Controls.Add(Me.lNo)
-        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.lFecha)
@@ -1482,5 +1530,8 @@ Partial Class Form1
     Friend WithEvents pbload As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents Button2 As Button
+    Friend WithEvents btnLimpiar As Button
+    Friend WithEvents txtSalus As TextBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents rbSalus As RadioButton
 End Class

@@ -1,30 +1,46 @@
 ﻿#Region "IMPORTS  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
 
-':::ADO.NET es un conjunto de componentes que pueden ser usado para acceder a datos y a servicios de datos. Es parte de la biblioteca de clases base que están incluidas en el Microsoft .NET Framework.
-Imports System.Data ':::Ofrece acceso a clases que representan la arquitectura de ADO.NET. ADO.NET permite crear componentes que administran datos de varios orígenes de datos con eficacia.
+Imports System.Data.OleDb ':::Proveedor de datos .NET para el acceso a bases de datos a través de OLE DB.
 
-':::OLE DB es la sigla de Object Linking and Embedding for Databases, es una tecnología usada para tener acceso a fuentes de información, o bases de datos.
-Imports System.Data.OleDb ':::Es el proveedor de datos .NET Framework para OLE DB.
+Imports System.IO ':::Permite la lectura y escritura en archivos y flujos de datos, y manejo de directorios.
 
-Imports Microsoft.Office.Interop.Word ':::Para activar esta referencia se va a proyecto luego en agregar referencia com y se agrega Microsoft Word 9.0 Object Library dependiendo de la version de office
-Imports System.IO ':::Contiene tipos que permiten leer y escribir en los archivos y secuencias de datos, así como tipos que proporcionan compatibilidad básica con los archivos y directorios.
-Imports Microsoft.Office.Interop
-Imports System.Runtime.InteropServices
-Imports SpireDoc = Spire.Doc
-Imports System.Windows.Controls
-Imports System.Drawing
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports System.Windows.Media.Media3D
-Imports stdole
-Imports System.Runtime.InteropServices.ComTypes
-Imports System.Security.Authentication.ExtendedProtection
+Imports Microsoft.Office.Interop ':::Espacio de nombres para interactuar con aplicaciones Microsoft Office desde .NET.
 
-
+Imports System.Runtime.InteropServices ':::Soporta la interoperabilidad entre el código administrado y no administrado.
 #End Region
 
 Public Class Form1
     ':::String -> Cadena de caracteres
     ':::Integer -> Valores de tipo entero
+
+    ':::CONEXIÓN a la base de datos Access
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        ':::INSTRUCCIÓN para mostrar la fecha de hoy
+        Me.lFecha.Text = Date.Now.Date
+        Dim fechaReporte = Format(Date.Now.Date, "Long Date")
+        lFReporte.Text = fechaReporte
+        cbAgudeza1.Text = "20/25"
+        cbAgudeza2.Text = "20/25"
+        cbAgudeza3.Text = "20/25"
+
+        Me.rtb1.ForeColor = Color.Gray
+        Me.rtb1.Text = "Observaciones: "
+
+        cbProfesional.Text = "Ramiro Faillace Poggio"
+
+        ':::INSTRUCCIÓN Try para capturar errores
+        Try
+
+            ':::Usamos la variable conexion para el enlace a la base de datos
+            conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & rutaBD
+            conexion.Open()
+            num()
+            MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
+        Catch ex As Exception
+            MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NINGUN DATO", vbCritical, "ERROR")
+            MsgBox(ex.Message)
+        End Try
+    End Sub
 
 #Region "VARIABLES GLOBALES */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
 
@@ -46,146 +62,311 @@ Public Class Form1
     ':::Se utiliza junto con la clase OleDbCommand. Sirve para enlazar la base de datos.
     Dim ConnectionString As String
 
+    ':::Se declara una variable llamada rutaEjecutable y la inicializa con la ruta completa (incluyendo el nombre del archivo y la extensión) del archivo de la asamblea ejecutable actual.
+    ':::El método GetExecutingAssembly() devuelve una referencia al ensamblado (o aplicación) que se está ejecutando actualmente,
+    '::y la propiedad Location de esa asamblea es una cadena que contiene la ruta completa hasta ese archivo de asamblea.
+    Dim rutaEjecutable As String = System.Reflection.Assembly.GetExecutingAssembly().Location
+
+    ':::Se declara una variable llamada directorioEjecutable y la inicializa con la ruta del directorio que contiene el archivo de la asamblea ejecutable actual.
+    ':::El método GetDirectoryName() del objeto Path toma una ruta de archivo completa (como la contenida en rutaEjecutable)
+    ':::y devuelve la parte del directorio de esa ruta, es decir, toda la ruta excepto el nombre del archivo y la extensión.
+    Dim directorioEjecutable As String = System.IO.Path.GetDirectoryName(rutaEjecutable)
+
+    ':::Path.Combine() toma dos o más cadenas de texto y las combina en una ruta de archivo válida.
+    ':::Aquí, se toma la ruta del directorio donde se está ejecutando la aplicación (directorioEjecutable)
+    ':::y se añade a la carpeta "Recursos" y el nombre del archivo de la base de datos "CERTIFICADO_DE_LICENCIA_BD.accdb".
+    ':::El resultado es una cadena de texto con la ruta completa hacia el archivo de la base de datos de Access.    
+    Dim rutaBD As String = Path.Combine(directorioEjecutable, "Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb")
+
+    ':::Se aplica la misma lógica solo cambiando la ruta hacia el archivo que se quiere utilizar.
+    Dim rutaGIF As String = Path.Combine(directorioEjecutable, "Recursos\Iconos\cargando-loading-012.gif")
+    Dim rutaREPORTE As String = Path.Combine(directorioEjecutable, "Recursos\Reportes")
+    Dim rutaREPORTEin As String = Path.Combine(directorioEjecutable, "Recursos\Reportes\")
+    Dim rutaPLANTILLA As String = Path.Combine(directorioEjecutable, "Recursos\Reportes\Plantilla.docx")
+    Dim rutaUSUARIO As String = Path.Combine(directorioEjecutable, "Recursos\usuario.png")
 #End Region
 
-#Region "PROCEDIMIENTOS */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
+#Region "BOTONES  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
 
-    ':::PROCEDIMIENTO para la consulta y le indicamos que debe pedir 2 parametros para ejecutarse correctamente (tabla, access)
-    Sub consulta(ByVal tabla As DataGridView, ByVal access As String)
-        ':::Instruccion Try para capturar errores
-        Try
+    ':::[GUARDAR] Se utiliza para enviar la información a la base de datos.
+    Private Sub BtnGuardar_Click(sender As System.Object, e As System.EventArgs) Handles btnGuardar.Click
 
-            ':::Creamos el objeto DataAdapter y le pasamos los dos parametros (Instruccion, conexión)
-            '::OleDbDaraAdapter funciona como un puente mediante Fill para cargar datos del origen de datos en DataSet y usar Update para enviar los cambios realizados en el DataSet origen de datos.
-            Dim DA As New OleDbDataAdapter(access, conexion)
+        If lpaciente.Visible = True And lcontador.Visible = False Then
+            ':::Muestra un cuadro de diálogo al usuario con una pregunta. El resultado de la elección del usuario (sí/no) se guarda en la variable "eleccion".
+            Dim eleccion As DialogResult = MessageBox.Show("ACTUALMENTE ESTA EN LA VISTA DE PACIENTE EXISTENTE, SI DESEA ACTUALIZAR LA INFORMACIÓN DEL PACIENTE DEBE PRESIONAR EL BOTON ACTUALIZAR. ¿QUIERE SALIR DE MODO VISTA DE PACIENTE PARA PODER INGRESAR NUEVOS PACIENTES?", "PRECAUCIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
 
-            ':::Creamos el objeto DataTable que recibe la informacion del DataAdapter
-            '::DataTable se utilizan para representar las tablas de un DataSet.
-            '::Los datos son locales de la aplicación basada en .NET en la que residen, pero se pueden llenar desde un origen de datos como SQL Server mediante un DataAdapter, como en este caso.
-            Dim DT As New Data.DataTable
+            ':::Si el usuario elige "Sí" en el cuadro de diálogo...
+            If eleccion = DialogResult.Yes Then
+                ':::Llama a la función "limpiar"
+                limpiar()
+            Else
+                ':::Si el usuario elige "No" en el cuadro de diálogo, no hace nada.
+            End If
+        Else
+            ':::INSTRUCCIÓN Try para capturar errores
+            Try
+                ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
+                comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, 
+                                                                         Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, 
+                                                                         Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, 
+                                                                         Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, 
+                                                                         Res_Licencia6, Res_Obs, Contador, Fotografia, Salus) 
+                                                                         VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, 
+                                                                         @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, 
+                                                                         @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, 
+                                                                         @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @lcontador, @pbFoto, @txtSalus)", conexion)
 
-            ':::Pasamos la informacion del DataAdapter al DataTable mediante la propiedad Fill, antes mencionada.
-            DA.Fill(DT)
+                profesional()
+                comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
+                comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
+                comandos.Parameters.AddWithValue("@Fotografia", lDirFoto.Text)
+                comandos.Parameters.AddWithValue("@Salus", txtSalus.Text)
 
-            ':::Ahora mostramos los datos en el DataGridView
-            tabla.DataSource = DT
-
-            dgvTabla.Columns("Pro_Nombre").Visible = False
-            dgvTabla.Columns("Pro_regTransito").Visible = False
-            dgvTabla.Columns("Pro_regSalud").Visible = False
-            dgvTabla.Columns("Pro_regOft").Visible = False
-            dgvTabla.Columns("Pac_Departamento").Visible = False
-            dgvTabla.Columns("Pac_Municipio").Visible = False
-            dgvTabla.Columns("Pac_Nacimiento").Visible = False
-            dgvTabla.Columns("Pac_Genero").Visible = False
-            dgvTabla.Columns("Pac_Residencia").Visible = False
-
-            dgvTabla.Columns("Contador").DisplayIndex = 0
-            dgvTabla.Columns("Pac_Nombre").DisplayIndex = 1
-            dgvTabla.Columns("Pac_Apellido").DisplayIndex = 2
-            dgvTabla.Columns("Pac_Dpi").DisplayIndex = 3
-
-            dgvTabla.Columns("Pac_Nombre").HeaderText = "Nombre del Paciente"
-            dgvTabla.Columns("Pac_Apellido").HeaderText = "Apellido del Paciente"
-            dgvTabla.Columns("Pac_Dpi").HeaderText = "DPI"
-            dgvTabla.Columns("Pac_Departamento").HeaderText = "Departamento"
-            dgvTabla.Columns("Pac_Municipio").HeaderText = "Municipio"
-            dgvTabla.Columns("Pac_Nacimiento").HeaderText = "Fecha de Nacimiento"
-            dgvTabla.Columns("Pac_Genero").HeaderText = "Género"
-            dgvTabla.Columns("Pac_Residencia").HeaderText = "Dirección"
-
-            dgvTabla.Columns("Res_Agudeza1").HeaderText = "Agudeza Visual 1"
-            dgvTabla.Columns("Res_Agudeza2").HeaderText = "Agudeza Visual 2"
-            dgvTabla.Columns("Res_Agudeza3").HeaderText = "Agudeza Visual 3"
-            dgvTabla.Columns("Res_Vision").HeaderText = "Visión de Colores"
-            dgvTabla.Columns("Res_CampoCentralOD").HeaderText = "Campo visual Central OD"
-            dgvTabla.Columns("Res_CampoCentralOI").HeaderText = "Campo visual Central OI"
-            dgvTabla.Columns("Res_CampoCentral").HeaderText = "Campo visual Central"
-            dgvTabla.Columns("Res_CampoPerifericoOD").HeaderText = "Campo visual Periferico OD"
-            dgvTabla.Columns("Res_CampoPerifericoOI").HeaderText = "Campo visual Periferico OI"
-            dgvTabla.Columns("Res_CampoPeriferico").HeaderText = "Campo visual Periferico"
-
-            dgvTabla.Columns("Res_Sensibilidad").HeaderText = "Sensibilidad al contraste"
-            dgvTabla.Columns("Res_Prueba").HeaderText = "Prueba estereoscopia"
-            dgvTabla.Columns("Res_Seg").HeaderText = "A 600 seg."
-            dgvTabla.Columns("Res_Anteojos").HeaderText = "Usa anteojos"
-            dgvTabla.Columns("Res_Lentes").HeaderText = "Usa lentes de contacto"
-
-            dgvTabla.Columns("Res_Licencia1").HeaderText = "Licencia A"
-            dgvTabla.Columns("Res_Licencia2").HeaderText = "Licencia B"
-            dgvTabla.Columns("Res_Licencia3").HeaderText = "Licencia E"
-            dgvTabla.Columns("Res_Licencia4").HeaderText = "Licencia C"
-            dgvTabla.Columns("Res_Licencia5").HeaderText = "Licencia M"
-            dgvTabla.Columns("Res_Licencia6").HeaderText = "Ninguna licencia"
-
-            dgvTabla.Columns("Res_Obs").HeaderText = "Observaciones"
-
-            dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
-        Catch ex As Exception
-            MsgBox("No se logro realizar la consulta por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
-        End Try
+                ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
+                comandos.ExecuteNonQuery()
+                MsgBox("DATOS GUARDADOS EXITOSAMENTE", vbInformation, "CORRECTO")
+                reporte()
+                actualizar()
+                limpiar()
+            Catch ex As Exception
+                'MsgBox("ERROR AL GUARDAR EL FORMULARIO", vbCritical, "ERROR")
+                'MsgBox(ex.Message)
+            End Try
+        End If
     End Sub
 
-    ':::PROCEDIMIENTO para Agregar, Actualizar y Eliminar ademas le indicamos que debe pedir 2 parametros para ejecutarse correctamente (tabla, access)
-    Sub operaciones(ByVal tabla As DataGridView, ByVal access As String)
-
-        ':::Instruccion Try para capturar errores
-        Try
-
-            ':::Creamos nuestro objeto de tipo Command que almacenara nuestras instrucciones, necesita 2 parametros (access, conexion)
-            Dim cmd As New OleDbCommand(access, conexion)
-
-            ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
-            '::Realiza operaciones de catálogo (por ejemplo, consultar la estructura de una base de datos o crear objetos de base de datos como tablas)
-            '::o cambiar los datos de una base de datos sin usar, mediante DataSet, la ejecución de instrucciones UPDATE, INSERT o DELETE.
-            cmd.ExecuteNonQuery()
-            MsgBox("DATOS ACTUALIZADOS EXITOSAMENTE", vbInformation, "CORRECTO")
-        Catch ex As Exception
-            MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
-        End Try
-
+    ':::[IMPRIMIR] Se utiliza para, ya sea, abrir la ubicación de los reportes, crear un reporte en word o en pdf.
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnReporte.Click
+        ':::La variable "estaGifEnEjecucion" se utiliza para cambiar el icono del boton imprimir y colocar el gif.
+        Dim estaGifEnEjecucion As Boolean = False
+        ':::Si alguno de los textBox esta vacio al momento de presionar el boton...
+        If (txtNPaciente.Text = Nothing Or txtAPaciente.Text = Nothing Or txtDpi.Text = Nothing) Then
+            ':::...Se verifica si el radiobutton "rbAbrir" esta seleccionado, si no lo esta
+            If (rbAbrir.Checked = False) Then
+                MsgBox("Falta información del paciente", vbExclamation, "AVISO")
+                If estaGifEnEjecucion = False Then
+                    btnReporte.Image = System.Drawing.Image.FromFile(rutaGIF)
+                End If
+                gbBotones.Visible = True
+                rbAbrir.Visible = True
+                rbAbrir.Location = New Drawing.Point(276, 25)
+                GroupBox3.Enabled = False
+                GroupBox2.Enabled = False
+                txtAPaciente.Enabled = False
+                txtDpi.Enabled = False
+                cbDepartamento.Enabled = False
+                cbMunicipio.Enabled = False
+                txtDate1.Enabled = False
+                cbGenero.Enabled = False
+                txtResidencia.Enabled = False
+                pbFoto.Enabled = False
+                btnGuardar.Enabled = False
+                btnActualizar.Enabled = False
+                btnBuscar.Enabled = False
+            End If
+            If (rbAbrir.Checked = True) Then
+                Call Shell("explorer.exe " & rutaREPORTE, vbNormalFocus)
+                pbSalir_Click(sender, e)
+            End If
+        Else
+            If estaGifEnEjecucion = False Then
+                btnReporte.Image = System.Drawing.Image.FromFile(rutaGIF)
+            End If
+            gbBotones.Visible = True
+            rbGenerarpdf.Visible = True
+            rbGenerarpdf.Location = New Drawing.Point(138, 25)
+            rbGenerarword.Visible = True
+            rbGenerarword.Location = New Drawing.Point(276, 25)
+            rbAbrir.Visible = True
+            rbAbrir.Location = New Drawing.Point(430, 25)
+            GroupBox3.Enabled = False
+            GroupBox2.Enabled = False
+            txtAPaciente.Enabled = False
+            txtDpi.Enabled = False
+            cbDepartamento.Enabled = False
+            cbMunicipio.Enabled = False
+            txtDate1.Enabled = False
+            cbGenero.Enabled = False
+            txtResidencia.Enabled = False
+            pbFoto.Enabled = False
+            btnGuardar.Enabled = False
+            btnActualizar.Enabled = False
+            btnBuscar.Enabled = False
+            If rbGenerarpdf.Checked = True Then
+                generarpdf(rutaREPORTEin & txtNPaciente.Text & ".docx",
+                           rutaREPORTEin & txtNPaciente.Text & ".pdf")
+            ElseIf rbGenerarword.Checked = True Then
+                reporte()
+            ElseIf rbAbrir.Checked = True Then
+                Call Shell("explorer.exe " & rutaREPORTE, vbNormalFocus)
+            End If
+        End If
     End Sub
 
-    ':::PROCEDIMIENTO para actualizar el DataGridView al momento de accionar cualquier boton.
-    Sub actualizar()
-        ':Instrucción "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
-        ':Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
-        ':Instrucción "Select * from [tabla]"
-
-        ':::Creamos la variable access que guarda la instruccion de tipo SQL
+    ':::[BUSCAR] Se utiliza para buscar a pacientes por nombre, apellido, dpi o para mostrarlos a todos en el DataGridView.
+    Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles btnBuscar.Click
+        Dim estaGifEnEjecucion As Boolean = False
+        If estaGifEnEjecucion = False Then
+            btnBuscar.Image = System.Drawing.Image.FromFile(rutaGIF)
+        End If
+        gbBotones.Visible = True
+        rbNombre.Visible = True
+        rbNombre.Location = New Drawing.Point(50, 25)
+        rbApellido.Visible = True
+        rbApellido.Location = New Drawing.Point(181, 25)
+        rbDpi.Visible = True
+        rbDpi.Location = New Drawing.Point(320, 25)
+        rbSalus.Visible = True
+        rbSalus.Location = New Drawing.Point(412, 25)
+        rbTodos.Visible = True
+        rbTodos.Location = New Drawing.Point(531, 25)
+        GroupBox3.Enabled = False
+        GroupBox2.Enabled = False
+        txtAPaciente.Enabled = False
+        txtNPaciente.Enabled = False
+        txtDpi.Enabled = False
+        cbDepartamento.Enabled = False
+        cbMunicipio.Enabled = False
+        txtDate1.Enabled = False
+        cbGenero.Enabled = False
+        txtResidencia.Enabled = False
+        pbFoto.Enabled = False
+        btnGuardar.Enabled = False
+        btnReporte.Enabled = False
+        btnActualizar.Enabled = False
+        Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
+        Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtAPaciente.Text & "'"
+        Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtDpi.Text & "'"
+        Dim salus As String = "Select * from Datos_Paciente where Salus = '" & txtSalus.Text & "'"
         Dim access As String = "Select * from Datos_Paciente"
 
-        ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos 2 parametros (dgvTabla, access)
-        Me.consulta(dgvTabla, access)
-        num()
-    End Sub
-
-    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes.
-    Sub num()
-
-        Dim Sql As String = "Select max(Contador +1) from Datos_Paciente"
-        Dim cmd As New OleDbCommand(Sql, conexion)
-
-        ':::ExecuteScalar es una operación que se utiliza para devolver un valor único
-        Dim codigo = cmd.ExecuteScalar
-
-        ':::IsDBNull es una operación que se utiliza para verificar si hay registros en la base de datos, lanza un valor booleano
-        If IsDBNull(codigo) Then
-            Me.lcontador.Text = "1"
-        Else
-
-            ':::CStr se encarga de convertir un valor numérico en un tipo String
-            Me.lcontador.Text = CInt(codigo)
+        If (rbNombre.Checked = True) Then
+            If (txtNPaciente.Text = Nothing) Then
+                MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, nombre)
+            End If
+        ElseIf (rbApellido.Checked = True) Then
+            If (txtAPaciente.Text = Nothing) Then
+                MsgBox("No ha ingresado el apellido del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, apellido)
+            End If
+        ElseIf (rbDpi.Checked = True) Then
+            If (txtDpi.Text = Nothing) Then
+                MsgBox("No ha ingresado el DPI del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, dpi)
+            End If
+        ElseIf (rbSalus.Checked = True) Then
+            If (txtDpi.Text = Nothing) Then
+                MsgBox("No ha ingresado el código de SALUS del paciente", vbExclamation, "AVISO")
+                pbSalir_Click(sender, e)
+            Else
+                Me.consulta(dgvTabla, salus)
+            End If
+        ElseIf (rbTodos.Checked = True) Then
+            Me.consulta(dgvTabla, access)
         End If
-
     End Sub
 
-    ':::PROCEDIMIENTO para generar los reportes en word
+    ':::[ACTUALIZAR] Se utiliza para actualizar la información existente de cualquier paciente.
+    Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles btnActualizar.Click
+        If (txtNPaciente.Text = Nothing Or txtAPaciente.Text = Nothing Or txtDpi.Text = Nothing Or lcontador.Visible = True) Then
+            MsgBox("Ningún paciente seleccionado, por favor seleccione un paciente en el botón BUSCAR.", vbExclamation, "AVISO")
+        Else
+            Try
+
+                ':::Usamos el comando y le indicamos con la instrucción "UPDATE [tabla] SET [columna1] = [@nombreherramienta1], [columna2] = [@nombreherramienta2] WHERE Contador = [@contador]", conexion)
+                comandos = New OleDbCommand("UPDATE Datos_Paciente SET Pro_Nombre = @cbProfesional, Pro_regTransito = @txtTransito, Pro_regSalud = @txtSalud, Pro_regOft = @txtOftal, 
+                                             Pac_Apellido = @txtAPaciente, Pac_Nombre = @txtNPaciente, Pac_Dpi = @txtDpi, Pac_Departamento = @cbDepartamento, Pac_Municipio = @cbMunicipio,
+                                             Pac_Nacimiento = @txtDate1, Pac_Genero = @cbGenero, Pac_Residencia = @txtResidencia, Res_Agudeza1 = @cbAgudeza1, Res_Agudeza2 = @cbAgudeza2, 
+                                             Res_Agudeza3 = @cbAgudeza3, Res_Vision = @rbVision1, Res_CampoCentralOD = @nudCentral1, Res_CampoCentralOI = @nudCentral2, Res_CampoCentral = @rbCentral1, 
+                                             Res_CampoPerifericoOD = @nudPeriferico1, Res_CampoPerifericoOI = @nudPeriferico2, Res_CampoPeriferico = @rbPeriferico1, Res_Sensibilidad = @rbSensibilidad1, 
+                                             Res_Prueba = @rbPrueba1, Res_Seg = @rbSeg1, Res_Anteojos = @rbAnteojos1, Res_Lentes = @rbLentes1, Res_Licencia1 = @cbA, Res_Licencia2 = @cbB, 
+                                             Res_Licencia3 = @cbE, Res_Licencia4 = @cbC, Res_Licencia5 = @cbM, Res_Licencia6 = @cbNinguna, Res_Obs = @rtb1, Fotografia = @pbFoto, Salus = @txtSalus
+                                             WHERE Contador = @contador", conexion)
+
+                profesional()
+
+                comandos.Parameters.AddWithValue("@rtb1", rtb1.Text)
+                comandos.Parameters.AddWithValue("@pbFoto", lDirFoto.Text)
+                comandos.Parameters.AddWithValue("@Contador", lpaciente.Text)
+                comandos.Parameters.AddWithValue("@Salus", txtSalus.Text)
+
+                ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
+                comandos.ExecuteNonQuery()
+                MsgBox("DATOS ACTUALIZADOS EXITOSAMENTE", vbInformation, "CORRECTO")
+                actualizar()
+                limpiar()
+
+            Catch ex As OleDbException ':::Excepciones específicas de la base de datos
+                MsgBox("Error en la base de datos: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
+
+            Catch ex As ArgumentNullException ':::Excepciones específicas para argumentos nulos
+                MsgBox("Uno de los parámetros es nulo: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
+
+            Catch ex As Exception
+                MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
+            End Try
+        End If
+    End Sub
+
+    ':::[X] Se utiliza para "cerrar" el submenu de las opciones de los botones.
+    Private Sub pbSalir_Click(sender As Object, e As EventArgs) Handles pbSalir.Click
+        btnReporte.Image = pbImpresora.Image
+        btnBuscar.Image = pbLupa.Image
+        gbBotones.Visible = False
+
+        rbGenerarpdf.Visible = False
+        rbGenerarpdf.Checked = False
+        rbGenerarword.Visible = False
+        rbGenerarword.Checked = False
+        rbAbrir.Visible = False
+        rbAbrir.Checked = False
+
+        rbNombre.Visible = False
+        rbNombre.Checked = False
+        rbApellido.Visible = False
+        rbApellido.Checked = False
+        rbDpi.Visible = False
+        rbDpi.Checked = False
+        rbSalus.Visible = False
+        rbSalus.Checked = False
+        rbTodos.Visible = False
+        rbTodos.Checked = False
+
+
+        GroupBox3.Enabled = True
+        GroupBox2.Enabled = True
+        txtAPaciente.Enabled = True
+        txtNPaciente.Enabled = True
+        txtDpi.Enabled = True
+        cbDepartamento.Enabled = True
+        cbMunicipio.Enabled = True
+        txtDate1.Enabled = True
+        cbGenero.Enabled = True
+        txtResidencia.Enabled = True
+        pbFoto.Enabled = True
+        btnGuardar.Enabled = True
+        btnReporte.Enabled = True
+        btnActualizar.Enabled = True
+        btnBuscar.Enabled = True
+    End Sub
+
+#End Region
+
+#Region "PROCEDIMIENTOS E INSTRUCCIONES PARA LOS BOTONES  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
+
+    ':::PROCEDIMIENTO para generar los reportes en word.
     Sub reporte()
         Try
             ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
-            FileCopy("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\Plantilla.docx",
-            "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            FileCopy(rutaPLANTILLA,
+            rutaREPORTEin & txtNPaciente.Text & ".docx")
 
             ':::Reinstanciar MSWord antes de intentar abrir otro documento.
             If MSWord Is Nothing Then
@@ -193,7 +374,7 @@ Public Class Form1
             End If
 
             ':::A documento se le asigna el documento de word que este especificado en la ruta.
-            documento = MSWord.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            documento = MSWord.Documents.Open(rutaREPORTEin & txtNPaciente.Text & ".docx")
 
             'MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
             'MsgBoxStyle.Information, "INFORMACIÓN")
@@ -217,22 +398,22 @@ Public Class Form1
             documento.Bookmarks.Item("txtDpi").Range.Text = txtDpi.Text
             documento.Bookmarks.Item("txtDate1").Range.Text = txtDate1.Text
 
-            ' Obtiene la relación de aspecto de la imagen original
+            ':::Obtiene la relación de aspecto de la imagen original
             Dim aspectRatio As Double = pbFoto.Image.Width / pbFoto.Image.Height
 
-            ' Determina el nuevo ancho de la imagen
+            ':::Determina el nuevo ancho de la imagen
             Dim newWidth As Integer = 130 ' Puedes ajustar este valor según tus necesidades
 
-            ' Calcula el nuevo alto de la imagen manteniendo la relación de aspecto
+            ':::Calcula el nuevo alto de la imagen manteniendo la relación de aspecto
             Dim newHeight As Integer = CInt(newWidth / aspectRatio)
 
-            ' Crea una nueva imagen con el tamaño deseado
+            ':::Crea una nueva imagen con el tamaño deseado
             Dim nuevaImagen As New Bitmap(pbFoto.Image, New Size(newWidth, newHeight))
 
-            ' Copia la nueva imagen al portapapeles
+            ':::Copia la nueva imagen al portapapeles
             Clipboard.SetImage(nuevaImagen)
 
-            'Pega la imagen en el marcador del documento
+            ':::Pega la imagen en el marcador del documento
             documento.Range.Bookmarks.Item("prueba").Range.Paste()
 
             ':::Se copia al portapapeles la imagen que este en el PictureBox
@@ -334,13 +515,14 @@ Public Class Form1
 
             documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
 
+
         Catch ex As Exception
 
         Finally
 
-            documento = MSWord.Documents.Open("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx")
+            documento = MSWord.Documents.Open(rutaREPORTEin & txtAPaciente.Text & " " & txtNPaciente.Text & ".docx")
 
-            ' Asegurarse de que el documento se guarda y se cierra correctamente
+            ':::Asegurarse de que el documento se guarda y se cierra correctamente
             If Not documento Is Nothing Then
                 documento.Save()
                 documento.Close(False)
@@ -348,21 +530,129 @@ Public Class Form1
                 documento = Nothing
             End If
 
-            ' Asegurarse de que la aplicación Word se cierra correctamente
+            ':::Asegurarse de que la aplicación Word se cierra correctamente
             If Not MSWord Is Nothing Then
                 MSWord.Quit()
                 Marshal.ReleaseComObject(MSWord)
                 MSWord = Nothing
             End If
 
-            ' Limpieza del recolector de basura
+            ':::Limpieza del recolector de basura
             GC.Collect()
             GC.WaitForPendingFinalizers()
         End Try
-
     End Sub
 
-    ':::PROCEDIMIENTO para limpiar los campos
+    ':::PROCEDIMIENTO para generar el reporte en pdf.
+    Sub generarpdf(ByVal wordFileName As String, ByVal pdfFileName As String)
+        ' Crea una nueva aplicación de Word
+        Dim wordApp As New Word.Application
+
+        ' Abre el documento de Word
+        Dim wordDoc As Word.Document = wordApp.Documents.Open(wordFileName)
+
+        ' Guarda el documento como PDF
+        pdfFileName = rutaREPORTEin & txtNPaciente.Text & ".pdf"
+        wordDoc.SaveAs2(pdfFileName, Word.WdSaveFormat.wdFormatPDF)
+
+        ' Cierra el documento y la aplicación de Word
+        wordDoc.Close()
+        wordApp.Quit()
+    End Sub
+
+    ':::PROCEDIMIENTO para la consulta y le indicamos que debe pedir 2 parametros para ejecutarse correctamente (tabla, access).
+    Sub consulta(ByVal tabla As DataGridView, ByVal access As String)
+        ':::Instruccion Try para capturar errores
+        Try
+
+            ':::Creamos el objeto DataAdapter y le pasamos los dos parametros (Instruccion, conexión)
+            '::OleDbDaraAdapter funciona como un puente mediante Fill para cargar datos del origen de datos en DataSet y usar Update para enviar los cambios realizados en el DataSet origen de datos.
+            Dim DA As New OleDbDataAdapter(access, conexion)
+
+            ':::Creamos el objeto DataTable que recibe la informacion del DataAdapter
+            '::DataTable se utilizan para representar las tablas de un DataSet.
+            '::Los datos son locales de la aplicación basada en .NET en la que residen, pero se pueden llenar desde un origen de datos como SQL Server mediante un DataAdapter, como en este caso.
+            Dim DT As New Data.DataTable
+
+            ':::Pasamos la informacion del DataAdapter al DataTable mediante la propiedad Fill, antes mencionada.
+            DA.Fill(DT)
+
+            ':::Ahora mostramos los datos en el DataGridView
+            tabla.DataSource = DT
+
+            dgvTabla.Columns("Pro_Nombre").Visible = False
+            dgvTabla.Columns("Pro_regTransito").Visible = False
+            dgvTabla.Columns("Pro_regSalud").Visible = False
+            dgvTabla.Columns("Pro_regOft").Visible = False
+            dgvTabla.Columns("Pac_Departamento").Visible = False
+            dgvTabla.Columns("Pac_Municipio").Visible = False
+            dgvTabla.Columns("Pac_Nacimiento").Visible = False
+            dgvTabla.Columns("Pac_Genero").Visible = False
+            dgvTabla.Columns("Pac_Residencia").Visible = False
+
+            dgvTabla.Columns("Contador").DisplayIndex = 0
+            dgvTabla.Columns("Salus").DisplayIndex = 1
+            dgvTabla.Columns("Pac_Nombre").DisplayIndex = 2
+            dgvTabla.Columns("Pac_Apellido").DisplayIndex = 3
+            dgvTabla.Columns("Pac_Dpi").DisplayIndex = 4
+
+            dgvTabla.Columns("Pac_Nombre").HeaderText = "Nombre del Paciente"
+            dgvTabla.Columns("Pac_Apellido").HeaderText = "Apellido del Paciente"
+            dgvTabla.Columns("Pac_Dpi").HeaderText = "DPI"
+            dgvTabla.Columns("Pac_Departamento").HeaderText = "Departamento"
+            dgvTabla.Columns("Pac_Municipio").HeaderText = "Municipio"
+            dgvTabla.Columns("Pac_Nacimiento").HeaderText = "Fecha de Nacimiento"
+            dgvTabla.Columns("Pac_Genero").HeaderText = "Género"
+            dgvTabla.Columns("Pac_Residencia").HeaderText = "Dirección"
+
+            dgvTabla.Columns("Res_Agudeza1").HeaderText = "Agudeza Visual 1"
+            dgvTabla.Columns("Res_Agudeza2").HeaderText = "Agudeza Visual 2"
+            dgvTabla.Columns("Res_Agudeza3").HeaderText = "Agudeza Visual 3"
+            dgvTabla.Columns("Res_Vision").HeaderText = "Visión de Colores"
+            dgvTabla.Columns("Res_CampoCentralOD").HeaderText = "Campo visual Central OD"
+            dgvTabla.Columns("Res_CampoCentralOI").HeaderText = "Campo visual Central OI"
+            dgvTabla.Columns("Res_CampoCentral").HeaderText = "Campo visual Central"
+            dgvTabla.Columns("Res_CampoPerifericoOD").HeaderText = "Campo visual Periferico OD"
+            dgvTabla.Columns("Res_CampoPerifericoOI").HeaderText = "Campo visual Periferico OI"
+            dgvTabla.Columns("Res_CampoPeriferico").HeaderText = "Campo visual Periferico"
+
+            dgvTabla.Columns("Res_Sensibilidad").HeaderText = "Sensibilidad al contraste"
+            dgvTabla.Columns("Res_Prueba").HeaderText = "Prueba estereoscopia"
+            dgvTabla.Columns("Res_Seg").HeaderText = "A 600 seg."
+            dgvTabla.Columns("Res_Anteojos").HeaderText = "Usa anteojos"
+            dgvTabla.Columns("Res_Lentes").HeaderText = "Usa lentes de contacto"
+
+            dgvTabla.Columns("Res_Licencia1").HeaderText = "Licencia A"
+            dgvTabla.Columns("Res_Licencia2").HeaderText = "Licencia B"
+            dgvTabla.Columns("Res_Licencia3").HeaderText = "Licencia E"
+            dgvTabla.Columns("Res_Licencia4").HeaderText = "Licencia C"
+            dgvTabla.Columns("Res_Licencia5").HeaderText = "Licencia M"
+            dgvTabla.Columns("Res_Licencia6").HeaderText = "Ninguna licencia"
+
+            dgvTabla.Columns("Res_Obs").HeaderText = "Observaciones"
+            dgvTabla.Columns("Salus").HeaderText = "Código Salus"
+
+            dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
+        Catch ex As Exception
+            MsgBox("No se logro realizar la consulta por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
+        End Try
+    End Sub
+
+    ':::PROCEDIMIENTO para actualizar el DataGridView al momento de accionar cualquier boton.
+    Sub actualizar()
+        ':INSTRUCCIÓN "Select * from [tabla] where [nombrecelda1]='" & [nombreherramienta1] & "'"
+        ':Dim access As String = "Select * from Certificados where NombrePaciente='" & txtNPaciente.Text & "'"
+        ':INSTRUCCIÓN "Select * from [tabla]"
+
+        ':::Creamos la variable access que guarda la instruccion de tipo SQL
+        Dim access As String = "Select * from Datos_Paciente"
+
+        ':::Accedemos a nuestro procedimiento "consulta" y le pasamos los dos 2 parametros (dgvTabla, access)
+        Me.consulta(dgvTabla, access)
+        num()
+    End Sub
+
+    ':::PROCEDIMIENTO para limpiar los campos.
     Sub limpiar()
         ':::Limpiar los TextBox
         'txtTransito.Text = ""
@@ -374,6 +664,7 @@ Public Class Form1
         txtResidencia.Text = ""
         txtEdad.Visible = False
         txtEdad.Text = " "
+        txtSalus.Text = ""
 
         ':::Limpiar los ComboBox
         'cbProfesional.SelectedValue = Nothing
@@ -432,9 +723,9 @@ Public Class Form1
         'dgvTabla.Columns("Pac_Nombre").DisplayIndex = 0
 
         ':::Limpiar la foto
-        pbFoto.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\usuario.png")
+        pbFoto.Image = System.Drawing.Image.FromFile(rutaUSUARIO)
 
-        ':::Instrucción para evitar que el # de paciente y correlativo del paciente actual se mezclen
+        ':::INSTRUCCIÓN para evitar que el # de paciente y correlativo del paciente actual se mezclen
         lpaciente.Visible = False
         lpaciente.Text = Nothing
         num()
@@ -446,28 +737,160 @@ Public Class Form1
         lPacienteE.Visible = False
         lNo.ForeColor = Color.Crimson
 
+        If lpaciente.Visible = True Then
+            btnGuardar.Enabled = False
+        Else
+            btnGuardar.Enabled = True
+        End If
+
     End Sub
 
-    ':::PROCEDIMIENTO para generar el reporte en pdf
-    Sub generarpdf(ByVal wordFileName As String, ByVal pdfFileName As String)
-        ' Crea una nueva aplicación de Word
-        Dim wordApp As New Word.Application
+    ':::INSTRUCCIÓN para mostrar la información en el formulario desde el DataGridView **.
+    Private Sub dgvTabla_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTabla.CellDoubleClick
+        limpiar()
+        Me.rtb1.ForeColor = Color.Black
+        Dim I As Integer = e.RowIndex
+        Me.cbProfesional.Text = dgvTabla.Rows(I).Cells(0).Value.ToString
+        Me.txtTransito.Text = dgvTabla.Rows(I).Cells(1).Value.ToString
+        Me.txtSalud.Text = dgvTabla.Rows(I).Cells(2).Value.ToString
+        Me.txtOftal.Text = dgvTabla.Rows(I).Cells(3).Value.ToString
+        Me.txtAPaciente.Text = dgvTabla.Rows(I).Cells(4).Value.ToString
+        Me.txtNPaciente.Text = dgvTabla.Rows(I).Cells(5).Value.ToString
+        Me.txtDpi.Text = dgvTabla.Rows(I).Cells(6).Value.ToString
+        Me.cbDepartamento.Text = dgvTabla.Rows(I).Cells(7).Value.ToString
+        Me.cbMunicipio.Text = dgvTabla.Rows(I).Cells(8).Value.ToString
+        Me.txtDate1.Value = dgvTabla.Rows(I).Cells(9).Value.ToString
+        Me.cbGenero.Text = dgvTabla.Rows(I).Cells(10).Value.ToString
+        Me.txtResidencia.Text = dgvTabla.Rows(I).Cells(11).Value.ToString
+        Me.cbAgudeza1.Text = dgvTabla.Rows(I).Cells(12).Value.ToString
+        Me.cbAgudeza2.Text = dgvTabla.Rows(I).Cells(13).Value.ToString
+        Me.cbAgudeza3.Text = dgvTabla.Rows(I).Cells(14).Value.ToString
 
-        ' Abre el documento de Word
-        Dim wordDoc As Word.Document = wordApp.Documents.Open(wordFileName)
+        ':::INSTRUCCIÓN para que los RadioButton se marquen correctamente al momento de enviarlos al formulario OPCION [1]
+        If CStr(dgvTabla.Rows(I).Cells(15).Value) = "NORMAL" Then
+            rbVision1.Checked = True
+        Else
+            rbVision2.Checked = True
+        End If
 
-        ' Guarda el documento como PDF
-        pdfFileName = "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".pdf"
-        wordDoc.SaveAs2(pdfFileName, Word.WdSaveFormat.wdFormatPDF)
+        ':::OPCION [2]
+        'rbVision1.Checked = CStr(dgvTabla.Rows(I).Cells(15).Value) = "NORMAL"
+        'rbVision2.Checked = CStr(dgvTabla.Rows(I).Cells(15).Value) = "DEFICIENTE"
 
-        ' Cierra el documento y la aplicación de Word
-        wordDoc.Close()
-        wordApp.Quit()
+        Me.nudCentral1.Value = dgvTabla.Rows(I).Cells(16).Value.ToString
+        Me.nudCentral2.Value = dgvTabla.Rows(I).Cells(17).Value.ToString
+        If CStr(dgvTabla.Rows(I).Cells(18).Value) = "NORMAL" Then
+            rbCentral1.Checked = True
+        Else
+            rbCentral2.Checked = True
+        End If
+
+        Me.nudPeriferico1.Value = dgvTabla.Rows(I).Cells(19).Value.ToString
+        Me.nudPeriferico2.Value = dgvTabla.Rows(I).Cells(20).Value.ToString
+        If CStr(dgvTabla.Rows(I).Cells(21).Value) = "NORMAL" Then
+            rbPeriferico1.Checked = True
+        Else
+            rbPeriferico2.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(22).Value) = "NORMAL" Then
+            rbSensibilidad1.Checked = True
+        Else
+            rbSensibilidad2.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(23).Value) = "SI HAY ESTEREOPSIS" Then
+            rbPrueba1.Checked = True
+        Else
+            rbPrueba2.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(24).Value) = "SI" Then
+            rbSeg1.Checked = True
+        Else
+            rbSeg2.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(25).Value) = "SI" Then
+            rbAnteojos1.Checked = True
+        Else
+            rbAnteojos2.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(26).Value) = "SI" Then
+            rbLentes1.Checked = True
+        Else
+            rbLentes2.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(27).Value) = "A" Then
+            cbA.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(28).Value) = "B" Then
+            cbB.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(29).Value) = "E" Then
+            cbE.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(30).Value) = "C" Then
+            cbC.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(31).Value) = "M" Then
+            cbM.Checked = True
+        End If
+
+        If CStr(dgvTabla.Rows(I).Cells(32).Value) = "NINGUNA" Then
+            cbNinguna.Checked = True
+        End If
+
+        Me.rtb1.Text = dgvTabla.Rows(I).Cells(33).Value.ToString
+
+        Me.pbFoto.ImageLocation = dgvTabla.Rows(I).Cells(34).Value.ToString
+        Me.lpaciente.Text = dgvTabla.Rows(I).Cells(35).Value.ToString
+        Me.txtSalus.Text = dgvTabla.Rows(I).Cells(36).Value.ToString
+
+        Me.lcontador.Visible = False
+        Me.lpaciente.Location = New Drawing.Point(840, 13)
+        Me.lpaciente.Visible = True
+        lPacienteN.Visible = False
+        lPacienteE.Location = New Drawing.Point(637, 13)
+        lPacienteE.Visible = True
+        lNo.ForeColor = Color.RoyalBlue
+        dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
+
     End Sub
 
-    ':::PROCEDIMIENTO del profesional
+#End Region
+
+#Region "PROCEDIMIENTOS */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
+
+    ':::PROCEDIMIENTO que lleva el contador de la cantidad de pacientes.
+    Sub num()
+
+        Dim Sql As String = "Select max(Contador +1) from Datos_Paciente"
+        Dim cmd As New OleDbCommand(Sql, conexion)
+
+        ':::ExecuteScalar es una operación que se utiliza para devolver un valor único
+        Dim codigo = cmd.ExecuteScalar
+
+        ':::IsDBNull es una operación que se utiliza para verificar si hay registros en la base de datos, lanza un valor booleano
+        If IsDBNull(codigo) Then
+            Me.lcontador.Text = "1"
+        Else
+
+            ':::CStr se encarga de convertir un valor numérico en un tipo String
+            Me.lcontador.Text = CInt(codigo)
+        End If
+
+    End Sub
+
+    ':::PROCEDIMIENTO del profesional.
     Sub profesional()
-        ':::Instrucción comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
+        ':::INSTRUCCIÓN comandos.Parameters.AddWithValue ([@nombrecelda1],[nombreherramienta1]) para agregar los datos a la tabla de la base de datos
         If cbProfesional.SelectedItem = Nothing Then
             MsgBox("Aún no ha selecciona a un médico", vbExclamation, "ERROR")
         Else
@@ -479,7 +902,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO apellido del paciente
+    ':::PROCEDIMIENTO apellido del paciente.
     Sub apellidoPaciente()
         If txtAPaciente.Text = Nothing Then
             MsgBox("Ingrese apellido del paciente", vbExclamation, "AVISO")
@@ -489,7 +912,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO nombre del paciente
+    ':::PROCEDIMIENTO nombre del paciente.
     Sub nombrePaciente()
         If txtNPaciente.Text = Nothing Then
             MsgBox("Ingrese nombre del paciente", vbExclamation, "AVISO")
@@ -499,7 +922,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO dpi del paciente
+    ':::PROCEDIMIENTO dpi del paciente.
     Sub dpiPaciente()
         If txtDpi.Text = Nothing Then
             MsgBox("Ingrese DPI del paciente", vbExclamation, "AVISO")
@@ -509,7 +932,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO departamento del paciente
+    ':::PROCEDIMIENTO departamento del paciente.
     Sub departamentoPaciente()
         If cbDepartamento.SelectedItem = Nothing Then
             MsgBox("Debe ingresar el departamento en el que reside el paciente", vbExclamation, "AVISO")
@@ -519,7 +942,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO municipio del paciente
+    ':::PROCEDIMIENTO municipio del paciente.
     Sub municipioPaciente()
         If cbMunicipio.SelectedItem = Nothing Then
             MsgBox("Debe ingresar el municipio en el que reside el paciente", vbExclamation, "AVISO")
@@ -529,7 +952,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO fecha de nacimiento del paciente
+    ':::PROCEDIMIENTO fecha de nacimiento del paciente.
     Sub fechaPaciente()
         If txtDate1.Text = Nothing Then
             MsgBox("Debe ingresar la fecha de nacimiento del paciente", vbExclamation, "AVISO")
@@ -539,7 +962,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO genero del paciente
+    ':::PROCEDIMIENTO genero del paciente.
     Sub generoPaciente()
         If cbGenero.SelectedItem = Nothing Then
             MsgBox("Debe ingresar el género del paciente", vbExclamation, "AVISO")
@@ -549,7 +972,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO residencia del paciente
+    ':::PROCEDIMIENTO residencia del paciente.
     Sub residenciaPaciente()
         If txtResidencia.Text = Nothing Then
             MsgBox("Debe ingresar la dirección en la que reside del paciente", vbExclamation, "AVISO")
@@ -562,12 +985,12 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO vision de colores del paciente
+    ':::PROCEDIMIENTO vision de colores del paciente.
     Sub visionPaciente()
         If rbVision1.Checked = Nothing And rbVision2.Checked = Nothing Then
             MsgBox("Debe ingresar la visión de colores del paciente", vbExclamation, "AVISO")
         Else
-            ':::Instrucción If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
+            ':::INSTRUCCIÓN If para los RadioButton. Hace la condición de guardar el texto del RadioButton que esté marcado.
             If (rbVision1.Checked = True) Then
                 comandos.Parameters.AddWithValue("@Res_Vision", rbVision1.Text)
                 centralPaciente()
@@ -578,7 +1001,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO campo central del paciente
+    ':::PROCEDIMIENTO campo central del paciente.
     Sub centralPaciente()
         If rbCentral1.Checked = Nothing And rbCentral2.Checked = Nothing Then
             MsgBox("Debe ingresar el campo visual central del paciente", vbExclamation, "AVISO")
@@ -595,7 +1018,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO campo periferico del paciente
+    ':::PROCEDIMIENTO campo periferico del paciente.
     Sub perifericoPaciente()
         If rbPeriferico1.Checked = Nothing And rbPeriferico2.Checked = Nothing Then
             MsgBox("Debe ingresar el campo visual periférico del paciente", vbExclamation, "AVISO")
@@ -612,7 +1035,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO sensibilidad al contraste del paciente
+    ':::PROCEDIMIENTO sensibilidad al contraste del paciente.
     Sub sensibilidadPaciente()
         If rbSensibilidad1.Checked = Nothing And rbSensibilidad2.Checked = Nothing Then
             MsgBox("Debe seleccionar la sensibilidad al contraste del paciente", vbExclamation, "AVISO")
@@ -627,7 +1050,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO estereoscopia del paciente 
+    ':::PROCEDIMIENTO estereoscopia del paciente.
     Sub estereoscopiaPaciente()
         If rbPrueba1.Checked = Nothing And rbPrueba2.Checked = Nothing Then
             MsgBox("Debe seleccionar la prueba estereoscopia para visión lejana del paciente:", vbExclamation, "AVISO")
@@ -642,7 +1065,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO a 600 segundos del paciente
+    ':::PROCEDIMIENTO a 600 segundos del paciente.
     Sub segPaciente()
         If rbSeg1.Checked = Nothing And rbSeg2.Checked = Nothing Then
             MsgBox("Debe seleccionar a 600 segundos del paciente", vbExclamation, "AVISO")
@@ -657,7 +1080,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO anteojos del paciente
+    ':::PROCEDIMIENTO anteojos del paciente.
     Sub anteojosPaciente()
         If rbAnteojos1.Checked = Nothing And rbAnteojos2.Checked = Nothing Then
             MsgBox("Debe seleccionar si el paciente usa lentes o no.", vbExclamation, "AVISO")
@@ -672,7 +1095,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO lentes de contacto del paciente
+    ':::PROCEDIMIENTO lentes de contacto del paciente.
     Sub lentesPaciente()
         If rbLentes1.Checked = Nothing And rbLentes2.Checked = Nothing Then
             MsgBox("Debe seleccionar si el paciente usa lentes de contacto o no.", vbExclamation, "AVISO")
@@ -687,7 +1110,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::PROCEDIMIENTO licencias del paciente
+    ':::PROCEDIMIENTO licencias del paciente.
     Sub licenciasPacientes()
         If cbA.Checked = Nothing And cbB.Checked = Nothing And cbE.Checked = Nothing And cbC.Checked = Nothing And cbM.Checked = Nothing And cbNinguna.Checked = Nothing Then
             MsgBox("Debe seleccionar para que tipo de licencia se encuentra apto el paciente.", vbExclamation, "AVISO")
@@ -726,6 +1149,7 @@ Public Class Form1
             End If
         End If
     End Sub
+
 #End Region
 
 #Region "INSTRUCCIONES  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
@@ -742,7 +1166,7 @@ Public Class Form1
         ':::Limpiamos el contenido del comboBox de municipios para que se "actualice" la información dependiendo de la opción elegida en departamentos
         cbMunicipio.Items.Clear()
 
-        ':::Instrucción Select Case para detectar lo que se selecciona en el comboBox de departamentos
+        ':::INSTRUCCIÓN Select Case para detectar lo que se selecciona en el comboBox de departamentos
         Select Case departamento
 
             ':::En cada Case va un departamento, el cual, dependiendo la elección de departamento se cambiaran los items en el comboBox de municipio
@@ -1110,135 +1534,7 @@ Public Class Form1
         End Select
     End Sub
 
-    ':::CERRAR el programa
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
-        ':::Instrucción para detener la ejecución del programa
-        Me.Close()
-    End Sub
-
-    ':::LIMPIAR el programa
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        limpiar()
-    End Sub
-
-    ':::Instrucción para mostrar la información en el formulario desde el DataGridView
-    Private Sub dgvTabla_CellDoubleClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTabla.CellDoubleClick
-        limpiar()
-
-        Dim I As Integer = e.RowIndex
-        Me.cbProfesional.Text = dgvTabla.Rows(I).Cells(0).Value.ToString
-        Me.txtTransito.Text = dgvTabla.Rows(I).Cells(1).Value.ToString
-        Me.txtSalud.Text = dgvTabla.Rows(I).Cells(2).Value.ToString
-        Me.txtOftal.Text = dgvTabla.Rows(I).Cells(3).Value.ToString
-        Me.txtAPaciente.Text = dgvTabla.Rows(I).Cells(4).Value.ToString
-        Me.txtNPaciente.Text = dgvTabla.Rows(I).Cells(5).Value.ToString
-        Me.txtDpi.Text = dgvTabla.Rows(I).Cells(6).Value.ToString
-        Me.cbDepartamento.Text = dgvTabla.Rows(I).Cells(7).Value.ToString
-        Me.cbMunicipio.Text = dgvTabla.Rows(I).Cells(8).Value.ToString
-        Me.txtDate1.Value = dgvTabla.Rows(I).Cells(9).Value.ToString
-        Me.cbGenero.Text = dgvTabla.Rows(I).Cells(10).Value.ToString
-        Me.txtResidencia.Text = dgvTabla.Rows(I).Cells(11).Value.ToString
-        Me.cbAgudeza1.Text = dgvTabla.Rows(I).Cells(12).Value.ToString
-        Me.cbAgudeza2.Text = dgvTabla.Rows(I).Cells(13).Value.ToString
-        Me.cbAgudeza3.Text = dgvTabla.Rows(I).Cells(14).Value.ToString
-
-        ':::Instrucción para que los RadioButton se marquen correctamente al momento de enviarlos al formulario OPCION [1]
-        If CStr(dgvTabla.Rows(I).Cells(15).Value) = "NORMAL" Then
-            rbVision1.Checked = True
-        Else
-            rbVision2.Checked = True
-        End If
-
-        ':::OPCION [2]
-        'rbVision1.Checked = CStr(dgvTabla.Rows(I).Cells(15).Value) = "NORMAL"
-        'rbVision2.Checked = CStr(dgvTabla.Rows(I).Cells(15).Value) = "DEFICIENTE"
-
-        Me.nudCentral1.Value = dgvTabla.Rows(I).Cells(16).Value.ToString
-        Me.nudCentral2.Value = dgvTabla.Rows(I).Cells(17).Value.ToString
-        If CStr(dgvTabla.Rows(I).Cells(18).Value) = "NORMAL" Then
-            rbCentral1.Checked = True
-        Else
-            rbCentral2.Checked = True
-        End If
-
-        Me.nudPeriferico1.Value = dgvTabla.Rows(I).Cells(19).Value.ToString
-        Me.nudPeriferico2.Value = dgvTabla.Rows(I).Cells(20).Value.ToString
-        If CStr(dgvTabla.Rows(I).Cells(21).Value) = "NORMAL" Then
-            rbPeriferico1.Checked = True
-        Else
-            rbPeriferico2.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(22).Value) = "NORMAL" Then
-            rbSensibilidad1.Checked = True
-        Else
-            rbSensibilidad2.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(23).Value) = "SI HAY ESTEREOPSIS" Then
-            rbPrueba1.Checked = True
-        Else
-            rbPrueba2.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(24).Value) = "SI" Then
-            rbSeg1.Checked = True
-        Else
-            rbSeg2.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(25).Value) = "SI" Then
-            rbAnteojos1.Checked = True
-        Else
-            rbAnteojos2.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(26).Value) = "SI" Then
-            rbLentes1.Checked = True
-        Else
-            rbLentes2.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(27).Value) = "A" Then
-            cbA.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(28).Value) = "B" Then
-            cbB.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(29).Value) = "E" Then
-            cbE.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(30).Value) = "C" Then
-            cbC.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(31).Value) = "M" Then
-            cbM.Checked = True
-        End If
-
-        If CStr(dgvTabla.Rows(I).Cells(32).Value) = "NINGUNA" Then
-            cbNinguna.Checked = True
-        End If
-
-        Me.rtb1.Text = dgvTabla.Rows(I).Cells(33).Value.ToString
-
-        Me.pbFoto.ImageLocation = dgvTabla.Rows(I).Cells(34).Value.ToString
-        Me.lpaciente.Text = dgvTabla.Rows(I).Cells(35).Value.ToString
-
-        Me.lcontador.Visible = False
-        Me.lpaciente.Location = New Drawing.Point(840, 13)
-        Me.lpaciente.Visible = True
-        lPacienteN.Visible = False
-        lPacienteE.Location = New Drawing.Point(637, 13)
-        lPacienteE.Visible = True
-        lNo.ForeColor = Color.RoyalBlue
-        dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
-    End Sub
-
-    ':::Instrucción que verifica el estado del CheckBox NINGUNA
+    ':::INSTRUCCIÓN que verifica el estado del CheckBox NINGUNA
     Private Sub cbNinguna_Click(sender As Object, e As System.EventArgs) Handles cbNinguna.Click
         If (cbNinguna.Checked = True) Then
             cbA.Checked = False
@@ -1249,72 +1545,42 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción que verifica el estado del CheckBox A
+    ':::INSTRUCCIÓN que verifica el estado del CheckBox A
     Private Sub cbA_Click(sender As Object, e As System.EventArgs) Handles cbA.Click
         If (cbA.Checked = True) Then
             cbNinguna.Checked = False
         End If
     End Sub
 
-    ':::Instrucción que verifica el estado del CheckBox B
+    ':::INSTRUCCIÓN que verifica el estado del CheckBox B
     Private Sub cbB_Click(sender As Object, e As System.EventArgs) Handles cbB.Click
         If (cbB.Checked = True) Then
             cbNinguna.Checked = False
         End If
     End Sub
 
-    ':::Instrucción que verifica el estado del CheckBox E
+    ':::INSTRUCCIÓN que verifica el estado del CheckBox E
     Private Sub cbE_Click(sender As Object, e As System.EventArgs) Handles cbE.Click
         If (cbE.Checked = True) Then
             cbNinguna.Checked = False
         End If
     End Sub
 
-    ':::Instrucción que verifica el estado del CheckBox C
+    ':::INSTRUCCIÓN que verifica el estado del CheckBox C
     Private Sub cbC_Click(sender As Object, e As System.EventArgs) Handles cbC.Click
         If (cbC.Checked = True) Then
             cbNinguna.Checked = False
         End If
     End Sub
 
-    ':::Instrucción que verifica el estado del CheckBox M
+    ':::INSTRUCCIÓN que verifica el estado del CheckBox M
     Private Sub cbM_Click(sender As Object, e As System.EventArgs) Handles cbM.Click
         If (cbM.Checked = True) Then
             cbNinguna.Checked = False
         End If
     End Sub
 
-    ':::Boton para LLENAR todos los campos
-    Private Sub btnAgregar_Click(sender As System.Object, e As System.EventArgs)
-        'cbProfesional.Text = "Luis Porras"
-        'txtTransito.Text = "123"
-        'txtSalud.Text = "456"
-        'txtOftal.Text = "789"
-        'txtNPaciente.Text = "Alejandro Polares"
-        'txtDpi.Text = "457"
-        'cbDepartamento.Text = "Guatemala"
-        'cbMunicipio.Text = "Ciudad de Guatemala"
-        'cbGenero.Text = "Masculino"
-        'txtResidencia.Text = "Vivo por ahi"
-        'cbAgudeza1.Text = "67"
-        'cbAgudeza2.Text = "34"
-        'cbAgudeza3.Text = "90"
-        'rbVision1.Checked = True
-        'nudCentral1.Value = "45"
-        'nudCentral2.Value = "32"
-        'rbCentral1.Checked = True
-        'nudPeriferico1.Value = "5"
-        'nudPeriferico2.Value = "57"
-        'rbPeriferico1.Checked = True
-        'rbSensibilidad1.Checked = True
-        'rbPrueba1.Checked = True
-        'rbSeg1.Checked = True
-        'rbAnteojos1.Checked = True
-        'rbLentes1.Checked = True
-        'rtb1.Text = "Esto es una prueba"
-    End Sub
-
-    ':::Instrucción para abrir el explorador de archivos y buscar la FOTO
+    ':::INSTRUCCIÓN para abrir el explorador de archivos y buscar la FOTO
     Private Sub PictureBox1_Click(sender As System.Object, e As System.EventArgs) Handles pbFoto.Click
 
         ':::Variable que utlizamos para guardar la cadena que contiene la localización de la imagen.
@@ -1337,7 +1603,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para calcular la edad del paciente
+    ':::INSTRUCCIÓN para calcular la edad del paciente
     Private Sub txtDate1_ValueChanged(sender As Object, e As EventArgs) Handles txtDate1.ValueChanged
         Dim fechaHoy As Date = Date.Now.Date
         Dim fechaNacimiento As Date = txtDate1.Value
@@ -1374,7 +1640,7 @@ Public Class Form1
         txtEdad.Visible = True
     End Sub
 
-    ':::Instrucción para que solo acepte número en el txtTransito
+    ':::INSTRUCCIÓN para que solo acepte número en el txtTransito
     Private Sub txtTransito_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTransito.KeyPress
         If Char.IsNumber(e.KeyChar) Then
             e.Handled = False
@@ -1387,7 +1653,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para que solo acepte número en el txtSalud
+    ':::INSTRUCCIÓN para que solo acepte número en el txtSalud
     Private Sub txtSalud_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSalud.KeyPress
         If Char.IsNumber(e.KeyChar) Then
             e.Handled = False
@@ -1400,7 +1666,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para que solo acepte número en el txtOftal
+    ':::INSTRUCCIÓN para que solo acepte número en el txtOftal
     Private Sub txtOftal_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtOftal.KeyPress
         If Char.IsNumber(e.KeyChar) Then
             e.Handled = False
@@ -1413,7 +1679,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para que solo acepte número en el txtDpi
+    ':::INSTRUCCIÓN para que solo acepte número en el txtDpi
     Private Sub txtDpi_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtDpi.KeyPress
         If Char.IsNumber(e.KeyChar) Then
             e.Handled = False
@@ -1426,7 +1692,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para que solo acepte letras en el txtAPaciente
+    ':::INSTRUCCIÓN para que solo acepte letras en el txtAPaciente
     Private Sub txtAPaciente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtAPaciente.KeyPress
         If Char.IsLetter(e.KeyChar) Then
             e.Handled = False
@@ -1439,7 +1705,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para que solo acepte letras en el txtNPaciente
+    ':::INSTRUCCIÓN para que solo acepte letras en el txtNPaciente
     Private Sub txtNPaciente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtNPaciente.KeyPress
         If Char.IsLetter(e.KeyChar) Then
             e.Handled = False
@@ -1452,7 +1718,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para que solo acepte números en el txtAPaciente
+    ':::INSTRUCCIÓN para que solo acepte números en el txtAPaciente
     Private Sub txtAgudeza1_KeyPress(sender As Object, e As KeyPressEventArgs)
         If Char.IsNumber(e.KeyChar) Then
             e.Handled = False
@@ -1465,7 +1731,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Instrucción para "placeholder" en el RichTextBox
+    ':::INSTRUCCIÓN para "placeholder" en el RichTextBox
     Private Sub rtb1_Click(sender As Object, e As EventArgs) Handles rtb1.Click
         If rtb1.Text = "Observaciones: " Then
             Me.rtb1.Text = Nothing
@@ -1473,116 +1739,7 @@ Public Class Form1
         End If
     End Sub
 
-    ':::Boton para imprimir los REPORTES en word
-    Private estaGifEnEjecucion As Boolean = False
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnReporte.Click
-        If (txtNPaciente.Text = Nothing Or txtAPaciente.Text = Nothing Or txtDpi.Text = Nothing) Then
-            If (rbAbrir.Checked = False) Then
-                MsgBox("Falta información del paciente", vbExclamation, "AVISO")
-                If estaGifEnEjecucion = False Then
-                    btnReporte.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Iconos\cargando-loading-012.gif")
-                    estaGifEnEjecucion = True
-                End If
-                gbBotones.Visible = True
-                rbAbrir.Visible = True
-                rbAbrir.Location = New Drawing.Point(276, 25)
-                GroupBox3.Enabled = False
-                GroupBox2.Enabled = False
-                txtAPaciente.Enabled = False
-                txtDpi.Enabled = False
-                cbDepartamento.Enabled = False
-                cbMunicipio.Enabled = False
-                txtDate1.Enabled = False
-                cbGenero.Enabled = False
-                txtResidencia.Enabled = False
-                pbFoto.Enabled = False
-                btnGuardar.Enabled = False
-                btnActualizar.Enabled = False
-                btnBuscar.Enabled = False
-                estaGifEnEjecucion = False
-            End If
-            If (rbAbrir.Checked = True) Then
-                Call Shell("explorer.exe " & "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
-                pbSalir_Click(sender, e)
-            End If
-        Else
-            If estaGifEnEjecucion = False Then
-                btnReporte.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Iconos\cargando-loading-012.gif")
-                estaGifEnEjecucion = True
-            End If
-            gbBotones.Visible = True
-            rbGenerarpdf.Visible = True
-            rbGenerarpdf.Location = New Drawing.Point(138, 25)
-            rbGenerarword.Visible = True
-            rbGenerarword.Location = New Drawing.Point(276, 25)
-            rbAbrir.Visible = True
-            rbAbrir.Location = New Drawing.Point(430, 25)
-            GroupBox3.Enabled = False
-            GroupBox2.Enabled = False
-            txtAPaciente.Enabled = False
-            txtDpi.Enabled = False
-            cbDepartamento.Enabled = False
-            cbMunicipio.Enabled = False
-            txtDate1.Enabled = False
-            cbGenero.Enabled = False
-            txtResidencia.Enabled = False
-            pbFoto.Enabled = False
-            btnGuardar.Enabled = False
-            btnActualizar.Enabled = False
-            btnBuscar.Enabled = False
-            estaGifEnEjecucion = False
-            If rbGenerarpdf.Checked = True Then
-                generarpdf("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".docx",
-                "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes\" & txtNPaciente.Text & ".pdf")
-            ElseIf rbGenerarword.Checked = True Then
-                reporte()
-            ElseIf rbAbrir.Checked = True Then
-                Call Shell("explorer.exe " & "C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes", vbNormalFocus)
-            End If
-        End If
-
-    End Sub
-
-    ':::"BOTON" para salir del submenu de la generacion de reportes y la busqueda de paciente.
-    Private Sub pbSalir_Click(sender As Object, e As EventArgs) Handles pbSalir.Click
-        btnReporte.Image = pbImpresora.Image
-        btnBuscar.Image = pbLupa.Image
-        gbBotones.Visible = False
-
-        rbGenerarpdf.Visible = False
-        rbGenerarpdf.Checked = False
-        rbGenerarword.Visible = False
-        rbGenerarword.Checked = False
-        rbAbrir.Visible = False
-        rbAbrir.Checked = False
-
-        rbNombre.Visible = False
-        rbNombre.Checked = False
-        rbApellido.Visible = False
-        rbApellido.Checked = False
-        rbDpi.Visible = False
-        rbDpi.Checked = False
-        rbTodos.Visible = False
-        rbTodos.Checked = False
-
-        GroupBox3.Enabled = True
-        GroupBox2.Enabled = True
-        txtAPaciente.Enabled = True
-        txtNPaciente.Enabled = True
-        txtDpi.Enabled = True
-        cbDepartamento.Enabled = True
-        cbMunicipio.Enabled = True
-        txtDate1.Enabled = True
-        cbGenero.Enabled = True
-        txtResidencia.Enabled = True
-        pbFoto.Enabled = True
-        btnGuardar.Enabled = True
-        btnReporte.Enabled = True
-        btnActualizar.Enabled = True
-        btnBuscar.Enabled = True
-    End Sub
-
-    ':::Instrucción para colocar los #'s de registro cuando se selecciona al profesional en cbProfesional
+    ':::INSTRUCCIÓN para colocar los #'s de registro cuando se selecciona al profesional en cbProfesional
     Private Sub cbProfesional_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbProfesional.SelectedIndexChanged
         If cbProfesional.Text = "Ramiro Faillace Poggio" Then
             txtTransito.Text = "070213"
@@ -1591,198 +1748,59 @@ Public Class Form1
 
     End Sub
 
-    ':::Instrucción para habilitar txtNPaciente si se selecciona en el menu de [BUSCAR]
+    ':::INSTRUCCIÓN para habilitar txtNPaciente si se selecciona en el menu de [BUSCAR]
     Private Sub rbNombre_Click(sender As Object, e As EventArgs) Handles rbNombre.Click
         txtNPaciente.Enabled = True
         txtAPaciente.Enabled = False
         txtDpi.Enabled = False
+        txtSalus.Enabled = False
     End Sub
 
-    ':::Instrucción para habilitar txtAPaciente si se selecciona en el menu de [BUSCAR]
+    ':::INSTRUCCIÓN para habilitar txtAPaciente si se selecciona en el menu de [BUSCAR]
     Private Sub rbApellido_Click(sender As Object, e As EventArgs) Handles rbApellido.Click
         txtNPaciente.Enabled = False
         txtAPaciente.Enabled = True
         txtDpi.Enabled = False
+        txtSalus.Enabled = False
     End Sub
 
-    ':::Instrucción para habilitar txtDpi si se selecciona en el menu de [BUSCAR]
+    ':::INSTRUCCIÓN para habilitar txtDpi si se selecciona en el menu de [BUSCAR]
     Private Sub rbDpi_Click(sender As Object, e As EventArgs) Handles rbDpi.Click
         txtNPaciente.Enabled = False
         txtAPaciente.Enabled = False
         txtDpi.Enabled = True
+        txtSalus.Enabled = False
+    End Sub
+
+    ':::INSTRUCCIÓN para habilitar txtSalus si se selecciona en el menu de [BUSCAR]
+    Private Sub rbSalus_CheckedChanged(sender As Object, e As EventArgs) Handles rbSalus.Click
+        txtNPaciente.Enabled = False
+        txtAPaciente.Enabled = False
+        txtDpi.Enabled = False
+        txtSalus.Enabled = True
     End Sub
 
 #End Region
 
-#Region "BASE DE DATOS  */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
-    ':::CONEXIÓN a la base de datos Access
-    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        ':::Instrucción para mostrar la fecha de hoy
-        Me.lFecha.Text = Date.Now.Date
-        Dim fechaReporte = Format(Date.Now.Date, "Long Date")
-        lFReporte.Text = fechaReporte
-        cbAgudeza1.Text = "20/25"
-        cbAgudeza2.Text = "20/25"
-        cbAgudeza3.Text = "20/25"
+#Region "EXTRAS   */*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
 
-        Me.rtb1.ForeColor = Color.Gray
-        Me.rtb1.Text = "Observaciones: "
+    ':::PROCEDIMIENTO para Agregar, Actualizar y Eliminar ademas le indicamos que debe pedir 2 parametros para ejecutarse correctamente (tabla, access)
+    Sub operaciones(ByVal tabla As DataGridView, ByVal access As String)
 
-        cbProfesional.Text = "Ramiro Faillace Poggio"
-
-        ':::Instrucción Try para capturar errores
+        ':::Instruccion Try para capturar errores
         Try
 
-            ':::Usamos la variable conexion para el enlace a la base de datos
-            conexion.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\CERTIFICADO_DE_LICENCIA_BD.accdb"
-            conexion.Open()
-            num()
-            MsgBox("SE CONECTO EXITOSAMENTE A LA BASE DE DATOS", vbInformation, "CORRECTO")
-        Catch ex As Exception
-            MsgBox("ERROR AL CONECTAR A LA BASE DE DATOS NO PODRA GUARDAR NINGUN DATO", vbCritical, "ERROR")
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    ':::Boton que ENVIA [GUARDAR] la información a la base de datos
-    Private Sub BtnGuardar_Click(sender As System.Object, e As System.EventArgs) Handles btnGuardar.Click
-        ':::Instrucción Try para capturar errores
-        Try
-
-            ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
-            comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, 
-                                                                     Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, 
-                                                                     Res_CampoCentralOI, Res_CampoCentral, Res_CampoPerifericoOD, Res_CampoPerifericoOI, Res_CampoPeriferico, Res_Sensibilidad, 
-                                                                     Res_Prueba, Res_Seg, Res_Anteojos, Res_Lentes, Res_Licencia1, Res_Licencia2, Res_Licencia3, Res_Licencia4, Res_Licencia5, 
-                                                                     Res_Licencia6, Res_Obs, Contador, Fotografia) 
-                                                                     VALUES (@cbProfesional, @txtTransito, @txtSalud, @txtOftal, @txtAPaciente, @txtNPaciente, @txtDpi, @cbDepartamento, @cbMunicipio, 
-                                                                     @txtDate1, @cbGenero, @txtResidencia, @cbAgudeza1, @cbAgudeza2, @cbAgudeza3, @rbVision1, @nudCentral1, @nudCentral2, @rbCentral1, 
-                                                                     @nudPeriferico1, @nudPeriferico2, @rbPeriferico1, @rbSensibilidad1, @rbPrueba1, @rbSeg1, @rbAnteojos1, @rbLentes1, @cbA, @cbB, 
-                                                                     @cbE, @cbC, @cbM, @cbNinguno, @rtb1, @lcontador, @pbFoto)", conexion)
-
-            profesional()
-
-            comandos.Parameters.AddWithValue("@Res_Obs", rtb1.Text)
-            comandos.Parameters.AddWithValue("@Contador", lcontador.Text)
-            comandos.Parameters.AddWithValue("@Fotografia", lDirFoto.Text)
+            ':::Creamos nuestro objeto de tipo Command que almacenara nuestras instrucciones, necesita 2 parametros (access, conexion)
+            Dim cmd As New OleDbCommand(access, conexion)
 
             ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
-            comandos.ExecuteNonQuery()
-            MsgBox("DATOS GUARDADOS EXITOSAMENTE", vbInformation, "CORRECTO")
-            reporte()
-            actualizar()
-            limpiar()
+            '::Realiza operaciones de catálogo (por ejemplo, consultar la estructura de una base de datos o crear objetos de base de datos como tablas)
+            '::o cambiar los datos de una base de datos sin usar, mediante DataSet, la ejecución de instrucciones UPDATE, INSERT o DELETE.
+            cmd.ExecuteNonQuery()
+            MsgBox("DATOS ACTUALIZADOS EXITOSAMENTE", vbInformation, "CORRECTO")
         Catch ex As Exception
-            'MsgBox("ERROR AL GUARDAR EL FORMULARIO", vbCritical, "ERROR")
-            'MsgBox(ex.Message)
+            MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
         End Try
-    End Sub
-
-    ':::Boton que MUESTRA [BUSCAR] la información almacenada en la base de datos
-    Private estaGifEnEjecucionB As Boolean
-    Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles btnBuscar.Click
-        If estaGifEnEjecucionB = False Then
-            btnBuscar.Image = System.Drawing.Image.FromFile("C:\Users\sistemas2\Documents\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Iconos\cargando-loading-012.gif")
-            estaGifEnEjecucionB = True
-        End If
-        gbBotones.Visible = True
-        rbNombre.Visible = True
-        rbNombre.Location = New Drawing.Point(228, 25)
-        rbApellido.Visible = True
-        rbApellido.Location = New Drawing.Point(318, 25)
-        rbDpi.Visible = True
-        rbDpi.Location = New Drawing.Point(175, 25)
-        rbTodos.Visible = True
-        rbTodos.Location = New Drawing.Point(413, 25)
-        'btnBuscar.Image = Nothing
-        'btnBuscar.Image = pbCargando.Image
-        GroupBox3.Enabled = False
-        GroupBox2.Enabled = False
-        txtAPaciente.Enabled = False
-        txtNPaciente.Enabled = False
-        txtDpi.Enabled = False
-        cbDepartamento.Enabled = False
-        cbMunicipio.Enabled = False
-        txtDate1.Enabled = False
-        cbGenero.Enabled = False
-        txtResidencia.Enabled = False
-        pbFoto.Enabled = False
-        btnGuardar.Enabled = False
-        btnReporte.Enabled = False
-        btnActualizar.Enabled = False
-        estaGifEnEjecucionB = False
-        Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
-        Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtAPaciente.Text & "'"
-        Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtDpi.Text & "'"
-        Dim access As String = "Select * from Datos_Paciente"
-
-        If (rbNombre.Checked = True) Then
-            If (txtNPaciente.Text = Nothing) Then
-                MsgBox("No ha ingresado el nombre del paciente", vbExclamation, "AVISO")
-                pbSalir_Click(sender, e)
-            Else
-                Me.consulta(dgvTabla, nombre)
-            End If
-        ElseIf (rbApellido.Checked = True) Then
-            If (txtNPaciente.Text = Nothing) Then
-                MsgBox("No ha ingresado el apellido del paciente", vbExclamation, "AVISO")
-                pbSalir_Click(sender, e)
-            Else
-                Me.consulta(dgvTabla, apellido)
-            End If
-        ElseIf (rbDpi.Checked = True) Then
-            If (txtNPaciente.Text = Nothing) Then
-                MsgBox("No ha ingresado el DPI del paciente", vbExclamation, "AVISO")
-                pbSalir_Click(sender, e)
-            Else
-                Me.consulta(dgvTabla, dpi)
-            End If
-        ElseIf (rbTodos.Checked = True) Then
-            Me.consulta(dgvTabla, access)
-        End If
-
-    End Sub
-
-    ':::Boton que ACTUALIZA [ACTUALIZAR] la informacion almacenada en la base de datos
-    Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles btnActualizar.Click
-
-        If (txtNPaciente.Text = Nothing Or txtAPaciente.Text = Nothing Or txtDpi.Text = Nothing Or lcontador.Visible = True) Then
-            MsgBox("Ningún paciente seleccionado, por favor seleccione un paciente en el botón BUSCAR.", vbExclamation, "AVISO")
-        Else
-            Try
-
-                ':::Usamos el comando y le indicamos con la instrucción "UPDATE [tabla] SET [columna1] = [@nombreherramienta1], [columna2] = [@nombreherramienta2] WHERE Contador = [@contador]", conexion)
-                comandos = New OleDbCommand("UPDATE Datos_Paciente SET Pro_Nombre = @cbProfesional, Pro_regTransito = @txtTransito, Pro_regSalud = @txtSalud, Pro_regOft = @txtOftal, 
-                                     Pac_Apellido = @txtAPaciente, Pac_Nombre = @txtNPaciente, Pac_Dpi = @txtDpi, Pac_Departamento = @cbDepartamento, Pac_Municipio = @cbMunicipio,
-                                     Pac_Nacimiento = @txtDate1, Pac_Genero = @cbGenero, Pac_Residencia = @txtResidencia, Res_Agudeza1 = @cbAgudeza1, Res_Agudeza2 = @cbAgudeza2, 
-                                     Res_Agudeza3 = @cbAgudeza3, Res_Vision = @rbVision1, Res_CampoCentralOD = @nudCentral1, Res_CampoCentralOI = @nudCentral2, Res_CampoCentral = @rbCentral1, 
-                                     Res_CampoPerifericoOD = @nudPeriferico1, Res_CampoPerifericoOI = @nudPeriferico2, Res_CampoPeriferico = @rbPeriferico1, Res_Sensibilidad = @rbSensibilidad1, 
-                                     Res_Prueba = @rbPrueba1, Res_Seg = @rbSeg1, Res_Anteojos = @rbAnteojos1, Res_Lentes = @rbLentes1, Res_Licencia1 = @cbA, Res_Licencia2 = @cbB, 
-                                     Res_Licencia3 = @cbE, Res_Licencia4 = @cbC, Res_Licencia5 = @cbM, Res_Licencia6 = @cbNinguna, Res_Obs = @rtb1, Fotografia = @pbFoto
-                                     WHERE Contador = @contador", conexion)
-
-                profesional()
-
-                comandos.Parameters.AddWithValue("@rtb1", rtb1.Text)
-                comandos.Parameters.AddWithValue("@pbFoto", lDirFoto.Text)
-                comandos.Parameters.AddWithValue("@Contador", lpaciente.Text)
-
-                ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
-                comandos.ExecuteNonQuery()
-                MsgBox("DATOS ACTUALIZADOS EXITOSAMENTE", vbInformation, "CORRECTO")
-                actualizar()
-                limpiar()
-
-            Catch ex As OleDbException ' Excepciones específicas de la base de datos
-                MsgBox("Error en la base de datos: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
-
-            Catch ex As ArgumentNullException ' Excepciones específicas para argumentos nulos
-                MsgBox("Uno de los parámetros es nulo: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
-
-            Catch ex As Exception
-                MsgBox("No se logro realizar la operación por: " & ex.Message, MsgBoxStyle.Critical, "ERROR")
-            End Try
-        End If
 
     End Sub
 
@@ -1796,8 +1814,49 @@ Public Class Form1
             limpiar()
         End If
 
-        ':::Instrucción "Delete * From [tabla] Where [nombrecelda1]=" & [nombreherramienta1] & ""
+        ':::INSTRUCCIÓN "Delete * From [tabla] Where [nombrecelda1]=" & [nombreherramienta1] & ""
 
+    End Sub
+
+    ':::Boton para cerrar el programa
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        ':::INSTRUCCIÓN para detener la ejecución del programa
+        Me.Close()
+    End Sub
+
+    ':::Boton para limpiar el programa
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLimpiar.Click
+        limpiar()
+    End Sub
+
+    ':::Boton para LLENAR todos los campos
+    Private Sub btnAgregar_Click(sender As System.Object, e As System.EventArgs)
+        'cbProfesional.Text = "Luis Porras"
+        'txtTransito.Text = "123"
+        'txtSalud.Text = "456"
+        'txtOftal.Text = "789"
+        'txtNPaciente.Text = "Alejandro Polares"
+        'txtDpi.Text = "457"
+        'cbDepartamento.Text = "Guatemala"
+        'cbMunicipio.Text = "Ciudad de Guatemala"
+        'cbGenero.Text = "Masculino"
+        'txtResidencia.Text = "Vivo por ahi"
+        'cbAgudeza1.Text = "67"
+        'cbAgudeza2.Text = "34"
+        'cbAgudeza3.Text = "90"
+        'rbVision1.Checked = True
+        'nudCentral1.Value = "45"
+        'nudCentral2.Value = "32"
+        'rbCentral1.Checked = True
+        'nudPeriferico1.Value = "5"
+        'nudPeriferico2.Value = "57"
+        'rbPeriferico1.Checked = True
+        'rbSensibilidad1.Checked = True
+        'rbPrueba1.Checked = True
+        'rbSeg1.Checked = True
+        'rbAnteojos1.Checked = True
+        'rbLentes1.Checked = True
+        'rtb1.Text = "Esto es una prueba"
     End Sub
 
 #End Region
