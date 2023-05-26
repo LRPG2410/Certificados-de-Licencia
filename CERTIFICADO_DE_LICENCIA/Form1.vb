@@ -28,6 +28,13 @@ Public Class Form1
 
         cbProfesional.Text = "Ramiro Faillace Poggio"
 
+        txtAPaciente.ContextMenuStrip = New ContextMenuStrip()  ':::Deshabilitar el menú contextual de txtAPaciente.
+        txtNPaciente.ContextMenuStrip = New ContextMenuStrip()  ':::Deshabilitar el menú contextual de txtNPaciente.
+        txtDpi.ContextMenuStrip = New ContextMenuStrip()  ':::Deshabilitar el menú contextual de txtDpi.
+        txtResidencia.ContextMenuStrip = New ContextMenuStrip()  ':::Deshabilitar el menú contextual txtResidencia.
+        txtSalus.ContextMenuStrip = New ContextMenuStrip()  ':::Deshabilitar el menú contextual txtSalus.
+        rtb1.ContextMenuStrip = New ContextMenuStrip()  ':::Deshabilitar el menú contextual rtb1.
+
         ':::INSTRUCCIÓN Try para capturar errores
         Try
 
@@ -163,6 +170,7 @@ Public Class Form1
                 btnGuardar.Enabled = False
                 btnActualizar.Enabled = False
                 btnBuscar.Enabled = False
+                rbSalus.Visible = False
             End If
             If (rbAbrir.Checked = True) Then
                 Call Shell("explorer.exe " & rutaREPORTE, vbNormalFocus)
@@ -294,8 +302,8 @@ Public Class Form1
 
                 comandos.Parameters.AddWithValue("@rtb1", rtb1.Text)
                 comandos.Parameters.AddWithValue("@pbFoto", lDirFoto.Text)
+                comandos.Parameters.AddWithValue("@txtSalus", txtSalus.Text)
                 comandos.Parameters.AddWithValue("@Contador", lpaciente.Text)
-                comandos.Parameters.AddWithValue("@Salus", txtSalus.Text)
 
                 ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
                 comandos.ExecuteNonQuery()
@@ -363,10 +371,15 @@ Public Class Form1
 
     ':::PROCEDIMIENTO para generar los reportes en word.
     Sub reporte()
+        ':::Crear la carpeta al inicio si no existe
+        Dim rutaCarpeta As String = Path.Combine(rutaREPORTEin, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text)
         Try
+            If Not Directory.Exists(rutaCarpeta) Then
+                Directory.CreateDirectory(rutaCarpeta)
+            End If
+
             ':::FileCopy se encarga de copiar una plantilla ya creada en word y crean un nuevo documento igual a la plantilla, pero con los datos que toma del formulario de vb.
-            FileCopy(rutaPLANTILLA,
-            rutaREPORTEin & txtNPaciente.Text & ".docx")
+            FileCopy(rutaPLANTILLA, Path.Combine(rutaCarpeta, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text & ".docx"))
 
             ':::Reinstanciar MSWord antes de intentar abrir otro documento.
             If MSWord Is Nothing Then
@@ -374,7 +387,7 @@ Public Class Form1
             End If
 
             ':::A documento se le asigna el documento de word que este especificado en la ruta.
-            documento = MSWord.Documents.Open(rutaREPORTEin & txtNPaciente.Text & ".docx")
+            documento = MSWord.Documents.Open(Path.Combine(rutaCarpeta, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text & ".docx"))
 
             'MsgBox("EL INFORME FUE GUARDADO EN C:\Users\sistemas.INTEVISA\Desktop\Proyectos\CERTIFICADO_DE_LICENCIA\CERTIFICADO_DE_LICENCIA\Recursos\Reportes CON EL NOMBRE DE '" & txtNPaciente.Text & " '",
             'MsgBoxStyle.Information, "INFORMACIÓN")
@@ -402,7 +415,7 @@ Public Class Form1
             Dim aspectRatio As Double = pbFoto.Image.Width / pbFoto.Image.Height
 
             ':::Determina el nuevo ancho de la imagen
-            Dim newWidth As Integer = 130 ' Puedes ajustar este valor según tus necesidades
+            Dim newWidth As Integer = 115 ' Puedes ajustar este valor según tus necesidades
 
             ':::Calcula el nuevo alto de la imagen manteniendo la relación de aspecto
             Dim newHeight As Integer = CInt(newWidth / aspectRatio)
@@ -515,12 +528,11 @@ Public Class Form1
 
             documento.Bookmarks.Item("rtb1").Range.Text = rtb1.Text
 
-
         Catch ex As Exception
 
         Finally
 
-            documento = MSWord.Documents.Open(rutaREPORTEin & txtAPaciente.Text & " " & txtNPaciente.Text & ".docx")
+            documento = MSWord.Documents.Open(Path.Combine(rutaCarpeta, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text & ".docx"))
 
             ':::Asegurarse de que el documento se guarda y se cierra correctamente
             If Not documento Is Nothing Then
@@ -540,6 +552,7 @@ Public Class Form1
             ':::Limpieza del recolector de basura
             GC.Collect()
             GC.WaitForPendingFinalizers()
+            carpeta()
         End Try
     End Sub
 
@@ -558,6 +571,12 @@ Public Class Form1
         ' Cierra el documento y la aplicación de Word
         wordDoc.Close()
         wordApp.Quit()
+    End Sub
+
+    ':::PROCEDIMIENTO para generar una carpeta con el codigo de salus, el apellido y el nombre del paciente.
+    Sub carpeta()
+        Dim rutaCarpeta As String = Path.Combine(rutaREPORTEin, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text)
+        Directory.CreateDirectory(rutaCarpeta)
     End Sub
 
     ':::PROCEDIMIENTO para la consulta y le indicamos que debe pedir 2 parametros para ejecutarse correctamente (tabla, access).
@@ -1778,6 +1797,54 @@ Public Class Form1
         txtAPaciente.Enabled = False
         txtDpi.Enabled = False
         txtSalus.Enabled = True
+    End Sub
+
+    ':::INSTRUCCIÓN para deshabilitar el Ctrl + V, El Shift + Insert, y el menú contextual de txtAPaciente.
+    Private Sub txtAPaciente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtAPaciente.KeyDown
+        ':::Verificar si se presionó Ctrl+V o Shift+Insert.
+        If (e.Control AndAlso e.KeyCode = Keys.V) OrElse (e.Shift AndAlso e.KeyCode = Keys.Insert) Then
+            e.SuppressKeyPress = True  ':::Prevenir el evento.
+        End If
+    End Sub
+
+    ':::INSTRUCCIÓN para deshabilitar el Ctrl + V, El Shift + Insert, y el menú contextual de txtNPaciente.
+    Private Sub txtNPaciente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtNPaciente.KeyDown
+        ':::Verificar si se presionó Ctrl+V o Shift+Insert.
+        If (e.Control AndAlso e.KeyCode = Keys.V) OrElse (e.Shift AndAlso e.KeyCode = Keys.Insert) Then
+            e.SuppressKeyPress = True  ':::Prevenir el evento.
+        End If
+    End Sub
+
+    ':::INSTRUCCIÓN para deshabilitar el Ctrl + V, El Shift + Insert, y el menú contextual de txtDpi.
+    Private Sub txtDpi_KeyDown(sender As Object, e As KeyEventArgs) Handles txtDpi.KeyDown
+        ':::Verificar si se presionó Ctrl+V o Shift+Insert.
+        If (e.Control AndAlso e.KeyCode = Keys.V) OrElse (e.Shift AndAlso e.KeyCode = Keys.Insert) Then
+            e.SuppressKeyPress = True  ':::Prevenir el evento.
+        End If
+    End Sub
+
+    ':::INSTRUCCIÓN para deshabilitar el Ctrl + V, El Shift + Insert, y el menú contextual de txtResidencia.
+    Private Sub txtResidencia_KeyDown(sender As Object, e As KeyEventArgs) Handles txtResidencia.KeyDown
+        ':::Verificar si se presionó Ctrl+V o Shift+Insert.
+        If (e.Control AndAlso e.KeyCode = Keys.V) OrElse (e.Shift AndAlso e.KeyCode = Keys.Insert) Then
+            e.SuppressKeyPress = True  ':::Prevenir el evento.
+        End If
+    End Sub
+
+    ':::INSTRUCCIÓN para deshabilitar el Ctrl + V, El Shift + Insert, y el menú contextual de txtSalus
+    Private Sub txtSalus_KeyDown(sender As Object, e As KeyEventArgs) Handles txtSalus.KeyDown
+        ':::Verificar si se presionó Ctrl+V o Shift+Insert.
+        If (e.Control AndAlso e.KeyCode = Keys.V) OrElse (e.Shift AndAlso e.KeyCode = Keys.Insert) Then
+            e.SuppressKeyPress = True  ':::Prevenir el evento.
+        End If
+    End Sub
+
+    ':::INSTRUCCIÓN para deshabilitar el Ctrl + V, El Shift + Insert, y el menú contextual de rtb1.
+    Private Sub rtb1_KeyDown(sender As Object, e As KeyEventArgs) Handles rtb1.KeyDown
+        ':::Verificar si se presionó Ctrl+V o Shift+Insert.
+        If (e.Control AndAlso e.KeyCode = Keys.V) OrElse (e.Shift AndAlso e.KeyCode = Keys.Insert) Then
+            e.SuppressKeyPress = True  ':::Prevenir el evento.
+        End If
     End Sub
 
 #End Region
