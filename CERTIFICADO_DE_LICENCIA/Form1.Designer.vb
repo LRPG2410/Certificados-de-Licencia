@@ -1048,10 +1048,10 @@ Partial Class Form1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(265, 7)
+        Me.Button1.Location = New System.Drawing.Point(1042, 40)
         Me.Button1.Name = "Button1"
         Me.Button1.Padding = New System.Windows.Forms.Padding(30, 0, 0, 0)
-        Me.Button1.Size = New System.Drawing.Size(58, 40)
+        Me.Button1.Size = New System.Drawing.Size(10, 10)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "ELIMINAR"
         Me.Button1.UseVisualStyleBackColor = True
@@ -1115,22 +1115,22 @@ Partial Class Form1
         'lNo
         '
         Me.lNo.AutoSize = True
-        Me.lNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 26.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lNo.ForeColor = System.Drawing.Color.Crimson
-        Me.lNo.Location = New System.Drawing.Point(795, 13)
+        Me.lNo.Location = New System.Drawing.Point(685, 17)
         Me.lNo.Name = "lNo"
-        Me.lNo.Size = New System.Drawing.Size(42, 24)
+        Me.lNo.Size = New System.Drawing.Size(74, 39)
         Me.lNo.TabIndex = 29
         Me.lNo.Text = "no: "
         '
         'lcontador
         '
         Me.lcontador.AutoSize = True
-        Me.lcontador.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lcontador.Font = New System.Drawing.Font("Microsoft Sans Serif", 26.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lcontador.ForeColor = System.Drawing.Color.Crimson
-        Me.lcontador.Location = New System.Drawing.Point(840, 13)
+        Me.lcontador.Location = New System.Drawing.Point(757, 17)
         Me.lcontador.Name = "lcontador"
-        Me.lcontador.Size = New System.Drawing.Size(20, 24)
+        Me.lcontador.Size = New System.Drawing.Size(36, 39)
         Me.lcontador.TabIndex = 30
         Me.lcontador.Text = "#"
         '
@@ -1159,11 +1159,11 @@ Partial Class Form1
         'lpaciente
         '
         Me.lpaciente.AutoSize = True
-        Me.lpaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lpaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 26.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lpaciente.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.lpaciente.Location = New System.Drawing.Point(840, 40)
+        Me.lpaciente.Location = New System.Drawing.Point(262, 0)
         Me.lpaciente.Name = "lpaciente"
-        Me.lpaciente.Size = New System.Drawing.Size(20, 24)
+        Me.lpaciente.Size = New System.Drawing.Size(36, 39)
         Me.lpaciente.TabIndex = 33
         Me.lpaciente.Text = "#"
         Me.lpaciente.Visible = False
@@ -1261,7 +1261,7 @@ Partial Class Form1
         '
         Me.pbCargando.Enabled = False
         Me.pbCargando.Image = CType(resources.GetObject("pbCargando.Image"), System.Drawing.Image)
-        Me.pbCargando.Location = New System.Drawing.Point(914, 7)
+        Me.pbCargando.Location = New System.Drawing.Point(1042, 7)
         Me.pbCargando.Name = "pbCargando"
         Me.pbCargando.Size = New System.Drawing.Size(10, 10)
         Me.pbCargando.TabIndex = 57
@@ -1272,7 +1272,7 @@ Partial Class Form1
         '
         Me.pbImpresora.Enabled = False
         Me.pbImpresora.Image = CType(resources.GetObject("pbImpresora.Image"), System.Drawing.Image)
-        Me.pbImpresora.Location = New System.Drawing.Point(930, 7)
+        Me.pbImpresora.Location = New System.Drawing.Point(1058, 7)
         Me.pbImpresora.Name = "pbImpresora"
         Me.pbImpresora.Size = New System.Drawing.Size(10, 10)
         Me.pbImpresora.TabIndex = 58
@@ -1283,7 +1283,7 @@ Partial Class Form1
         '
         Me.pbLupa.Enabled = False
         Me.pbLupa.Image = CType(resources.GetObject("pbLupa.Image"), System.Drawing.Image)
-        Me.pbLupa.Location = New System.Drawing.Point(946, 7)
+        Me.pbLupa.Location = New System.Drawing.Point(1074, 7)
         Me.pbLupa.Name = "pbLupa"
         Me.pbLupa.Size = New System.Drawing.Size(10, 10)
         Me.pbLupa.TabIndex = 59
@@ -1293,22 +1293,22 @@ Partial Class Form1
         'lPacienteN
         '
         Me.lPacienteN.AutoSize = True
-        Me.lPacienteN.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lPacienteN.Font = New System.Drawing.Font("Microsoft Sans Serif", 26.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lPacienteN.ForeColor = System.Drawing.Color.Crimson
-        Me.lPacienteN.Location = New System.Drawing.Point(657, 13)
+        Me.lPacienteN.Location = New System.Drawing.Point(437, 17)
         Me.lPacienteN.Name = "lPacienteN"
-        Me.lPacienteN.Size = New System.Drawing.Size(143, 24)
+        Me.lPacienteN.Size = New System.Drawing.Size(257, 39)
         Me.lPacienteN.TabIndex = 60
         Me.lPacienteN.Text = "Nuevo paciente"
         '
         'lPacienteE
         '
         Me.lPacienteE.AutoSize = True
-        Me.lPacienteE.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lPacienteE.Font = New System.Drawing.Font("Microsoft Sans Serif", 26.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lPacienteE.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.lPacienteE.Location = New System.Drawing.Point(637, 37)
+        Me.lPacienteE.Location = New System.Drawing.Point(140, 32)
         Me.lPacienteE.Name = "lPacienteE"
-        Me.lPacienteE.Size = New System.Drawing.Size(163, 24)
+        Me.lPacienteE.Size = New System.Drawing.Size(301, 39)
         Me.lPacienteE.TabIndex = 61
         Me.lPacienteE.Text = "Paciente existente"
         Me.lPacienteE.Visible = False
@@ -1317,7 +1317,7 @@ Partial Class Form1
         '
         Me.pbload.Enabled = False
         Me.pbload.Image = CType(resources.GetObject("pbload.Image"), System.Drawing.Image)
-        Me.pbload.Location = New System.Drawing.Point(914, 24)
+        Me.pbload.Location = New System.Drawing.Point(1042, 24)
         Me.pbload.Name = "pbload"
         Me.pbload.Size = New System.Drawing.Size(10, 10)
         Me.pbload.TabIndex = 62
@@ -1328,7 +1328,7 @@ Partial Class Form1
         '
         Me.PictureBox1.Enabled = False
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(930, 24)
+        Me.PictureBox1.Location = New System.Drawing.Point(1058, 24)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(10, 10)
         Me.PictureBox1.TabIndex = 63
@@ -1339,7 +1339,7 @@ Partial Class Form1
         '
         Me.PictureBox2.Enabled = False
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(946, 23)
+        Me.PictureBox2.Location = New System.Drawing.Point(1074, 23)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(10, 10)
         Me.PictureBox2.TabIndex = 64

@@ -112,6 +112,31 @@ Public Class Form1
         Else
             ':::INSTRUCCIÓN Try para capturar errores
             Try
+                ':::Verificamos que el Dpi y el código de Salus ya existen.
+                Dim dpi As String = txtDpi.Text
+                Dim salus As String = txtSalus.Text
+                Dim queryDPI As String = "SELECT COUNT(*) FROM Datos_Paciente WHERE Pac_Dpi = @Dpi"
+                Dim querySALUS As String = "SELECT COUNT(*) FROM Datos_Paciente WHERE Salus = @Salus"
+
+                Dim commandDPI As New OleDbCommand(queryDPI, conexion)
+                Dim commandSALUS As New OleDbCommand(querySALUS, conexion)
+
+                commandDPI.Parameters.AddWithValue("@Dpi", dpi)
+                commandSALUS.Parameters.AddWithValue("@Salus", salus)
+
+                Dim countDPI As Integer = CInt(commandDPI.ExecuteScalar())
+                Dim countSALUS As Integer = CInt(commandSALUS.ExecuteScalar())
+
+                If countDPI > 0 Then
+                    MessageBox.Show("ESTE DPI YA EXISTE.", "PRECAUCIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Return
+                End If
+
+                If countSALUS > 0 Then
+                    MessageBox.Show("ESTE CÓDIGO DE SALUS YA EXISTE.", "PRECAUCIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Return
+                End If
+
                 ':::Usamos el comando y le indicamos con la instrucción "INSERT INTO [tabla] ([nombrecelda1],[nombrecelda2]) VALUES([@nombreherramienta1],[@nombreherramienta2]", conexion)
                 comandos = New OleDbCommand("INSERT INTO Datos_Paciente (Pro_Nombre, Pro_regTransito, Pro_regSalud, Pro_regOft, Pac_Apellido, Pac_Nombre, Pac_Dpi, Pac_Departamento, Pac_Municipio, 
                                                                          Pac_Nacimiento, Pac_Genero, Pac_Residencia, Res_Agudeza1, Res_Agudeza2, Res_Agudeza3, Res_Vision, Res_CampoCentralOD, 
@@ -131,7 +156,7 @@ Public Class Form1
 
                 ':::Ejecutamos la instruccion mediante la propiedad ExecuteNonQuery del command
                 comandos.ExecuteNonQuery()
-                MsgBox("DATOS GUARDADOS EXITOSAMENTE", vbInformation, "CORRECTO")
+                MsgBox("DATOS GUARDADOS EXITOSAMENTE.", vbInformation, "CORRECTO")
                 reporte()
                 actualizar()
                 limpiar()
@@ -144,6 +169,7 @@ Public Class Form1
 
     ':::[IMPRIMIR] Se utiliza para, ya sea, abrir la ubicación de los reportes, crear un reporte en word o en pdf.
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnReporte.Click
+        Dim rutaCARPETA As String = Path.Combine(rutaREPORTEin, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text)
         ':::La variable "estaGifEnEjecucion" se utiliza para cambiar el icono del boton imprimir y colocar el gif.
         Dim estaGifEnEjecucion As Boolean = False
         ':::Si alguno de los textBox esta vacio al momento de presionar el boton...
@@ -161,6 +187,8 @@ Public Class Form1
                 GroupBox2.Enabled = False
                 txtAPaciente.Enabled = False
                 txtDpi.Enabled = False
+                txtSalus.Enabled = False
+                txtNPaciente.Enabled = False
                 cbDepartamento.Enabled = False
                 cbMunicipio.Enabled = False
                 txtDate1.Enabled = False
@@ -200,9 +228,12 @@ Public Class Form1
             btnGuardar.Enabled = False
             btnActualizar.Enabled = False
             btnBuscar.Enabled = False
+            txtSalus.Enabled = False
+            txtNPaciente.Enabled = False
             If rbGenerarpdf.Checked = True Then
-                generarpdf(rutaREPORTEin & txtNPaciente.Text & ".docx",
-                           rutaREPORTEin & txtNPaciente.Text & ".pdf")
+                generarpdf(Path.Combine(rutaCARPETA, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text & ".docx"),
+                           Path.Combine(rutaCARPETA, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text & ".pdf"))
+
             ElseIf rbGenerarword.Checked = True Then
                 reporte()
             ElseIf rbAbrir.Checked = True Then
@@ -242,6 +273,7 @@ Public Class Form1
         btnGuardar.Enabled = False
         btnReporte.Enabled = False
         btnActualizar.Enabled = False
+        txtSalus.Enabled = False
         Dim nombre As String = "Select * from Datos_Paciente where Pac_Nombre = '" & txtNPaciente.Text & "'"
         Dim apellido As String = "Select * from Datos_Paciente where Pac_Apellido = '" & txtAPaciente.Text & "'"
         Dim dpi As String = "Select * from Datos_Paciente where Pac_Dpi = '" & txtDpi.Text & "'"
@@ -347,7 +379,6 @@ Public Class Form1
         rbTodos.Visible = False
         rbTodos.Checked = False
 
-
         GroupBox3.Enabled = True
         GroupBox2.Enabled = True
         txtAPaciente.Enabled = True
@@ -363,6 +394,7 @@ Public Class Form1
         btnReporte.Enabled = True
         btnActualizar.Enabled = True
         btnBuscar.Enabled = True
+        txtSalus.Enabled = True
     End Sub
 
 #End Region
@@ -550,22 +582,24 @@ Public Class Form1
             End If
 
             ':::Limpieza del recolector de basura
-            GC.Collect()
-            GC.WaitForPendingFinalizers()
+            'GC.Collect()
+            'GC.WaitForPendingFinalizers()
             carpeta()
         End Try
     End Sub
 
     ':::PROCEDIMIENTO para generar el reporte en pdf.
     Sub generarpdf(ByVal wordFileName As String, ByVal pdfFileName As String)
-        ' Crea una nueva aplicación de Word
+        Dim rutaCARPETA As String = Path.Combine(rutaREPORTEin, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text)
+        ':::Crea una nueva aplicación de Word
         Dim wordApp As New Word.Application
 
-        ' Abre el documento de Word
+        ':::Abre el documento de Word
         Dim wordDoc As Word.Document = wordApp.Documents.Open(wordFileName)
 
         ' Guarda el documento como PDF
-        pdfFileName = rutaREPORTEin & txtNPaciente.Text & ".pdf"
+
+        pdfFileName = Path.Combine(rutaCARPETA, txtSalus.Text & " " & txtAPaciente.Text & ", " & txtNPaciente.Text & ".pdf")
         wordDoc.SaveAs2(pdfFileName, Word.WdSaveFormat.wdFormatPDF)
 
         ' Cierra el documento y la aplicación de Word
@@ -869,14 +903,15 @@ Public Class Form1
         Me.rtb1.Text = dgvTabla.Rows(I).Cells(33).Value.ToString
 
         Me.pbFoto.ImageLocation = dgvTabla.Rows(I).Cells(34).Value.ToString
+        Me.lDirFoto.Text = dgvTabla.Rows(I).Cells(34).Value.ToString
         Me.lpaciente.Text = dgvTabla.Rows(I).Cells(35).Value.ToString
         Me.txtSalus.Text = dgvTabla.Rows(I).Cells(36).Value.ToString
 
         Me.lcontador.Visible = False
-        Me.lpaciente.Location = New Drawing.Point(840, 13)
+        Me.lpaciente.Location = New Drawing.Point(757, 17)
         Me.lpaciente.Visible = True
         lPacienteN.Visible = False
-        lPacienteE.Location = New Drawing.Point(637, 13)
+        lPacienteE.Location = New Drawing.Point(393, 17)
         lPacienteE.Visible = True
         lNo.ForeColor = Color.RoyalBlue
         dgvTabla.Sort(dgvTabla.Columns("Contador"), System.ComponentModel.ListSortDirection.Descending)
